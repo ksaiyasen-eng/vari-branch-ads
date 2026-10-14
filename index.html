@@ -1,0 +1,2385 @@
+<!doctype html>
+<html lang="lo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="ລະບົບພາຍໃນ Vari: ສາຂາບັນທຶກລູກຄ້າຈາກໂຄສະນາ Facebook, ສນຫ ຕິດຕາມລູກຄ້ານອກເຂດ ແລະ ແດຊບອດຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1F4E79">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://xpehjmiymlxqbydczppu.supabase.co; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<title>ຕິດຕາມໂຄສະນາສາຂາ Vari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow reading column; verdict cards first, charts second, detail last. Brand navy on white. */
+:root{
+  --brand:#1F4E79; --brand-ink:#1F4E79; --brand-soft:#E8F0F8;
+  --bg:#FFFFFF; --surface:#F5F8FB; --surface-2:#EBF0F5; --line:#D8E0E8;
+  --ink:#2B3137; --muted:#5E6A75;
+  --good:#2E7D32; --warn:#F9A825; --bad:#C62828;
+  --good-ink:#256B29; --bad-ink:#B71C1C; --zin-ink:#FFFFFF; --zout-ink:#10202F; --zunk-ink:#1C2329;
+  --on-good:#FFFFFF; --on-warn:#2A1F00; --on-bad:#FFFFFF;
+  --good-soft:#E6F2E7; --warn-soft:#FFF5D6; --bad-soft:#FBE7E7;
+  --missing-bg:#FFF3BF; --missing-ink:#6B4E00; --missing-line:#E8C547;
+  --sample-bg:#F1E9FA; --sample-ink:#5B2E86; --sample-line:#B48AD8;
+  --b1:#1F4E79; --b2:#B4477A;
+  --zin:#1F4E79; --zout:#8DB3D6; --zunk:#C3CAD1;
+  --font:"Noto Sans Lao","Phetsarath OT","Lao Sangam MN",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --brand:#2F6AA0; --brand-ink:#8EC0EE; --brand-soft:#16283A;
+  --bg:#10161D; --surface:#172029; --surface-2:#1F2A35; --line:#2C3a47;
+  --ink:#E4EAF0; --muted:#9AA8B5;
+  --good-ink:#81C784; --bad-ink:#F28B82; --zin-ink:#0B1620; --zout-ink:#FFFFFF; --zunk-ink:#FFFFFF;
+  --good-soft:#1A2E1C; --warn-soft:#352B0C; --bad-soft:#3A1A1A;
+  --missing-bg:#3D3204; --missing-ink:#FFE08A; --missing-line:#8A7413;
+  --sample-bg:#2A1D38; --sample-ink:#D9B8F5; --sample-line:#7A55A0;
+  --b1:#6FA8DC; --b2:#E07FAE;
+  --zin:#6FA8DC; --zout:#2F5F8A; --zunk:#55606B;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --brand:#2F6AA0; --brand-ink:#8EC0EE; --brand-soft:#16283A;
+  --bg:#10161D; --surface:#172029; --surface-2:#1F2A35; --line:#2C3a47;
+  --ink:#E4EAF0; --muted:#9AA8B5;
+  --good-ink:#81C784; --bad-ink:#F28B82; --zin-ink:#0B1620; --zout-ink:#FFFFFF; --zunk-ink:#FFFFFF;
+  --good-soft:#1A2E1C; --warn-soft:#352B0C; --bad-soft:#3A1A1A;
+  --missing-bg:#3D3204; --missing-ink:#FFE08A; --missing-line:#8A7413;
+  --sample-bg:#2A1D38; --sample-ink:#D9B8F5; --sample-line:#7A55A0;
+  --b1:#6FA8DC; --b2:#E07FAE;
+  --zin:#6FA8DC; --zout:#2F5F8A; --zunk:#55606B;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+h1{font-size:1.6rem;font-weight:700;color:var(--brand-ink)}
+h2{font-size:1.12rem;font-weight:700}
+h3{font-size:1.3rem;font-weight:700}
+.num,.tab{font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--brand-ink);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 14px;font-weight:600;font-size:.92rem}
+.btn:hover{border-color:var(--brand-ink)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#FFFFFF}
+.btn.danger{color:var(--bad-ink)}
+.btn.danger.armed{background:var(--bad);border-color:var(--bad);color:#FFFFFF}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+
+/* header */
+.top{display:flex;flex-direction:column;gap:12px;border-bottom:3px solid var(--brand);padding-bottom:16px}
+.eyebrow{font-size:.82rem;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.9rem;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:600}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.range{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.range label{display:flex;gap:6px;align-items:center;font-size:.9rem}
+.range input[type=date]{border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--bg)}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:3px 12px;font-size:.85rem}
+.chip:hover{border-color:var(--brand-ink)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#FFFFFF}
+.banner-sample{background:var(--sample-bg);color:var(--sample-ink);border:2px dashed var(--sample-line);border-radius:10px;padding:10px 14px;font-weight:700}
+
+/* panels */
+.panel{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:14px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.load-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.load-grid > div{display:flex;flex-direction:column;gap:8px;min-width:0}
+textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);font-size:.85rem;resize:vertical}
+.msg{font-size:.9rem;min-height:1.2em}
+.msg.ok{color:var(--good-ink)}
+.msg.err{color:var(--bad-ink)}
+.set-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:.85rem;font-weight:600}
+.field input{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--bg);width:100%}
+.field.is-missing input{background:var(--missing-bg);border-color:var(--missing-line);color:var(--missing-ink)}
+.field .hint{font-size:.78rem;color:var(--muted)}
+.field.is-missing .hint{color:var(--missing-ink);font-weight:600}
+.field.is-sample input{border:2px dashed var(--sample-line)}
+.field.is-sample .hint{color:var(--sample-ink);font-weight:600}
+
+/* alerts */
+.alerts{display:flex;flex-direction:column;gap:8px}
+.alert{display:flex;gap:10px;align-items:flex-start;border-radius:10px;padding:10px 14px;background:var(--warn-soft);border:1px solid var(--missing-line)}
+.alert .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--warn);margin-top:.5em}
+.alert.info{background:var(--brand-soft);border-color:var(--line)}
+.alert.info .dot{background:var(--brand-ink)}
+.alert p{margin:0}
+.alert .sub{font-size:.85rem;color:var(--muted)}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0;border-top:6px solid var(--line)}
+.card.v-grow{border-top-color:var(--good)} .card.v-adjust{border-top-color:var(--warn)} .card.v-stop{border-top-color:var(--bad)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:middle}
+.verdict{display:flex;flex-direction:column;gap:4px}
+.pill{display:inline-block;border-radius:10px;padding:6px 18px;font-size:1.45rem;font-weight:700;line-height:1.35;text-align:center}
+.pill.grow{background:var(--good);color:var(--on-good)}
+.pill.adjust{background:var(--warn);color:var(--on-warn)}
+.pill.stop{background:var(--bad);color:var(--on-bad)}
+.pill.none{background:var(--surface-2);color:var(--muted);font-size:1.05rem}
+.rule{margin:0;font-size:.82rem;color:var(--muted);font-weight:600}
+.cost .lbl{font-size:.88rem;color:var(--muted);font-weight:600}
+.cost .big{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cost .big .num{font-size:2.5rem;font-weight:700;line-height:1.1}
+.cost .big .unit{font-size:1rem;font-weight:600;color:var(--muted)}
+.cost .vs{font-size:.9rem}
+.nodata{display:inline-block;background:var(--missing-bg);color:var(--missing-ink);border-radius:6px;padding:1px 8px;font-size:.8rem;font-weight:600}
+.gauge{display:flex;flex-direction:column;gap:4px}
+.gauge-bar{position:relative;height:16px;border-radius:8px;overflow:visible;display:flex}
+.gauge-bar span{height:100%}
+.gauge-bar .z1{background:var(--good);border-radius:8px 0 0 8px;width:40%}
+.gauge-bar .z2{background:var(--warn);width:20%}
+.gauge-bar .z3{background:var(--bad);border-radius:0 8px 8px 0;width:40%}
+.gauge-bar.off span{background:var(--surface-2)}
+.gauge-mark{position:absolute;top:-6px;width:4px;height:28px;background:var(--ink);border-radius:2px;transform:translateX(-2px);box-shadow:0 0 0 2px var(--bg)}
+.gauge-ticks{position:relative;height:1.2em;font-size:.75rem;color:var(--muted)}
+.gauge-ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.gauge-ticks span:first-child{transform:none}
+.gauge-ticks span:last-child{transform:translateX(-100%)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:0}
+.stats div{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:6px;min-width:0}
+.stats dt{font-size:.8rem;color:var(--muted);font-weight:600}
+.stats dd{margin:0;font-size:1.2rem;font-weight:700}
+.stats dd .u{font-size:.8rem;font-weight:600;color:var(--muted);margin-left:4px}
+.stats dd .s{display:block;font-size:.78rem;font-weight:400;color:var(--muted)}
+.notes{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.notes li{font-size:.88rem;background:var(--surface);border-radius:8px;padding:6px 10px}
+.notes li.w{background:var(--warn-soft)}
+.budget{display:flex;flex-direction:column;gap:8px;min-width:0}
+.budget h3{font-size:1rem}
+.budget table{min-width:0;width:100%;font-size:.9rem}
+.budget th,.budget td{white-space:normal;padding:6px 8px;vertical-align:middle}
+.budget th .tag{margin-left:6px}
+.budget td input{width:100%;min-width:6.5em;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--bg);text-align:right;font-variant-numeric:tabular-nums}
+.budget input.is-missing{background:var(--missing-bg);border-color:var(--missing-line);color:var(--missing-ink)}
+.budget input.is-sample{border:2px dashed var(--sample-line)}
+.refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.refs div{background:var(--surface);border-radius:10px;padding:10px 12px;min-width:0}
+.refs dt{font-size:.8rem;color:var(--muted);font-weight:600}
+.refs dd{margin:0;font-weight:700;font-size:1.05rem}
+.refs dd .u{font-size:.8rem;color:var(--muted);font-weight:600;margin-left:4px}
+
+/* charts */
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:16px}
+.chart{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0;background:var(--bg)}
+.chart.wide{grid-column:1/-1}
+.chart p{margin:0}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll-x svg{display:block;width:100%;min-width:540px;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.85rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{flex:none}
+.empty-chart{padding:28px 12px;text-align:center;background:var(--surface);border-radius:10px;color:var(--muted)}
+svg text{font-family:var(--font);fill:var(--muted);font-size:12px}
+svg .ax{stroke:var(--line)}
+svg .lbl-strong{fill:var(--ink);font-weight:700}
+
+/* table */
+.tbl-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tbl-tools select,.tbl-tools input{border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--bg)}
+.tbl-tools input{flex:1 1 200px;min-width:0}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:900px}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--surface);font-weight:700;position:sticky;top:0}
+td.r,th.r{text-align:right}
+tr.pending td{background:var(--warn-soft)}
+tr.pending td:first-child{box-shadow:inset 4px 0 0 var(--warn)}
+.tag{display:inline-block;border-radius:6px;padding:0 7px;font-size:.78rem;font-weight:600;background:var(--surface-2)}
+.tag.ok{background:var(--good-soft);color:var(--good-ink)}
+.tag.wait{background:var(--warn);color:var(--on-warn)}
+.tag.no{background:var(--bad-soft);color:var(--bad-ink)}
+
+/* payout */
+.payout{display:flex;flex-direction:column;gap:10px}
+.pay-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
+.pay-row .calc{font-size:.95rem}
+.pay-row .amt{font-weight:700;font-size:1.15rem}
+.pay-total{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.pay-total .amt{font-size:1.9rem;font-weight:700;color:var(--brand-ink)}
+.copy-fallback{width:100%;min-height:120px}
+
+/* footer */
+.foot{border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;font-size:.86rem;color:var(--muted)}
+.foot h2{font-size:.95rem;color:var(--ink);margin-bottom:6px}
+.foot ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.foot div{min-width:0}
+
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+
+/* app shell: tabs, login, forms, lists */
+[hidden]{display:none!important}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tabs .tab-btn{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 16px;font-weight:600;font-size:.92rem}
+.tabs .tab-btn[aria-current="page"]{background:var(--brand);border-color:var(--brand);color:#FFFFFF}
+.tabs .spacer{flex:1 1 auto}
+.who{font-size:.88rem;color:var(--muted)}
+.who b{color:var(--ink)}
+.view{display:flex;flex-direction:column;gap:22px;min-width:0}
+.login{max-width:520px;width:100%;margin:0 auto}
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.role-btn{border:2px solid var(--line);background:var(--bg);border-radius:12px;padding:14px 10px;font-weight:700;font-size:1rem;text-align:center}
+.role-btn small{display:block;font-weight:400;color:var(--muted);font-size:.78rem}
+.role-btn[aria-pressed="true"]{border-color:var(--brand-ink);background:var(--brand-soft)}
+.pin-row{display:flex;gap:8px;flex-wrap:wrap}
+.pin-row input{flex:1 1 160px;min-width:0;font-size:1.4rem;letter-spacing:.3em;text-align:center;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--bg)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:0}
+.kpis div{background:var(--surface);border-radius:12px;padding:12px 14px;min-width:0;border:1px solid var(--line)}
+.kpis div.hl{background:var(--brand-soft);border-color:var(--brand-ink)}
+.kpis div.warn{background:var(--warn-soft);border-color:var(--missing-line)}
+.kpis dt{font-size:.8rem;color:var(--muted);font-weight:600}
+.kpis dd{margin:0;font-size:1.7rem;font-weight:700;line-height:1.2}
+.kpis dd .u{font-size:.8rem;color:var(--muted);font-weight:600;margin-left:4px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.field select{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--bg);width:100%}
+fieldset{border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 14px;font-weight:600;font-size:.92rem}
+.seg button[aria-pressed="true"]{border-color:var(--brand-ink);background:var(--brand);color:#FFFFFF}
+.seg button[disabled]{opacity:.4;cursor:not-allowed}
+.seg.small button{padding:4px 12px;font-size:.85rem;border-width:1px;border-radius:999px}
+.hint{margin:0;font-size:.85rem;color:var(--muted)}
+.hint.on{color:var(--brand-ink);font-weight:600}
+.form-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn.big{padding:11px 28px;font-size:1.02rem}
+.lead-list{display:flex;flex-direction:column;gap:10px}
+.lead{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--bg);min-width:0}
+.lead.pending{border-left:5px solid var(--warn)}
+.lead.late{border-left:5px solid var(--bad)}
+.lead.done{border-left:5px solid var(--good)}
+.lead-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+.lead-name{font-weight:700;font-size:1.05rem;overflow-wrap:anywhere}
+.lead-meta{font-size:.86rem;color:var(--muted);overflow-wrap:anywhere}
+.lead-tags{display:flex;flex-wrap:wrap;gap:6px}
+.lead-acts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lead-acts .btn{padding:5px 12px;font-size:.86rem}
+.phone{font-variant-numeric:tabular-nums;font-weight:600;color:var(--brand-ink);text-decoration:none}
+.hq-res{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.hq-res input{flex:1 1 200px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--bg)}
+.btn.ok{border-color:var(--good);color:var(--good-ink)}
+.btn.ok[aria-pressed="true"]{background:var(--good);color:var(--on-good)}
+.btn.no{border-color:var(--bad);color:var(--bad-ink)}
+.btn.no[aria-pressed="true"]{background:var(--bad);color:var(--on-bad)}
+.btn.wait[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:var(--on-warn)}
+.tag.late{background:var(--bad);color:var(--on-bad)}
+.tag.br{background:var(--brand-soft);color:var(--brand-ink)}
+.empty{padding:24px 12px;text-align:center;background:var(--surface);border-radius:10px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-weight:600;max-width:calc(100% - 32px);z-index:50;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.toast.err{background:var(--bad);color:#FFFFFF}
+.guide ol,.guide ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:72ch}
+.guide p{margin:0;max-width:72ch}
+.guide h3{font-size:1rem;margin-top:6px}
+.guide summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"▸";color:var(--brand-ink);font-size:1.1rem;transition:transform .15s}
+.guide details[open] > summary::before{transform:rotate(90deg)}
+.guide summary h2{display:inline}
+.guide details[open]{gap:12px}
+.guide details:not([open]){gap:0}
+.flow{counter-reset:none}
+.terms{margin:0;display:grid;grid-template-columns:minmax(0,12em) minmax(0,1fr);gap:8px 16px;max-width:80ch}
+.terms dt{font-weight:700}
+.terms dd{margin:0}
+@media (max-width:560px){ .terms{grid-template-columns:minmax(0,1fr)} .terms dd{margin-bottom:6px} }
+.pcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.pcard{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg);min-width:0;border-top:5px solid var(--line)}
+.pcard.t-good{border-top-color:var(--good)} .pcard.t-warn{border-top-color:var(--warn)} .pcard.t-bad{border-top-color:var(--bad)} .pcard.t-info{border-top-color:var(--brand)}
+.pgrid{margin:0;display:flex;flex-direction:column;gap:8px}
+.pgrid div{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:8px;border-top:1px solid var(--line);padding-top:6px}
+.pgrid dt{font-size:.8rem;color:var(--muted);font-weight:600}
+.pgrid dd{margin:0;font-size:.92rem;overflow-wrap:anywhere}
+.pgrid dd.big{font-size:1.2rem;font-weight:700}
+.spill{display:inline-block;border-radius:999px;padding:2px 12px;font-size:.82rem;font-weight:700;background:var(--surface-2);color:var(--muted)}
+.spill.good{background:var(--good);color:var(--on-good)} .spill.warn{background:var(--warn);color:var(--on-warn)} .spill.bad{background:var(--bad);color:var(--on-bad)} .spill.info{background:var(--brand);color:#FFFFFF}
+.mchips{display:flex;flex-wrap:wrap;gap:4px}
+.mchip{display:inline-block;border-radius:6px;padding:1px 7px;font-size:.78rem;font-weight:600;background:var(--surface-2);color:var(--muted)}
+.mchip.ok{background:var(--good-soft);color:var(--good-ink)} .mchip.no{background:var(--bad);color:var(--on-bad)} .mchip.due{background:var(--warn);color:var(--on-warn)}
+.bsec{display:flex;flex-direction:column;gap:12px}
+.mrow{display:grid;grid-template-columns:minmax(0,7em) minmax(0,10em) minmax(0,1fr);gap:8px;align-items:center}
+.mrow select,.mrow input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--bg);width:100%;min-width:0}
+@media (max-width:480px){ .mrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .mrow input{grid-column:1/-1} .pgrid div{grid-template-columns:minmax(0,1fr)} }
+.online-pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:.78rem;font-weight:700;background:var(--good-soft);color:var(--good-ink)}
+
+@media (max-width:480px){
+  h1{font-size:1.35rem}
+  .cost .big .num{font-size:2.1rem}
+  .pill{font-size:1.25rem}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+@media print{
+  :root,:root[data-theme],:root:not([data-theme="light"]){
+    --brand:#1F4E79;--brand-ink:#1F4E79;--brand-soft:#E8F0F8;--bg:#FFFFFF;--surface:#F5F8FB;--surface-2:#EBF0F5;--line:#CCD5DE;
+    --ink:#222222;--muted:#4F5B66;--good-soft:#E6F2E7;--warn-soft:#FFF5D6;--bad-soft:#FBE7E7;
+    --good-ink:#256B29;--bad-ink:#B71C1C;--zin-ink:#FFFFFF;--zout-ink:#10202F;--zunk-ink:#1C2329;--missing-bg:#FFF3BF;--missing-ink:#6B4E00;--missing-line:#E8C547;--sample-bg:#F1E9FA;--sample-ink:#5B2E86;--sample-line:#B48AD8;
+    --b1:#1F4E79;--b2:#B4477A;--zin:#1F4E79;--zout:#8DB3D6;--zunk:#C3CAD1;color-scheme:light;
+  }
+  @page{size:A4;margin:12mm}
+  body{font-size:11pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0;gap:14px}
+  .no-print{display:none!important}
+  .cards{grid-template-columns:1fr 1fr}
+  .charts{grid-template-columns:1fr}
+  .card,.chart,.payout,.alerts{break-inside:avoid}
+  .scroll-x{overflow:visible}
+  .scroll-x svg{min-width:0}
+  .tbl-wrap{overflow:visible;border:none}
+  table{min-width:0;font-size:8pt}
+  th,td{padding:3px 5px;white-space:normal}
+  .col-phone{display:none}
+  th{position:static}
+  .toast,.tabs{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <noscript><p class="alert">ໜ້ານີ້ຕ້ອງເປີດ JavaScript — ກະລຸນາເປີດ JavaScript ໃນເບຣົາເຊີ ແລ້ວໂຫຼດໜ້າໃໝ່</p></noscript>
+
+  <header class="top">
+    <div class="eyebrow" id="eyebrow">Vari · ງົບໂຄສະນາ Facebook ລະດັບສາຂາ · ທົດລອງ 3 ເດືອນ</div>
+    <h1>ຕິດຕາມຜົນງົບໂຄສະນາສາຂາ</h1>
+    <nav class="tabs" id="tabs" aria-label="ເມນູ">
+      <button class="tab-btn" data-view="dash">ແດຊບອດ</button>
+      <button class="tab-btn" data-view="branch">ບັນທຶກລູກຄ້າ</button>
+      <button class="tab-btn" data-view="hq">ສນຫ ຕິດຕາມ</button>
+      <button class="tab-btn" data-view="budget">ໂອນງົບ</button>
+      <button class="tab-btn" data-view="admin">ແອດມິນ</button>
+      <button class="tab-btn" data-view="guide">ຄູ່ມື</button>
+      <span class="spacer"></span>
+      <span class="who" id="who"></span>
+      <button class="btn" id="btnAuth">ເຂົ້າລະບົບ</button>
+    </nav>
+  </header>
+
+  <!-- ===== login ===== -->
+  <main class="view" id="viewLogin" hidden>
+    <section class="panel login">
+      <h2>ເຂົ້າລະບົບ</h2>
+      <p class="hint">ເລືອກວ່າທ່ານແມ່ນໃຜ ແລ້ວໃສ່ PIN ທີ່ໄດ້ຮັບ</p>
+      <div class="role-grid" id="roleGrid">
+        <button type="button" class="role-btn" data-role="b0" aria-pressed="false">ໂນນຄໍ້<small>ພະນັກງານສາຂາ</small></button>
+        <button type="button" class="role-btn" data-role="b1" aria-pressed="false">ສີສະຫວາດ<small>ພະນັກງານສາຂາ</small></button>
+        <button type="button" class="role-btn" data-role="hq" aria-pressed="false">ສນຫ<small>ຕິດຕາມລູກຄ້ານອກເຂດ</small></button>
+        <button type="button" class="role-btn" data-role="admin" aria-pressed="false">ແອດມິນ<small>ເຈົ້າຂອງ / ຜູ້ຈັດການ</small></button>
+      </div>
+      <form id="loginForm" class="pin-row" novalidate>
+        <label class="small" for="pinIn" style="flex-basis:100%"><b>PIN</b></label>
+        <input id="pinIn" type="password" inputmode="numeric" autocomplete="current-password" maxlength="8" pattern="[0-9]*" disabled>
+        <button class="btn primary big" id="btnLogin" disabled>ເຂົ້າລະບົບ</button>
+      </form>
+      <div class="msg" id="loginMsg" role="status"></div>
+      <p class="hint">ບໍ່ມີ PIN? ຍັງເບິ່ງ <button type="button" class="chip" data-view="dash">ແດຊບອດແບບອອບໄລນ໌</button> ໄດ້ ໂດຍນຳເຂົ້າໄຟລ໌ CSV ຫຼື ກົດ ເບິ່ງຕົວຢ່າງ</p>
+      <p class="hint">ໃຊ້ຄັ້ງທຳອິດ? ອ່ານ <button type="button" class="chip" data-view="guide">ຄູ່ມືການໃຊ້ງານ</button></p>
+    </section>
+  </main>
+
+  <!-- ===== guide ===== -->
+  <main class="view guide" id="viewGuide" hidden>
+    <section class="panel">
+      <h2>ຄູ່ມືການໃຊ້ງານ</h2>
+      <p>ລະບົບນີ້ໃຊ້ຕິດຕາມໂຄງການງົບໂຄສະນາ Facebook ຂອງສາຂາ ໂນນຄໍ້ ແລະ ສີສະຫວາດ. ລູກຄ້າທັກເຂົ້າເພຈສາຂາ → ສາຂາບັນທຶກທຸກຄົນ → ລູກຄ້ານອກເຂດຖືກສົ່ງໃຫ້ ສນຫ ຕິດຕາມ → ເຈົ້າຂອງເບິ່ງຜົນທຸກວັນຈັນ.</p>
+      <ol class="flow">
+        <li><b>ສາຂາ</b> ບັນທຶກລູກຄ້າທີ່ທັກເຂົ້າມາ ແລະ ຜົນການຂາຍ</li>
+        <li><b>ສນຫ</b> ໂທຫາລູກຄ້ານອກເຂດ ພາຍໃນ 24 ຊົ່ວໂມງ ແລ້ວແຈ້ງຜົນ</li>
+        <li><b>ເຈົ້າຂອງ / ຜູ້ຈັດການ</b> ເບິ່ງແດຊບອດ ແລະ ຕິດຕາມການໂອນງົບ</li>
+      </ol>
+    </section>
+
+    <details class="panel" data-guide="branch">
+      <summary><h2>ສຳລັບພະນັກງານສາຂາ</h2></summary>
+      <ol>
+        <li><b>ເຂົ້າລະບົບ:</b> ກົດ ເຂົ້າລະບົບ → ເລືອກຊື່ສາຂາ → ໃສ່ PIN ຂອງສາຂາ. ເຂົ້າຄັ້ງດຽວ ຢູ່ໄດ້ 30 ວັນ ໃນເຄື່ອງນັ້ນ.</li>
+        <li><b>ບັນທຶກລູກຄ້າທຸກຄົນທີ່ທັກເຂົ້າມາ ພາຍໃນມື້ດຽວກັນ</b> ເຖິງວ່າຈະຍັງບໍ່ຊື້ກໍ່ຕາມ. ຕ້ອງມີ ຊື່ ຫຼື ເບີໂທ ຢ່າງໜ້ອຍ 1 ຢ່າງ.</li>
+        <li><b>ເລືອກເຂດ:</b> ໃນເຂດ = ສາຂາສົ່ງເອງໄດ້. ນອກເຂດ = ສາຂາສົ່ງບໍ່ເຖິງ — ລະບົບຈະສົ່ງໃຫ້ ສນຫ ອັດຕະໂນມັດ ບໍ່ຕ້ອງໂທບອກ. ບໍ່ແນ່ໃຈ = ໃຊ້ຊົ່ວຄາວ ແລ້ວຕ້ອງກັບມາແກ້ເປັນ ໃນເຂດ ຫຼື ນອກເຂດ.</li>
+        <li><b>ຕອບທັນ 30 ນາທີ:</b> ເລືອກ ທັນ ຖ້າຕອບລູກຄ້າຄັ້ງທຳອິດພາຍໃນ 30 ນາທີ ຫຼັງລູກຄ້າທັກ. ຕອບຕາມຄວາມຈິງ — ຕົວເລກນີ້ໃຊ້ເບິ່ງວ່າສາຂາວຽກໜັກເກີນ ຫຼື ບໍ່.</li>
+        <li><b>ຜົນ:</b> ກຳລັງຕອບ = ຍັງຄຸຍຢູ່. ປິດການຂາຍໄດ້ = ລູກຄ້າສັ່ງຊື້ຄັ້ງທຳອິດແລ້ວ (ໃສ່ວັນທີ ແລະ ມູນຄ່າ). ບໍ່ສົ່ງຜົນ = ລູກຄ້າບໍ່ຊື້.</li>
+        <li><b>ອັບເດດຜົນ:</b> ໃນລາຍຊື່ລູກຄ້າ ກົດ ປິດການຂາຍໄດ້ / ບໍ່ສົ່ງຜົນ ໄດ້ເລີຍ. ກົດ ແກ້ໄຂ ເພື່ອແກ້ຂໍ້ມູນອື່ນ.</li>
+        <li><b>ລຶບ:</b> ລຶບໄດ້ພາຍໃນ 48 ຊົ່ວໂມງ ຫຼັງບັນທຶກ ແລະ ຕ້ອງເປັນລາຍການທີ່ ສນຫ ຍັງບໍ່ແຈ້ງຜົນ. ເກີນນັ້ນ ໃຫ້ແຈ້ງແອດມິນ.</li>
+        <li><b>ຕົວເລກດ້ານເທິງ:</b> ປິດການຂາຍໄດ້ ກີ່ຈຸດ, ສົ່ງໃຫ້ ສນຫ ກີ່ຄົນ, ສນຫ ປິດໄດ້ກີ່ຄົນ ແລະ ລໍຖ້າຜົນກີ່ຄົນ. ກົດ ເດືອນນີ້ / ເດືອນກ່ອນ / ທັງໝົດ ເພື່ອປ່ຽນຊ່ວງ.</li>
+        <li><b>ລູກຄ້ານອກເຂດ:</b> ບັນທຶກໃນແອັບ ເລືອກ ນອກເຂດ = ສົ່ງໃຫ້ ສນຫ ແລ້ວ — ແອັບຄືຫຼັກຖານດຽວ ບໍ່ຕ້ອງສົ່ງທາງອື່ນ. ໂຄງການນີ້ບໍ່ມີຄ່າສົ່ງຕໍ່. ຫຼັງ ສນຫ ແຈ້ງຜົນແລ້ວ ສາຂາປ່ຽນເຂດ ຫຼື ຜົນຂອງລູກຄ້າຄົນນັ້ນບໍ່ໄດ້.</li>
+      </ol>
+    </details>
+
+    <details class="panel" data-guide="hq">
+      <summary><h2>ສຳລັບ ສນຫ</h2></summary>
+      <ol>
+        <li><b>ເປີດແຖບ ສນຫ ຕິດຕາມ ທຸກມື້</b> (ຢ່າງໜ້ອຍເຊົ້າ ແລະ ບ່າຍ). ລາຍການທີ່ລໍຖ້າດົນທີ່ສຸດຢູ່ເທິງສຸດ.</li>
+        <li><b>ໂທຫາລູກຄ້າພາຍໃນ 24 ຊົ່ວໂມງ</b> ນັບແຕ່ສາຂາສົ່ງມາ. ປ້າຍ ຄວນໂທດ່ວນ ຂຶ້ນເມື່ອຜ່ານ 12 ຊົ່ວໂມງ, ປ້າຍສີແດງ ເກີນ 24 ຊົ່ວໂມງ ຂຶ້ນເມື່ອເກີນກຳນົດ.</li>
+        <li>ແຕະເບີໂທເພື່ອໂທ ຫຼື ກົດ ສຳເນົາເບີ. ອ່ານ ໝາຍເຫດຈາກສາຂາ ກ່ອນໂທ.</li>
+        <li><b>ບັນທຶກສັ້ນໆ</b> ໃນຊ່ອງ ບັນທຶກ ສນຫ ແລ້ວກົດຜົນ: ປິດການຂາຍໄດ້ = ລູກຄ້າສັ່ງຊື້ກັບ ສນຫ ແລ້ວ. ປິດບໍ່ໄດ້ = ລູກຄ້າບໍ່ເອົາ. ຍັງລໍຖ້າ = ໂທບໍ່ຕິດ ຫຼື ນັດໃໝ່.</li>
+        <li>ກົດ ປິດການຂາຍໄດ້ ເມື່ອລູກຄ້າສັ່ງຊື້ແລ້ວແທ້ເທົ່ານັ້ນ — ຕົວເລກນີ້ນັບເປັນລູກຄ້າໃໝ່ຂອງໂຄງການ.</li>
+        <li>ຖ້າກົດຜິດ ກົດປຸ່ມຜົນທີ່ຖືກຕ້ອງໃໝ່ໄດ້ເລີຍ.</li>
+      </ol>
+    </details>
+
+    <details class="panel" data-guide="admin">
+      <summary><h2>ສຳລັບເຈົ້າຂອງ / ຜູ້ຈັດການແຟຣນໄຊ (ແອດມິນ)</h2></summary>
+      <h3>ເລີ່ມໃຊ້ຄັ້ງທຳອິດ</h3>
+      <ol>
+        <li>ເຂົ້າລະບົບເປັນ ແອດມິນ → ແຖບ ແອດມິນ → ປ່ຽນ PIN ຂອງແອດມິນກ່ອນ.</li>
+        <li>ແຖບ ແອດມິນ → ໄລຍະໂຄງການ: ຕັ້ງ ວັນເລີ່ມໂຄງການ, ຈຳນວນງວດ (3) ແລະ ວັນທີສົ່ງໃບບິນ Facebook — ແຖບ ໂອນງົບ ຈະສ້າງງວດໃຫ້ເອງ.</li>
+        <li>ກົດ ເປີດ ຕັ້ງຄ່າ ແລ້ວຕື່ມ: ອັດຕາແລກປ່ຽນ, ກຳໄລຂັ້ນຕົ້ນຕໍ່ລູກຄ້າຕໍ່ເດືອນ ແລະ ອາຍຸລູກຄ້າສະເລ່ຍ. ລະບົບບັນທຶກເອງ ທຸກຄົນເຫັນຄືກັນ.</li>
+        <li>ແຈກ PIN ໃຫ້ສາຂາ ແລະ ສນຫ ແບບສ່ວນຕົວ (ບໍ່ສົ່ງໃນກຸ່ມ). ສົ່ງລິ້ງໜ້ານີ້ໃຫ້ເຂົາເຈົ້າເປີດໃນມືຖື ແລະ ເພີ່ມໃສ່ໜ້າຫຼັກ (Add to Home Screen).</li>
+      </ol>
+      <h3>ທຸກວັນຈັນ (10 ນາທີ)</h3>
+      <ol>
+        <li>ເປີດ ແດຊບອດ (ຊ່ວງ ເດືອນນີ້). ອ່ານແຖບເຕືອນສີເຫຼືອງກ່ອນ.</li>
+        <li>ກວດແຖບ ໂອນງົບ ວ່າ ສນຫ ບັນທຶກພາບໜ້າຈໍວັນຈັນ ແລະ ໃບບິນຄົບ — ແດຊບອດເອົາເງິນທີ່ໃຊ້ຈິງຈາກບ່ອນນັ້ນໄປຄຳນວນເອງ. ປ່ຽນຊ່ວງວັນທີໄດ້ເລີຍ.</li>
+        <li>ເບິ່ງປ້າຍຜົນຕັດສິນຂອງແຕ່ລະສາຂາ: ຂະຫຍາຍ / ຕໍ່ ແລະ ປັບ / ຢຸດ. ຕັດສິນໄດ້ ເມື່ອໄດ້ຜົນຄືກັນ 2 ເດືອນຕິດຕໍ່ກັນ.</li>
+        <li>ທ້າຍງວດ: ກວດແຖບ ໂອນງົບ ວ່າຫຼັກຖານຄົບ ກ່ອນອະນຸມັດໂອນງວດຖັດໄປ.</li>
+      </ol>
+      <h3>ອື່ນໆ</h3>
+      <ul>
+        <li>ແຖບ ບັນທຶກລູກຄ້າ: ແອດມິນເລືອກສາຂາ ແລ້ວເພີ່ມ/ແກ້/ລຶບ ລູກຄ້າແທນສາຂາໄດ້.</li>
+        <li>ແຖບ ແອດມິນ → ດາວໂຫຼດ CSV: ໄດ້ໄຟລ໌ທີ່ມີຖັນ A–P ຄືກັບແຜ່ນ ບັນທຶກລູກຄ້າ ໃນ Excel.</li>
+        <li>ພິມເຂົ້າທີ່ປະຊຸມ: ເປີດແດຊບອດ ແລ້ວກົດ Ctrl+P (⌘+P ໃນ Mac). ເບີໂທລູກຄ້າບໍ່ຖືກພິມ.</li>
+        <li>ພະນັກງານລາອອກ ຫຼື PIN ຮົ່ວ: ປ່ຽນ PIN ຂອງຝ່າຍນັ້ນທັນທີ — ເຄື່ອງທີ່ໃຊ້ PIN ເກົ່າຈະຖືກອອກຈາກລະບົບ.</li>
+      </ul>
+    </details>
+
+    <details class="panel" data-guide="budget">
+      <summary><h2>ໂອນງົບ ແລະ ຫຼັກຖານ (ແຖບ ໂອນງົບ)</h2></summary>
+      <p>ຕາມຂໍ້ຕົກລົງ ພາກ 5: ສນຫ ໂອນ 100 ໂດລາ/ເດືອນ ເປັນກີບຕາມອັດຕາວັນໂອນ. ສາຂາຈ່າຍ Facebook ເອງ ແລະ ສົ່ງຫຼັກຖານ. ໂຄງການແບ່ງເປັນງວດລະ 1 ເດືອນ ນັບຈາກວັນເລີ່ມໂຄງການ.</p>
+      <h3>ສຳລັບ ສນຫ</h3>
+      <ol>
+        <li><b>ວັນເລີ່ມງວດ:</b> ເປີດແຖບ ໂອນງົບ → ກົດ ບັນທຶກ / ແກ້ໄຂ ຂອງງວດນັ້ນ → ໃສ່ອັດຕາແລກປ່ຽນວັນໂອນ. ລະບົບຄຳນວນ ຍອດທີ່ຕ້ອງໂອນ = ງົບຕາມແຜນ − ເງິນເຫຼືອທີ່ສາຂາຍັງຖືຢູ່.</li>
+        <li>ໂອນເງິນ ແລ້ວໃສ່ ວັນທີໂອນ ແລະ ຈຳນວນທີ່ໂອນຈິງ (ກົດ ໃສ່ຈຳນວນຕາມຍອດທີ່ຕ້ອງໂອນ ໄດ້).</li>
+        <li><b>ທຸກວັນຈັນ:</b> ເມື່ອສາຂາສົ່ງພາບໜ້າຈໍ ເລືອກ ໄດ້ຮັບ ແລະ ໃສ່ເງິນທີ່ໃຊ້ຮອດວັນນັ້ນ. ຖ້າສາຂາບໍ່ສົ່ງ ເລືອກ ບໍ່ໄດ້ຮັບ.</li>
+        <li><b>ສິ້ນງວດ:</b> ເມື່ອໄດ້ຮັບໃບບິນ Facebook ເລືອກ ໄດ້ຮັບແລ້ວ ແລະ ໃສ່ ເງິນທີ່ໃຊ້ຈິງຕາມໃບບິນ.</li>
+        <li>ຖ້າຂຶ້ນ <b>ຫ້າມໂອນ</b> = ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ (ມີວັນຈັນ ບໍ່ໄດ້ຮັບ, ໃບບິນບໍ່ສົ່ງ ຫຼື ເກີນກຳນົດ). ຢ່າໂອນ ຈົນກວ່າສາຂາສົ່ງຄົບ ແລະ ແກ້ບັນທຶກງວດກ່ອນ.</li>
+        <li><b>ຈົບໂຄງການ:</b> ງວດສຸດທ້າຍຈະສະແດງ ເງິນທີ່ສາຂາຕ້ອງສົ່ງຄືນ. ເມື່ອໄດ້ຮັບຄືນ ບັນທຶກຈຳນວນ ແລະ ວັນທີ.</li>
+      </ol>
+      <h3>ສຳລັບສາຂາ</h3>
+      <ul>
+        <li>ແຖບ ໂອນງົບ ສະແດງວ່າ ສນຫ ໂອນໃຫ້ເທົ່າໃດ, ຫຼັກຖານໃດສົ່ງແລ້ວ ແລະ ກຳນົດສົ່ງຄັ້ງຕໍ່ໄປ (ເບິ່ງໄດ້ຢ່າງດຽວ).</li>
+        <li>ທຸກວັນຈັນ ກ່ອນ 10:00 ສົ່ງພາບໜ້າຈໍຜົນໂຄສະນາ (ເງິນທີ່ໃຊ້ · ຄົນເຫັນ · ຂໍ້ຄວາມ). ສິ້ນງວດ ສົ່ງໃບບິນ Facebook ກ່ອນວັນທີກຳນົດ.</li>
+        <li>ເງິນທີ່ໃຊ້ບໍ່ໝົດ ບໍ່ເສຍ — ຖືກຫັກອອກຈາກງວດຖັດໄປ ແລະ ງວດສຸດທ້າຍສົ່ງຄືນ ສນຫ.</li>
+      </ul>
+      <h3>ຜົນຕໍ່ແດຊບອດ</h3>
+      <p>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ໃຊ້ເງິນທີ່ໃຊ້ຈິງຈາກໃບບິນຂອງແຕ່ລະງວດ. ຖ້າຍັງບໍ່ມີໃບບິນ ໃຊ້ພາບໜ້າຈໍວັນຈັນລ່າສຸດ ແລະ ຂຶ້ນວ່າ ປະມານ — ບໍ່ຕ້ອງກອກງົບຊ້ຳໃນ ຕັ້ງຄ່າ.</p>
+    </details>
+
+    <details class="panel" data-guide="terms">
+      <summary><h2>ຄວາມໝາຍຂອງຕົວເລກໃນແດຊບອດ</h2></summary>
+      <dl class="terms">
+        <dt>ຄົນທັກ</dt><dd>ຈຳນວນລູກຄ້າທີ່ສາຂາບັນທຶກ ໃນຊ່ວງວັນທີທີ່ເລືອກ (ນັບຕາມວັນທີທັກ)</dd>
+        <dt>ລູກຄ້າໃໝ່ຂອງສາຂາ</dt><dd>ລູກຄ້າທີ່ມີຜົນ ປິດການຂາຍໄດ້ (ສັ່ງຊື້ແລ້ວ)</dd>
+        <dt>ນອກເຂດທີ່ ສນຫ ປິດໄດ້</dt><dd>ລູກຄ້ານອກເຂດທີ່ ສນຫ ແຈ້ງວ່າ ປິດການຂາຍໄດ້</dd>
+        <dt>ລໍຖ້າ ສນຫ ແຈ້ງຜົນ</dt><dd>ລູກຄ້ານອກເຂດທີ່ ສນຫ ຍັງບໍ່ໄດ້ບັນທຶກວ່າ ປິດໄດ້ ຫຼື ປິດບໍ່ໄດ້ — ຍັງບໍ່ນັບເປັນລູກຄ້າໃໝ່</dd>
+        <dt>ງົບທີ່ໃຊ້ໃນຊ່ວງ</dt><dd>ລວມງົບລາຍເດືອນຂອງເດືອນທີ່ຢູ່ໃນຊ່ວງວັນທີ. ເດືອນທີ່ຢູ່ໃນຊ່ວງບໍ່ເຕັມເດືອນ ຄິດຕາມສັດສ່ວນວັນ ແລະ ຂຶ້ນຄຳວ່າ ປະມານ. ຖ້າເດືອນໃດຍັງບໍ່ໃສ່ງົບ ລະບົບບອກຊື່ເດືອນນັ້ນ ແລະ ບໍ່ຄຳນວນ</dd>
+        <dt>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່</dt><dd>ງົບທີ່ໃຊ້ໃນຊ່ວງ ÷ (ລູກຄ້າໃໝ່ຂອງສາຂາ + ນອກເຂດທີ່ ສນຫ ປິດໄດ້)</dd>
+        <dt>LTV</dt><dd>ກຳໄລຂັ້ນຕົ້ນຕໍ່ລູກຄ້າຕໍ່ເດືອນ × ອາຍຸລູກຄ້າສະເລ່ຍ (ເດືອນ)</dd>
+        <dt>ເພດານ</dt><dd>LTV ÷ ຕົວຫານເພດານ (ຄ່າຕັ້ງຕົ້ນ 2) = ຕົ້ນທຶນສູງສຸດທີ່ຍອມຈ່າຍຕໍ່ລູກຄ້າໃໝ່ 1 ຄົນ</dd>
+        <dt>ຂະຫຍາຍ</dt><dd>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ບໍ່ເກີນ 80% ຂອງເພດານ</dd>
+        <dt>ຕໍ່ ແລະ ປັບ</dt><dd>ຕົ້ນທຶນຢູ່ລະຫວ່າງ 80% ຫາ 120% ຂອງເພດານ</dd>
+        <dt>ຢຸດ</dt><dd>ຕົ້ນທຶນ ເທົ່າກັບ ຫຼື ເກີນ 120% ຂອງເພດານ</dd>
+        <dt>— ຫຼື ຍັງບໍ່ມີຂໍ້ມູນ</dt><dd>ຄຳນວນບໍ່ໄດ້ ເພາະຍັງຂາດຕັ້ງຄ່າ ຫຼື ຍັງບໍ່ມີລູກຄ້າໃໝ່ — ລະບົບບໍ່ເດົາຕົວເລກແທນ</dd>
+      </dl>
+    </details>
+
+    <details class="panel" data-guide="faq">
+      <summary><h2>ບັນຫາທີ່ພົບເລື້ອຍ</h2></summary>
+      <dl class="terms">
+        <dt>ລືມ PIN</dt><dd>ແຈ້ງແອດມິນ ໃຫ້ຕັ້ງ PIN ໃໝ່ໃນແຖບ ແອດມິນ.</dd>
+        <dt>ຂຶ້ນວ່າ ລັອກ X ນາທີ</dt><dd>ໃສ່ PIN ຜິດ 5 ຄັ້ງ. ລໍຖ້າຕາມເວລາທີ່ບອກ. ຖ້າຜິດຊ້ຳອີກ ເວລາລັອກຈະເພີ່ມຂຶ້ນເທື່ອລະເທົ່າຕົວ (ສູງສຸດ 24 ຊົ່ວໂມງ).</dd>
+        <dt>ມີຄົນແກ້ລາຍການນີ້ກ່ອນແລ້ວ</dt><dd>ມີອີກຄົນບັນທຶກລາຍການດຽວກັນກ່ອນ. ລະບົບໂຫຼດຂໍ້ມູນໃໝ່ໃຫ້ແລ້ວ — ກວດ ແລ້ວບັນທຶກອີກຄັ້ງ.</dd>
+        <dt>ເຊື່ອມຕໍ່ບໍ່ໄດ້</dt><dd>ອິນເຕີເນັດບໍ່ດີ. ຂໍ້ມູນຍັງບໍ່ຖືກບັນທຶກ ຈົນກວ່າຈະຂຶ້ນຂໍ້ຄວາມ ບັນທຶກແລ້ວ — ລອງກົດບັນທຶກອີກຄັ້ງເມື່ອເນັດກັບມາ.</dd>
+        <dt>ໝົດເວລາເຂົ້າລະບົບ</dt><dd>ເຂົ້າລະບົບຄົບ 30 ວັນ ຫຼື ແອດມິນປ່ຽນ PIN. ເຂົ້າລະບົບໃໝ່ດ້ວຍ PIN ປັດຈຸບັນ.</dd>
+        <dt>ແດຊບອດບໍ່ຂຶ້ນຕົວເລກ</dt><dd>ກວດຊ່ວງວັນທີ (ກົດ ເດືອນນີ້ ຫຼື ທັງໝົດຂອງຂໍ້ມູນ) ແລະ ອ່ານແຖບເຕືອນວ່າຂາດຕັ້ງຄ່າໃດ.</dd>
+      </dl>
+    </details>
+
+    <section class="panel">
+      <h2>ຄວາມປອດໄພຂອງຂໍ້ມູນລູກຄ້າ</h2>
+      <ul>
+        <li>ຢ່າບອກ PIN ໃຫ້ຄົນນອກຝ່າຍ ແລະ ຢ່າຂຽນ PIN ໄວ້ໃນກຸ່ມແຊັດ.</li>
+        <li>ໃຊ້ເຄື່ອງຂອງຄົນອື່ນ: ກົດ ອອກຈາກລະບົບ ທຸກຄັ້ງຫຼັງໃຊ້ແລ້ວ.</li>
+        <li>ຊື່ ແລະ ເບີໂທລູກຄ້າ ໃຊ້ສະເພາະວຽກຂາຍຂອງ Vari ເທົ່ານັ້ນ ຫ້າມແຊຣ໌ອອກນອກບໍລິສັດ.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ===== branch: record customers ===== -->
+  <main class="view" id="viewBranch" hidden>
+    <section>
+      <div class="sec-head">
+        <h2 id="brTitle">ສາຂາ</h2>
+        <div class="range">
+          <select id="brSel" aria-label="ເລືອກສາຂາ" hidden></select>
+          <button class="chip" data-bp="this">ເດືອນນີ້</button>
+          <button class="chip" data-bp="prev">ເດືອນກ່ອນ</button>
+          <button class="chip" data-bp="all">ທັງໝົດ</button>
+        </div>
+      </div>
+      <p class="hint" id="brPeriod"></p>
+      <dl class="kpis" id="brKpis"></dl>
+    </section>
+
+    <section class="panel" id="leadFormWrap">
+      <div class="panel-head">
+        <h2 id="formTitle">ເພີ່ມລູກຄ້າທີ່ທັກເຂົ້າມາ</h2>
+        <button type="button" class="btn" id="btnFormReset" hidden>ຍົກເລີກການແກ້ໄຂ</button>
+      </div>
+      <form id="leadForm" novalidate style="display:flex;flex-direction:column;gap:16px">
+        <div class="form-grid">
+          <div class="field"><label for="lfDate">ວັນທີທັກ</label><input type="date" id="lfDate"></div>
+          <div class="field"><label for="lfName">ຊື່ລູກຄ້າ</label><input id="lfName" autocomplete="off"></div>
+          <div class="field"><label for="lfPhone">ເບີໂທ</label><input id="lfPhone" type="tel" inputmode="tel" autocomplete="off"></div>
+          <div class="field"><label for="lfPlace">ບ້ານ / ພິກັດ</label><input id="lfPlace" autocomplete="off"></div>
+          <div class="field"><label for="lfProduct">ສິນຄ້າທີ່ສົນໃຈ</label><input id="lfProduct" list="productList" autocomplete="off"></div>
+          <div class="field"><label for="lfQty">ຈຳນວນ</label><input id="lfQty" inputmode="decimal" autocomplete="off"></div>
+        </div>
+        <datalist id="productList"><option value="ຖັງ 18.9L"><option value="ຂວດແກ້ວ 300ml"><option value="ຂວດແກ້ວ 500ml"><option value="ຂວດຢາງ"></datalist>
+        <fieldset><legend>ລູກຄ້າຢູ່ ໃນເຂດ ຫຼື ນອກເຂດ ຂອງສາຂາ?</legend><div class="seg" data-name="zone" role="group"></div></fieldset>
+        <fieldset><legend>ຕອບລູກຄ້າທັນພາຍໃນ 30 ນາທີ?</legend><div class="seg" data-name="fast" role="group"></div></fieldset>
+        <fieldset><legend>ຜົນ</legend><div class="seg" data-name="status" role="group"></div><p class="hint" id="statusHint"></p></fieldset>
+        <div class="form-grid" id="orderFields" hidden>
+          <div class="field"><label for="lfFirst">ວັນທີສັ່ງຊື້ຄັ້ງທຳອິດ</label><input type="date" id="lfFirst"></div>
+          <div class="field"><label for="lfValue">ມູນຄ່າອໍເດີ້ແລກ (ກີບ)</label><input id="lfValue" inputmode="numeric" autocomplete="off"></div>
+        </div>
+        <div class="field"><label for="lfNote">ໝາຍເຫດ (ເຊັ່ນ ເວລາສະດວກໃຫ້ໂທ, ທາງໄປບ້ານ)</label><input id="lfNote" autocomplete="off"></div>
+        <div class="form-actions"><button class="btn primary big" id="btnSaveLead">ບັນທຶກ</button><span class="msg" id="leadMsg" role="status"></span></div>
+      </form>
+    </section>
+
+    <section>
+      <div class="sec-head"><h2>ລາຍຊື່ລູກຄ້າ</h2><span class="small muted" id="brCount"></span></div>
+      <div class="tbl-tools">
+        <div class="seg small" id="brFilter" role="group" aria-label="ກອງ"></div>
+        <input type="search" id="brSearch" placeholder="ຄົ້ນຫາ ຊື່, ເບີໂທ, ບ້ານ" aria-label="ຄົ້ນຫາ">
+      </div>
+      <div class="lead-list" id="brList"></div>
+    </section>
+  </main>
+
+  <!-- ===== HQ: follow up out-of-zone ===== -->
+  <main class="view" id="viewHq" hidden>
+    <section>
+      <div class="sec-head"><h2>ລູກຄ້ານອກເຂດ ທີ່ສາຂາສົ່ງໃຫ້ ສນຫ ຕິດຕາມ</h2><span class="small muted">ຄວນຕິດຕໍ່ລູກຄ້າພາຍໃນ 24 ຊົ່ວໂມງ</span></div>
+      <dl class="kpis" id="hqKpis"></dl>
+    </section>
+    <section>
+      <div class="tbl-tools">
+        <div class="seg small" id="hqFilter" role="group" aria-label="ກອງ"></div>
+        <select id="hqBranch" aria-label="ສາຂາ"></select>
+        <input type="search" id="hqSearch" placeholder="ຄົ້ນຫາ ຊື່, ເບີໂທ, ບ້ານ" aria-label="ຄົ້ນຫາ">
+      </div>
+      <div class="lead-list" id="hqList"></div>
+    </section>
+  </main>
+
+  <!-- ===== budget transfers & evidence ===== -->
+  <main class="view" id="viewBudget" hidden>
+    <section>
+      <div class="sec-head"><h2>ໂອນງົບ ແລະ ຫຼັກຖານການໃຊ້ງົບ</h2><span class="small muted">ຂໍ້ຕົກລົງ ສະບັບ 1.2 ພາກ 5</span></div>
+      <p class="hint" id="bgProject"></p>
+      <div class="alerts" id="bgAlerts"></div>
+    </section>
+
+    <section class="panel" id="bgFormWrap" hidden>
+      <div class="panel-head"><h2 id="bgFormTitle">ບັນທຶກ</h2><button type="button" class="btn" id="bgCancel">ປິດ</button></div>
+      <form id="bgForm" novalidate style="display:flex;flex-direction:column;gap:16px">
+        <h3>1. ການໂອນ</h3>
+        <div class="form-grid">
+          <div class="field"><label for="bfUsd">ງົບ (ໂດລາ)</label><input id="bfUsd" inputmode="decimal" autocomplete="off"></div>
+          <div class="field"><label for="bfRate">ອັດຕາແລກປ່ຽນວັນໂອນ (ກີບ / 1 ໂດລາ)</label><input id="bfRate" inputmode="decimal" autocomplete="off"></div>
+          <div class="field"><label for="bfDate">ວັນທີໂອນ</label><input type="date" id="bfDate"></div>
+          <div class="field"><label for="bfAmt">ຈຳນວນທີ່ໂອນຈິງ (ກີບ)</label><input id="bfAmt" inputmode="numeric" autocomplete="off"></div>
+        </div>
+        <p class="hint on" id="bfCalc"></p>
+        <div><button type="button" class="chip" id="bfFill">ໃສ່ຈຳນວນຕາມຍອດທີ່ຕ້ອງໂອນ</button></div>
+        <div class="field"><label for="bfNote1">ໝາຍເຫດການໂອນ (ເຊັ່ນ ເລກອ້າງອີງ)</label><input id="bfNote1" autocomplete="off"></div>
+        <h3>2. ພາບໜ້າຈໍຜົນໂຄສະນາ ທຸກວັນຈັນ</h3>
+        <p class="hint">ຕື່ມເງິນທີ່ໃຊ້ຮອດວັນນັ້ນເປັນກີບ (ຖ້າ Facebook ສະແດງເປັນໂດລາ ໃຫ້ຄູນອັດຕາແລກປ່ຽນ). ເລືອກ ບໍ່ໄດ້ຮັບ = ຢຸດໂອນງວດຖັດໄປ</p>
+        <div id="bfMondays" style="display:flex;flex-direction:column;gap:8px"></div>
+        <h3>3. ໃບບິນ Facebook ຂອງງວດ</h3>
+        <div class="form-grid">
+          <div class="field"><label for="bfInv">ໃບບິນ</label><select id="bfInv"><option value="">ຍັງບໍ່ໄດ້ຮັບ</option><option value="ແມ່ນ">ໄດ້ຮັບແລ້ວ</option><option value="ບໍ່">ບໍ່ສົ່ງ / ບໍ່ຖືກຕ້ອງ</option></select></div>
+          <div class="field"><label for="bfInvDate">ວັນທີໄດ້ຮັບ</label><input type="date" id="bfInvDate"></div>
+          <div class="field"><label for="bfActual">ເງິນທີ່ໃຊ້ຈິງຕາມໃບບິນ (ກີບ)</label><input id="bfActual" inputmode="numeric" autocomplete="off"></div>
+        </div>
+        <div id="bfRefundBox" hidden>
+          <h3>4. ສົ່ງຄືນເງິນເຫຼືອ (ງວດສຸດທ້າຍ)</h3>
+          <div class="form-grid">
+            <div class="field"><label for="bfRefund">ຈຳນວນທີ່ສາຂາສົ່ງຄືນ (ກີບ)</label><input id="bfRefund" inputmode="numeric" autocomplete="off"></div>
+            <div class="field"><label for="bfRefundDate">ວັນທີສົ່ງຄືນ</label><input type="date" id="bfRefundDate"></div>
+          </div>
+        </div>
+        <div class="field"><label for="bfNote">ໝາຍເຫດ</label><input id="bfNote" autocomplete="off"></div>
+        <div class="form-actions"><button class="btn primary big" id="bfSave">ບັນທຶກ</button><span class="msg" id="bfMsg" role="status"></span></div>
+      </form>
+    </section>
+
+    <div id="bgBranches" style="display:flex;flex-direction:column;gap:24px"></div>
+  </main>
+
+  <!-- ===== admin ===== -->
+  <main class="view" id="viewAdmin" hidden>
+    <section class="panel">
+      <h2>ໄລຍະໂຄງການ</h2>
+      <p class="hint">ໃຊ້ແບ່ງງວດໂອນງົບ: ງວດທີ 1 ເລີ່ມວັນເລີ່ມໂຄງການ, ແຕ່ລະງວດຍາວ 1 ເດືອນ. ວັນໂອນ = ວັນເລີ່ມຂອງແຕ່ລະງວດ</p>
+      <form id="projForm" class="form-grid" novalidate>
+        <div class="field"><label for="pjStart">ວັນເລີ່ມໂຄງການ</label><input type="date" id="pjStart"></div>
+        <div class="field"><label for="pjPeriods">ຈຳນວນງວດ (ເດືອນ)</label><input id="pjPeriods" inputmode="numeric" autocomplete="off" placeholder="3"></div>
+        <div class="field"><label for="pjInvDay">ສົ່ງໃບບິນ Facebook ພາຍໃນວັນທີ (ຂອງເດືອນຖັດໄປ)</label><input id="pjInvDay" inputmode="numeric" autocomplete="off" placeholder="1–28"></div>
+        <div class="field" style="justify-content:flex-end"><button class="btn primary" id="pjSave">ບັນທຶກ</button></div>
+      </form>
+      <div class="msg" id="pjMsg" role="status"></div>
+    </section>
+    <section class="panel">
+      <h2>ຕັ້ງຄ່າໂຄງການ</h2>
+      <p class="hint">ຕັ້ງຄ່າ (ອັດຕາແລກປ່ຽນ, ກຳໄລ, ອາຍຸລູກຄ້າ) ແກ້ໄດ້ຢູ່ ແດຊບອດ → ຕັ້ງຄ່າ. ເມື່ອເຂົ້າລະບົບເປັນແອດມິນ ຄ່າທີ່ແກ້ຈະບັນທຶກໃຫ້ທຸກຄົນເຫັນຄືກັນ.</p>
+      <div><button class="btn" id="btnGoSettings">ເປີດ ຕັ້ງຄ່າ</button></div>
+    </section>
+    <section class="panel">
+      <h2>ປ່ຽນ PIN</h2>
+      <p class="hint">ເມື່ອປ່ຽນ PIN ເຄື່ອງທີ່ເຂົ້າລະບົບດ້ວຍ PIN ເກົ່າຈະຖືກອອກຈາກລະບົບ. ສາຂາ ແລະ ສນຫ: 4–8 ຕົວເລກ · ແອດມິນ: 6–8 ຕົວເລກ</p>
+      <form id="pinForm" class="form-grid" novalidate>
+        <div class="field"><label for="pfRole">ຂອງໃຜ</label><select id="pfRole"><option value="b0">ສາຂາ ໂນນຄໍ້</option><option value="b1">ສາຂາ ສີສະຫວາດ</option><option value="hq">ສນຫ</option><option value="admin">ແອດມິນ</option></select></div>
+        <div class="field"><label for="pfPin">PIN ໃໝ່</label><input id="pfPin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="8"></div>
+        <div class="field"><label for="pfPin2">ພິມ PIN ໃໝ່ອີກຄັ້ງ</label><input id="pfPin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="8"></div>
+        <div class="field" style="justify-content:flex-end"><button class="btn primary" id="btnSetPin">ບັນທຶກ PIN</button></div>
+      </form>
+      <div class="msg" id="pinMsg" role="status"></div>
+    </section>
+    <section class="panel">
+      <h2>ສົ່ງອອກເປັນ Excel</h2>
+      <p class="hint">ດາວໂຫຼດລູກຄ້າທັງໝົດເປັນໄຟລ໌ CSV ທີ່ມີຖັນ A–P ຄືກັບແຜ່ນ ບັນທຶກລູກຄ້າ — ເປີດດ້ວຍ Excel ຫຼື ວາງຕໍ່ໃນໄຟລ໌ຕິດຕາມໄດ້ເລີຍ</p>
+      <div><button class="btn primary" id="btnExport">ດາວໂຫຼດ CSV ລູກຄ້າ</button> <button class="btn" id="btnExportBudget">ດາວໂຫຼດ CSV ໂອນງົບ</button></div>
+    </section>
+  </main>
+
+  <!-- ===== dashboard ===== -->
+  <main class="view" id="viewDash">
+    <div class="meta">
+      <span>ຊ່ວງທີ່ເບິ່ງ: <b id="metaRange" class="tab">—</b></span>
+      <span>ອັບເດດຂໍ້ມູນລ່າສຸດ: <b id="metaUpdated" class="tab">ຍັງບໍ່ມີຂໍ້ມູນ</b></span>
+      <span>ແຖວທີ່ໃຊ້: <b id="metaRows" class="tab">—</b></span>
+    </div>
+    <div class="range no-print">
+      <label for="dFrom">ຕັ້ງແຕ່ <input type="date" id="dFrom"></label>
+      <label for="dTo">ຮອດ <input type="date" id="dTo"></label>
+      <button class="chip" data-preset="this">ເດືອນນີ້</button>
+      <button class="chip" data-preset="prev">ເດືອນກ່ອນ</button>
+      <button class="chip" data-preset="all">ທັງໝົດຂອງຂໍ້ມູນ</button>
+    </div>
+    <div class="toolbar no-print">
+      <button class="btn primary" id="btnLoad" aria-expanded="false" aria-controls="panelLoad">ນຳເຂົ້າຂໍ້ມູນ</button>
+      <button class="btn" id="btnSettings" aria-expanded="false" aria-controls="panelSettings">ຕັ້ງຄ່າ</button>
+      <button class="btn" id="btnSample">ເບິ່ງຕົວຢ່າງ</button>
+      <button class="btn" id="btnTheme">ໂໝດມືດ</button>
+    </div>
+    <div class="banner-sample" id="sampleBanner" hidden>ຂໍ້ມູນສົມມຸດ — ບໍ່ແມ່ນຕົວເລກຈິງ ໃຊ້ເບິ່ງໜ້າຕາເທົ່ານັ້ນ. ກົດ “ນຳເຂົ້າຂໍ້ມູນ” ເພື່ອໃຊ້ໄຟລ໌ຈິງ</div>
+
+  <section class="panel no-print" id="panelLoad" hidden>
+    <div class="panel-head">
+      <h2>ນຳເຂົ້າຂໍ້ມູນ ຈາກແຜ່ນ ບັນທຶກລູກຄ້າ</h2>
+      <button class="btn danger" id="btnClear">ລຶບຂໍ້ມູນ</button>
+    </div>
+    <div class="alert info" id="onlineBox" hidden><span class="dot" aria-hidden="true"></span><div>
+      <p>ເຂົ້າລະບົບແລ້ວ — ແດຊບອດໃຊ້ຂໍ້ມູນທີ່ສາຂາກອກໃນລະບົບໂດຍອັດຕະໂນມັດ. ນຳເຂົ້າ CSV ຂ້າງລຸ່ມ ຖ້າຢາກເບິ່ງຂໍ້ມູນຈາກ Excel ແທນ.</p>
+      <p><button class="chip" id="btnUseOnline">ກັບໄປໃຊ້ຂໍ້ມູນອອນໄລນ໌</button></p>
+    </div></div>
+    <div class="load-grid">
+      <div>
+        <label for="fileCsv"><b>1. ເລືອກໄຟລ໌ CSV</b></label>
+        <span class="small muted">ໃນ Excel: File → Save As → “CSV UTF-8”. ໄຟລ໌ຖືກອ່ານໃນເຄື່ອງນີ້ເທົ່ານັ້ນ ບໍ່ອັບໂຫຼດໄປໃສ</span>
+        <input type="file" id="fileCsv" accept=".csv,.tsv,.txt,text/csv">
+      </div>
+      <div>
+        <label for="pasteBox"><b>2. ວາງຂໍ້ມູນຈາກ Excel</b></label>
+        <span class="small muted">ກັອບແຖວ (ຖັນ A–P) ແລ້ວວາງ. ຮັບທັງແບບ Tab ແລະ ຈຸດ (,)</span>
+        <textarea id="pasteBox" placeholder="ວາງແຖວຈາກ Excel ທີ່ນີ້"></textarea>
+        <div><button class="btn primary" id="btnPaste">ນຳເຂົ້າຂໍ້ມູນທີ່ວາງ</button></div>
+      </div>
+    </div>
+    <div class="msg" id="loadMsg" role="status"></div>
+  </section>
+
+  <section class="panel no-print" id="panelSettings" hidden>
+    <div class="panel-head">
+      <h2>ຕັ້ງຄ່າ</h2>
+      <span class="small muted" id="setNote">ຊ່ອງສີເຫຼືອງ = ຍັງບໍ່ໄດ້ຕື່ມ. ບັນທຶກໃນເຄື່ອງນີ້ອັດຕະໂນມັດ</span>
+    </div>
+    <div class="set-grid" id="setGrid"></div>
+    <div class="budget" id="budgetBox">
+      <h3>ງົບທີ່ໃຊ້ຈິງ ລາຍເດືອນ (ກີບ)</h3>
+      <p class="hint" id="budgetHint">ໃສ່ຍອດທີ່ຈ່າຍໃຫ້ Facebook ຂອງແຕ່ລະເດືອນ (ເບິ່ງຈາກ Ads Manager). ເດືອນທີ່ຜ່ານມາ = ຍອດເຕັມເດືອນ · ເດືອນນີ້ = ຍອດທີ່ໃຊ້ຮອດມື້ນີ້. ລະບົບລວມງົບຕາມຊ່ວງວັນທີທີ່ເລືອກໃຫ້ເອງ — ເດືອນທີ່ຢູ່ໃນຊ່ວງບໍ່ເຕັມເດືອນ ຄິດຕາມສັດສ່ວນວັນ.</p>
+      <div class="tbl-wrap"><table><thead><tr><th scope="col">ເດືອນ</th><th scope="col">ໂນນຄໍ້</th><th scope="col">ສີສະຫວາດ</th></tr></thead><tbody></tbody></table></div>
+      <p class="small" id="budgetSum" role="status"></p>
+    </div>
+  </section>
+
+  <div class="alerts" id="alerts" aria-live="polite"></div>
+
+  <section>
+    <div class="sec-head"><h2>ສະຫຼຸບລາຍສາຂາ</h2><span class="small muted">ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ທຽບກັບ ເພດານ</span></div>
+    <div class="cards" id="cards"></div>
+    <dl class="refs" id="refs"></dl>
+  </section>
+
+  <section>
+    <h2>ກຣາຟ</h2>
+    <div class="charts">
+      <div class="chart wide">
+        <h2>ແນວໂນ້ມລາຍອາທິດ: ຄົນທັກ ທຽບ ລູກຄ້າໃໝ່</h2>
+        <p class="small muted">ເສັ້ນທຶບ = ຄົນທັກ, ເສັ້ນປະ = ລູກຄ້າໃໝ່. ພື້ນທີ່ລະຫວ່າງ 2 ເສັ້ນ = ຄົນທີ່ທັກແຕ່ຍັງບໍ່ໄດ້ຊື້. ອາທິດເລີ່ມວັນຈັນ</p>
+        <div class="legend" id="lgTrend"></div>
+        <div class="scroll-x" id="chTrend"></div>
+      </div>
+      <div class="chart">
+        <h2>ສັດສ່ວນ ໃນເຂດ / ນອກເຂດ</h2>
+        <div class="legend" id="lgZone"></div>
+        <div class="scroll-x" id="chZone"></div>
+      </div>
+      <div class="chart">
+        <h2>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ທຽບ ເພດານ</h2>
+        <p class="small muted">ເສັ້ນປະ = ເພດານ. ແຖບສີເຫຼືອງ = ໂຊນ ±20% ຂອງເພດານ</p>
+        <div class="scroll-x" id="chCost"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>ລູກຄ້າລ່າສຸດ</h2><span class="small muted" id="tblCount"></span></div>
+    <div class="tbl-tools no-print">
+      <label class="small" for="fBranch">ສາຂາ</label>
+      <select id="fBranch"></select>
+      <label class="small" for="fStatus">ສະຖານະ</label>
+      <select id="fStatus"></select>
+      <input type="search" id="fSearch" placeholder="ຄົ້ນຫາ ຊື່, ເບີໂທ, ບ້ານ, ສິນຄ້າ" aria-label="ຄົ້ນຫາ">
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>ວັນທີ</th><th>ສາຂາ</th><th>ຊື່ລູກຄ້າ</th><th class="col-phone">ເບີໂທ</th><th>ບ້ານ / ພິກັດ</th><th>ສິນຄ້າ</th><th class="r">ຈຳນວນ</th><th>ເຂດ</th><th>ຕອບທັນ</th><th>ສະຖານະ</th><th>ຜົນ ສນຫ</th><th class="r">ມູນຄ່າ (ກີບ)</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+  </section>
+
+  
+
+  <footer class="foot" id="foot"></footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+"use strict";
+const SMOOTH = (()=>{ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'; }catch(e){ return 'auto'; } })();
+/* ============ constants ============ */
+const BRANCHES = ['ໂນນຄໍ້','ສີສະຫວາດ'];
+const BR_COLOR = ['var(--b1)','var(--b2)'];
+const ZONE = {IN:'ໃນເຂດ', OUT:'ນອກເຂດ', UNSURE:'ບໍ່ແນ່ໃຈ'};
+const YES='ແມ່ນ', NO='ບໍ່', WAIT='ລໍຖ້າ';
+const STATUS = ['ກຳລັງຕອບ','ສັ່ງຊື້ແລ້ວ','ບໍ່ສົ່ງຜົນ','ສົ່ງຕໍ່ສນຫແລ້ວ'];
+const ORDERED = 'ສັ່ງຊື້ແລ້ວ';
+const NODATA = 'ຍັງບໍ່ມີຂໍ້ມູນ';
+const RULE_TXT = 'ຕ້ອງໄດ້ຜົນຄືກັນ 2 ເດືອນຕິດຕໍ່ກັນ ຈຶ່ງຕັດສິນໄດ້';
+const VERDICT = {
+  grow:{txt:'ຂະຫຍາຍ', cls:'grow'},
+  adjust:{txt:'ຕໍ່ ແລະ ປັບ', cls:'adjust'},
+  stop:{txt:'ຢຸດ', cls:'stop'}
+};
+const LS = {data:'vari-ads-dash-data-v1', set:'vari-ads-dash-settings-v1', theme:'vari-ads-dash-theme-v1'};
+const TH_REPLY = 0.70, TH_OUT = 0.40, LO = 0.8, HI = 1.2;
+
+/* settings fields: key, label, hint, default */
+const FIELDS = [
+  {k:'usd', label:'ງົບຕໍ່ເດືອນຕໍ່ສາຂາ (ໂດລາ)', def:'100', unit:'ໂດລາ'},
+  {k:'rate', label:'ອັດຕາແລກປ່ຽນ (ກີບ/ໂດລາ)', def:'', unit:'ກີບ'},
+  {k:'profit', label:'ກຳໄລຂັ້ນຕົ້ນຕໍ່ລູກຄ້າຕໍ່ເດືອນ (ກີບ)', def:'', unit:'ກີບ'},
+  {k:'life', label:'ອາຍຸລູກຄ້າສະເລ່ຍ (ເດືອນ)', def:'', unit:'ເດືອນ'},
+  {k:'divisor', label:'ຕົວຫານເພດານ', def:'2', unit:''}
+];
+const SAMPLE_SET = {usd:'100', rate:'21500', profit:'60000', life:'12', divisor:'2'};
+
+/* ============ state ============ */
+let state = {
+  rows: [], meta: {mode:'none', source:'', loadedAt:'', total:0, skipped:{}, dateFmt:''},
+  settings: Object.fromEntries(FIELDS.map(f=>[f.k,f.def])),
+  range: monthRange(todayYMD(), 0)
+};
+
+/* ============ safe storage ============ */
+function lsGet(k){ try{ const v = window.localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function lsSet(k,v){ try{ window.localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+function lsDel(k){ try{ window.localStorage.removeItem(k); }catch(e){} }
+
+/* ============ helpers ============ */
+const $ = id => document.getElementById(id);
+function debounce(fn,ms){ let h; return (...a)=>{ clearTimeout(h); h=setTimeout(()=>fn(...a),ms); }; }
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function canon(s){ return String(s ?? '').normalize('NFKC').replace(/່ໍ/g,'ໍ່').replace(/\s+/g,''); }
+function matchOne(v, list){ const c = canon(v); if(!c) return ''; for(const x of list){ if(canon(x)===c) return x; } return null; }
+function isNum(v){ return typeof v==='number' && isFinite(v); }
+function safeDiv(a,b){ if(!isNum(a)||!isNum(b)||b===0) return null; const r=a/b; return isFinite(r)?r:null; }
+function ceilUp(x){ return isNum(x) ? Math.ceil(x - 1e-9) : null; }
+function fmtInt(v){ return isNum(v) ? Math.round(v).toLocaleString('en-US') : '—'; }
+function fmtKip(v){ return isNum(v) ? Math.round(v).toLocaleString('en-US') + ' ກີບ' : '—'; }
+function fmtPct(v){ return isNum(v) ? (Math.round(v*1000)/10).toLocaleString('en-US') + '%' : '—'; }
+function parseNum(v){
+  if(v===null||v===undefined) return null;
+  if(typeof v==='number') return isFinite(v)?v:null;
+  const s = String(v).replace(/ກີບ|kip|lak|\$/gi,'').replace(/[,\s]/g,'');
+  if(s==='') return null;
+  const n = Number(s); return isFinite(n) ? n : null;
+}
+function setNum(k){ const n = parseNum(effSettings()[k]); return n; }
+
+/* dates as YYYY-MM-DD strings (UTC math) */
+function pad(n){ return String(n).padStart(2,'0'); }
+function ymdFromUTC(d){ return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate()); }
+function utc(ymd){ const [y,m,d]=ymd.split('-').map(Number); return new Date(Date.UTC(y,m-1,d)); }
+function addDays(ymd,n){ const d=utc(ymd); d.setUTCDate(d.getUTCDate()+n); return ymdFromUTC(d); }
+function todayYMD(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function monthRange(ymd, offset){
+  const [y,m]=ymd.split('-').map(Number);
+  const s=new Date(Date.UTC(y,m-1+offset,1)), e=new Date(Date.UTC(y,m+offset,0));
+  return {from:ymdFromUTC(s), to:ymdFromUTC(e)};
+}
+function mondayOf(ymd){ const d=utc(ymd); const wd=(d.getUTCDay()+6)%7; d.setUTCDate(d.getUTCDate()-wd); return ymdFromUTC(d); }
+function showDate(ymd){ if(!ymd) return ''; const [y,m,d]=ymd.split('-'); return d+'/'+m+'/'+y; }
+function mkDate(y,m,d){
+  if(y<100) y+=2000; if(y>2400) y-=543;
+  if(m<1||m>12||d<1||d>31||y<1990||y>2100) return null;
+  const dt=new Date(Date.UTC(y,m-1,d));
+  if(dt.getUTCMonth()!==m-1) return null;
+  return ymdFromUTC(dt);
+}
+function detectDateFmt(values){
+  let dmy=0, mdy=0;
+  for(const v of values){
+    const m=String(v??'').trim().match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/);
+    if(!m) continue;
+    if(+m[1]>12) dmy++; else if(+m[2]>12) mdy++;
+  }
+  return mdy>dmy ? 'MDY' : 'DMY';
+}
+function parseDate(v, fmt){
+  const s=String(v??'').trim(); if(!s) return null;
+  if(/^\d+(\.\d+)?$/.test(s)){
+    const n=Math.floor(Number(s));
+    if(n>30000 && n<80000) return ymdFromUTC(new Date(Date.UTC(1899,11,30) + n*864e5));
+    return null;
+  }
+  let m=s.match(/^(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})/);
+  if(m) return mkDate(+m[1],+m[2],+m[3]);
+  m=s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/);
+  if(m) return fmt==='MDY' ? mkDate(+m[3],+m[1],+m[2]) : mkDate(+m[3],+m[2],+m[1]);
+  return null;
+}
+
+/* ============ CSV / TSV parser ============ */
+function parseDelimited(text){
+  text = String(text||'').replace(/^﻿/,'');
+  const head = text.slice(0,8000);
+  let delim = ',';
+  if(head.indexOf('\t')>=0) delim='\t';
+  else if((head.match(/;/g)||[]).length > (head.match(/,/g)||[]).length) delim=';';
+  const rows=[]; let row=[], cell='', q=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(q){
+      if(ch==='"'){ if(text[i+1]==='"'){ cell+='"'; i++; } else q=false; }
+      else cell+=ch;
+    }else{
+      if(ch==='"' && cell==='') q=true;
+      else if(ch===delim){ row.push(cell); cell=''; }
+      else if(ch==='\n'||ch==='\r'){
+        if(ch==='\r' && text[i+1]==='\n') i++;
+        row.push(cell); rows.push(row); row=[]; cell='';
+      }else cell+=ch;
+    }
+  }
+  if(cell!=='' || row.length){ row.push(cell); rows.push(row); }
+  return {rows, delim};
+}
+
+/* turn raw grid (columns A–P by position) into clean records */
+function gridToRecords(grid){
+  let start=0;
+  for(let i=0;i<grid.length;i++){
+    const r=grid[i];
+    if(canon(r[0]).startsWith('ວັນທີ') && canon(r[1]).startsWith('ສາຂາ')) start=i+1;
+  }
+  const body=grid.slice(start);
+  const fmt=detectDateFmt(body.flatMap(r=>[r[0],r[10],r[12]]));
+  const out=[]; const skipped={otherBranch:0, otherNames:[], noBranch:0, badDate:0};
+  for(const r of body){
+    const c = i => String(r[i] ?? '').trim();
+    const meaningful = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,15].some(i=>c(i)!=='');
+    if(!meaningful) continue;
+    const br = matchOne(c(1), BRANCHES);
+    if(br===''){ skipped.noBranch++; continue; }
+    if(br===null){ skipped.otherBranch++; if(skipped.otherNames.length<5 && !skipped.otherNames.includes(c(1))) skipped.otherNames.push(c(1)); continue; }
+    const date=parseDate(c(0),fmt);
+    if(!date){ skipped.badDate++; continue; }
+    const zone = matchOne(c(7), [ZONE.IN,ZONE.OUT,ZONE.UNSURE]);
+    out.push({
+      date, branch:br, name:c(2), phone:c(3), place:c(4), product:c(5), qty:parseNum(c(6)),
+      zone: zone===null ? c(7) : zone,
+      fast: matchOne(c(8),[YES,NO]) ?? c(8),
+      status: matchOne(c(9),STATUS) ?? c(9),
+      firstOrder: parseDate(c(10),fmt), value: parseNum(c(11)),
+      hqDate: parseDate(c(12),fmt),
+      hq: matchOne(c(13),[YES,NO,WAIT]) ?? c(13),
+      note:c(15)
+    });
+  }
+  return {records:out, skipped, dateFmt:fmt};
+}
+
+/* ============ calculations (exact formulas from the brief) ============ */
+function effSettings(){
+  if(state.meta.mode==='online'){ const o={}; FIELDS.forEach(f=>o[f.k]=String(online.settings[f.k]??'')); if(o.usd==='') o.usd='100'; if(o.divisor==='') o.divisor='2'; o.budgets=budgetsOf(online.settings); return o; }
+  const s={...state.settings};
+  if(state.meta.mode==='sample'){ for(const k in SAMPLE_SET){ if(String(s[k]??'').trim()==='') s[k]=SAMPLE_SET[k]; } }
+  s.budgets = budgetsOf(state.settings);
+  if(state.meta.mode==='sample' && state.sampleBudgets){
+    const own=s.budgets, smp=state.sampleBudgets, b={};
+    for(const m of new Set([...Object.keys(own),...Object.keys(smp)])) b[m]=BRANCHES.map((_,i)=>{ const v=String((own[m]||[])[i]??'').trim(); return v!==''?v:String((smp[m]||[])[i]??''); });
+    s.budgets=b;
+  }
+  return s;
+}
+function inRange(rows, range){
+  return rows.filter(r => (!range.from || r.date>=range.from) && (!range.to || r.date<=range.to));
+}
+function isPendingHQ(r){ return r.zone===ZONE.OUT && (r.hq==='' || r.hq===WAIT); }
+
+/* ---------- monthly ad budgets: {'YYYY-MM': [ໂນນຄໍ້, ສີສະຫວາດ]} in kip ---------- */
+function monthKey(ymd){ return String(ymd).slice(0,7); }
+function monthLabel(m){ const [y,mo]=m.split('-'); return mo+'/'+y; }
+function addMonth(m,n){ const [y,mo]=m.split('-').map(Number); const d=new Date(Date.UTC(y,mo-1+n,1)); return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1); }
+function lastDay(m){ const [y,mo]=m.split('-').map(Number); return ymdFromUTC(new Date(Date.UTC(y,mo,0))); }
+function dayCount(a,b){ return Math.round((utc(b)-utc(a))/864e5)+1; }
+function todayRef(){ return (typeof online!=='undefined' && online.today) || todayYMD(); }
+function budgetsOf(s){ return (s && s.budgets && typeof s.budgets==='object') ? s.budgets : {}; }
+/* Budget spent by branch bi inside the range. Each month counts by its share of days in the range;
+   the current month is counted only up to today because its entry is the spend so far. */
+function budgetForRange(budgets, range, bi){
+  const today=todayRef();
+  if(!range.from || !range.to) return {amount:null, missing:[], approx:false};
+  const from=range.from, to=range.to>today?today:range.to;
+  const missing=[]; let amount=0, approx=false;
+  for(let m=monthKey(from); m<=monthKey(to); m=addMonth(m,1)){
+    const mStart=m+'-01', mEnd = m===monthKey(today) ? today : lastDay(m);
+    const a = from>mStart?from:mStart, b = to<mEnd?to:mEnd;
+    if(a>b) continue;
+    const v = parseNum((budgets[m]||[])[bi]);
+    if(v===null){ missing.push(m); continue; }
+    const frac = dayCount(a,b)/dayCount(mStart,mEnd);
+    if(frac<1) approx=true;
+    amount += v*frac;
+  }
+  return {amount: missing.length?null:amount, missing, approx};
+}
+
+function computeBranch(rows, s, idx){
+  const n = rows.length;
+  const inZ = rows.filter(r=>r.zone===ZONE.IN).length;
+  const outZ = rows.filter(r=>r.zone===ZONE.OUT).length;
+  const unsure = rows.filter(r=>r.zone===ZONE.UNSURE).length;
+  const fast = rows.filter(r=>r.fast===YES).length;
+  const newC = rows.filter(r=>r.status===ORDERED).length;
+  const value = rows.reduce((a,r)=>a+(isNum(r.value)?r.value:0),0);
+  const hqWon = rows.filter(r=>r.hq===YES).length;
+  const pending = rows.filter(isPendingHQ).length;
+  const payout = 0;   // no referral fee for out-of-zone customers (policy 2026-10-14)
+  const used = parseNum(s['used'+idx]);
+  const costPerLead = safeDiv(used, n);
+  const costPerNew = isNum(used) ? safeDiv(used, newC + hqWon) : null;
+  return {n, inZ, outZ, unsure, pOut:safeDiv(outZ,n), pFast:safeDiv(fast,n), newC, pClose:safeDiv(newC,n),
+          value, hqWon, pending, payout, used, costPerLead, costPerNew};
+}
+function computeGlobal(s){
+  const usd=parseNum(s.usd), rate=parseNum(s.rate), profit=parseNum(s.profit), life=parseNum(s.life), div=parseNum(s.divisor);
+  const ltv = (isNum(profit)&&isNum(life)) ? profit*life : null;
+  const ceiling = (isNum(div) && div>0) ? safeDiv(ltv, div) : null;
+  const budget = (isNum(usd)&&isNum(rate)) ? usd*rate : null;
+  return {ltv, ceiling: (isNum(ceiling)&&ceiling>0)?ceiling:null, budget,
+          breakEven: ceilUp(safeDiv(budget, ltv)), minNew: ceilUp(safeDiv(budget, ceiling)), div};
+}
+function verdictOf(cost, ceiling){
+  if(!isNum(cost) || !isNum(ceiling) || ceiling<=0) return null;
+  const r = cost/ceiling;
+  if(r <= LO) return 'grow';
+  if(r >= HI) return 'stop';
+  return 'adjust';
+}
+
+/* ============ sample data ============ */
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function makeSample(){
+  const rnd=mulberry32(20261010);
+  const pick=a=>a[Math.floor(rnd()*a.length)];
+  const shuffle=a=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+  const today=todayYMD(), span=48, start=addDays(today,-span);
+  const men=['ບຸນມີ','ສົມພອນ','ຄຳແພງ','ວິໄລ','ສຸລິຍາ','ທອງສີ','ບຸນເຫຼືອ','ພູວົງ','ສີສຸກ','ແກ້ວມະນີ'];
+  const women=['ແສງເດືອນ','ມະນີວັນ','ບົວພັນ','ພອນສະຫວັນ','ດາວວອນ','ນ້ອຍ','ຈັນທະວີ','ອານຸສອນ','ວັນນິດາ','ສຸດາລັດ'];
+  const shops=['ຮ້ານກາເຟ ດອກຈຳປາ','ຮ້ານເຝີ ແມ່ຄຳ','ຫ້ອງການ ສີເມືອງ','ຮ້ານຕັດຜົມ ນ້ອຍ'];
+  const villages=[['ບ້ານໂນນຄໍ້','ບ້ານດອນກອຍ','ບ້ານໂພນຕ້ອງ','ບ້ານໜອງບອນ'],['ບ້ານສີສະຫວາດ','ບ້ານສີເມືອງ','ບ້ານທົ່ງຂັນຄຳ','ບ້ານຫາຍໂສກ']];
+  const farVillages=['ບ້ານດົງໂດກ','ບ້ານໄຊຍະພູມ','ບ້ານທາດຫຼວງ','ບ້ານໂພນທັນ','ບ້ານຊຳເຄ້'];
+  const products=[['ຖັງ 18.9L',12000],['ຖັງ 18.9L',12000],['ຖັງ 18.9L',12000],['ຂວດແກ້ວ 300ml (ແພັກ)',40000],['ຂວດແກ້ວ 500ml (ແພັກ)',48000],['ຂວດຢາງ (ແພັກ)',35000]];
+  const plan=[
+    {in:{[ORDERED]:13,'ກຳລັງຕອບ':4,'ບໍ່ສົ່ງຜົນ':5}, outHq:[YES,YES,YES,NO,WAIT,''], unsure:2, fast:25, curve:0.75},
+    {in:{[ORDERED]:7,'ກຳລັງຕອບ':3,'ບໍ່ສົ່ງຜົນ':2}, outHq:[YES,YES,YES,NO,NO,NO,NO,WAIT,WAIT,'',''], unsure:1, fast:15, curve:1}
+  ];
+  const rows=[];
+  plan.forEach((p,bi)=>{
+    let list=[];
+    for(const st in p.in) for(let i=0;i<p.in[st];i++) list.push({zone:ZONE.IN, status:st, hq:''});
+    p.outHq.forEach(h=>list.push({zone:ZONE.OUT, status:'ສົ່ງຕໍ່ສນຫແລ້ວ', hq:h}));
+    for(let i=0;i<p.unsure;i++) list.push({zone:ZONE.UNSURE, status:'ກຳລັງຕອບ', hq:''});
+    list=shuffle(list);
+    const late = x => (x.status==='ກຳລັງຕອບ' || (x.zone===ZONE.OUT && (x.hq===''||x.hq===WAIT))) ? 1 : 0;
+    list.sort((a,b)=>late(a)-late(b));
+    const fastFlags=shuffle(Array.from({length:list.length},(_,i)=>i<p.fast?YES:NO));
+    const n=list.length;
+    list.forEach((x,i)=>{
+      const off=Math.min(span, Math.round(span*Math.pow((i+rnd()*0.9)/n, p.curve)));
+      const date=addDays(start,off);
+      const female=rnd()<0.5;
+      const name = rnd()<0.12 ? pick(shops) : (female?'ນາງ ':'ທ້າວ ')+pick(female?women:men);
+      const [prod,price]=pick(products);
+      const qty = prod.startsWith('ຖັງ') ? 2+Math.floor(rnd()*5) : 1+Math.floor(rnd()*3);
+      const phone='020 '+pick(['5','7','9'])+String(Math.floor(rnd()*1000)).padStart(3,'0')+' '+String(Math.floor(rnd()*10000)).padStart(4,'0');
+      const place = x.zone===ZONE.OUT ? pick(farVillages) : pick(villages[bi]);
+      const ordered = x.status===ORDERED;
+      let fo = ordered ? addDays(date, Math.floor(rnd()*3)) : null; if(fo && fo>today) fo=today;
+      let hd = x.zone===ZONE.OUT ? addDays(date,1) : null; if(hd && hd>today) hd=today;
+      rows.push({date, branch:BRANCHES[bi], name, phone, place, product:prod, qty, zone:x.zone, fast:fastFlags[i],
+        status:x.status, firstOrder:fo, value: ordered ? qty*price : null, hqDate:hd, hq:x.zone===ZONE.OUT?x.hq:'', note:''});
+    });
+  });
+  rows.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  const budgets={}, full=[2200000,2150000];
+  for(let m=monthKey(start); m<=monthKey(today); m=addMonth(m,1)){
+    const f = m===monthKey(today) ? dayCount(m+'-01',today)/dayCount(m+'-01',lastDay(m)) : 1;
+    budgets[m]=full.map(v=>String(Math.round(v*f/1000)*1000));
+  }
+  return {rows, range:{from:start, to:today}, budgets};
+}
+
+/* ============ loading ============ */
+function loadText(text, source){
+  const {rows:grid} = parseDelimited(text);
+  if(!grid.length) return msg('ບໍ່ພົບຂໍ້ມູນໃນສິ່ງທີ່ນຳເຂົ້າ', 'err');
+  const {records, skipped, dateFmt} = gridToRecords(grid);
+  if(!records.length){
+    let why = 'ບໍ່ພົບແຖວທີ່ມີ ສາຂາ ເປັນ ' + BRANCHES.join(' ຫຼື ') + ' ແລະ ມີວັນທີຖືກຕ້ອງ.';
+    if(skipped.otherBranch) why += ' ຂ້າມ ' + skipped.otherBranch + ' ແຖວ ທີ່ຊື່ສາຂາບໍ່ກົງ (' + skipped.otherNames.join(', ') + ').';
+    if(skipped.badDate) why += ' ຂ້າມ ' + skipped.badDate + ' ແຖວ ທີ່ວັນທີອ່ານບໍ່ໄດ້.';
+    return msg(why, 'err');
+  }
+  const wasSample = state.meta.mode==='sample';
+  state.rows = records;
+  state.meta = {mode:'real', source, loadedAt:new Date().toISOString(), total:records.length, skipped, dateFmt};
+  if(wasSample) state.range = monthRange(todayYMD(),0);
+  const inR = inRange(records, state.range).length;
+  persistData();
+  render();
+  msg('ນຳເຂົ້າແລ້ວ ' + records.length + ' ແຖວ' + (inR===0 ? ' — ແຕ່ບໍ່ມີແຖວໃນຊ່ວງວັນທີທີ່ເລືອກ. ກົດ “ທັງໝົດຂອງຂໍ້ມູນ”' : ''), 'ok');
+}
+function msg(t, kind){ const el=$('loadMsg'); el.textContent=t; el.className='msg '+(kind||''); }
+function persistData(){
+  if(state.meta.mode==='online') return;
+  if(state.meta.mode==='real') lsSet(LS.data, {rows:state.rows, meta:state.meta});
+  else lsDel(LS.data);
+}
+function persistSettings(){ lsSet(LS.set, {settings:state.settings, range:state.range}); }
+
+/* ============ rendering ============ */
+function render(){
+  const s = effSettings();
+  const g = computeGlobal(s);
+  s.__bud = BRANCHES.map((b,i)=> state.meta.mode==='online' ? spendForRange(spendSegments(i), state.range) : budgetForRange(budgetsOf(s), state.range, i));
+  s.__bud.forEach((bd,i)=>{ s['used'+i]=bd.amount; });
+  const hasData = state.meta.mode!=='none' && state.rows.length>0;
+  const rows = hasData ? inRange(state.rows, state.range) : [];
+  const per = BRANCHES.map((b,i)=>computeBranch(rows.filter(r=>r.branch===b), s, i));
+  per.forEach((p,i)=>{ p.bud = s.__bud[i]; });
+  per.forEach(p=>{ p.verdict = verdictOf(p.costPerNew, g.ceiling); p.ratio = safeDiv(p.costPerNew, g.ceiling); });
+
+  renderHeader(hasData, rows, s);
+  renderSettings();
+  renderAlerts(hasData, rows, per, g, s);
+  renderCards(hasData, per, g);
+  renderRefs(g, s);
+  renderTrend(hasData, rows);
+  renderZone(hasData, per);
+  renderCost(hasData, per, g);
+  renderTable(hasData, rows);
+  renderFoot(hasData, rows, s, g, per);
+}
+
+function renderHeader(hasData, rows, s){
+  const usd=parseNum(s.usd);
+  $('eyebrow').textContent = 'Vari · ງົບໂຄສະນາ Facebook ' + (isNum(usd)?fmtInt(usd)+' ໂດລາ':'—') + '/ເດືອນ/ສາຂາ · ທົດລອງ 3 ເດືອນ · ' + BRANCHES.join(' ແລະ ');
+  $('metaRange').textContent = (state.range.from?showDate(state.range.from):'…') + ' – ' + (state.range.to?showDate(state.range.to):'…');
+  if(hasData){
+    const d=new Date(state.meta.loadedAt);
+    const last = state.rows.reduce((a,r)=>r.date>a?r.date:a,'');
+    $('metaUpdated').textContent = (isNaN(d)?'':pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes())) + ' (ຂໍ້ມູນຮອດ ' + showDate(last) + ')';
+    $('metaRows').textContent = fmtInt(rows.length) + ' ຈາກ ' + fmtInt(state.rows.length);
+  }else{
+    $('metaUpdated').textContent = NODATA; $('metaRows').textContent = '—';
+  }
+  $('sampleBanner').hidden = state.meta.mode!=='sample';
+  $('dFrom').value = state.range.from||''; $('dTo').value = state.range.to||'';
+}
+
+function renderSettings(){
+  renderBudgets();
+  const grid=$('setGrid');
+  if(!grid.dataset.built){
+    grid.innerHTML = FIELDS.map(f=>`<div class="field" id="fw-${f.k}"><label for="set-${f.k}">${esc(f.label)}</label><input id="set-${f.k}" inputmode="decimal" autocomplete="off" data-k="${f.k}"><span class="hint" id="fh-${f.k}"></span></div>`).join('');
+    grid.dataset.built='1';
+    grid.addEventListener('input', e=>{
+      const k=e.target.dataset.k; if(!k) return;
+      if(state.meta.mode==='online'){ online.settings[k]=e.target.value; queueSettingsSave(); render(); return; }
+      state.settings[k]=e.target.value; persistSettings(); render();
+    });
+  }
+  const isOnline = state.meta.mode==='online';
+  const canEdit = !isOnline || (session && session.role==='admin');
+  for(const f of FIELDS){
+    const inp=$('set-'+f.k), wrap=$('fw-'+f.k), hint=$('fh-'+f.k);
+    inp.disabled = !canEdit;
+    const src = isOnline ? online.settings : state.settings;
+    const own=String(src[f.k]??'').trim();
+    const sample = state.meta.mode==='sample' && own==='' ;
+    if(document.activeElement!==inp) inp.value = own!=='' ? src[f.k] : (sample ? SAMPLE_SET[f.k] : '');
+    const bad = own!=='' && parseNum(own)===null;
+    wrap.classList.toggle('is-missing', (own==='' && !sample) || bad);
+    wrap.classList.toggle('is-sample', sample);
+    hint.textContent = bad ? 'ຕົວເລກບໍ່ຖືກຕ້ອງ' : own==='' ? (sample ? 'ຄ່າຕົວຢ່າງ (ບໍ່ແມ່ນຄ່າຈິງ)' : NODATA) : (f.unit?f.unit:'');
+  }
+  const note = isOnline ? (canEdit ? 'ຄ່າເຫຼົ່ານີ້ບັນທຶກໃນລະບົບ — ທຸກຄົນເຫັນຄືກັນ' : 'ແອດມິນເທົ່ານັ້ນທີ່ແກ້ຕັ້ງຄ່າໄດ້') : 'ຊ່ອງສີເຫຼືອງ = ຍັງບໍ່ໄດ້ຕື່ມ. ບັນທຶກໃນເຄື່ອງນີ້ອັດຕະໂນມັດ';
+  $('setNote').textContent = settingsSaveMsg || note;
+}
+
+function missText(bd){ if(!bd) return ''; if(bd.missingText!==undefined) return bd.missingText; return bd.missing.length ? 'ເດືອນ '+bd.missing.map(monthLabel).join(', ') : ''; }
+function renderBudgets(){
+  const box=$('budgetBox'); if(!box) return;
+  const hintEl=$('budgetHint'); if(hintEl && !hintEl.dataset.orig) hintEl.dataset.orig=hintEl.textContent;
+  if(state.meta.mode==='online'){
+    box.querySelector('.tbl-wrap').hidden=true;
+    hintEl.textContent='ໃນລະບົບອອນໄລນ໌ ງົບທີ່ໃຊ້ຈິງ ມາຈາກແຖບ ໂອນງົບ ອັດຕະໂນມັດ: ໃຊ້ຕົວເລກໃບບິນ Facebook ຂອງແຕ່ລະງວດ — ຖ້າຍັງບໍ່ມີ ໃຊ້ພາບໜ້າຈໍວັນຈັນລ່າສຸດ ແລະ ຂຶ້ນວ່າ ປະມານ';
+    const eff=effSettings();
+    $('budgetSum').textContent='ງົບທີ່ແດຊບອດໃຊ້ ສຳລັບ '+showDate(state.range.from)+' – '+showDate(state.range.to)+': '+BRANCHES.map((b,i)=>{ const bd=spendForRange(spendSegments(i), state.range); return b+' '+(bd.amount===null?'— ('+NODATA+(missText(bd)?': '+missText(bd):'')+')':fmtKip(bd.amount)+(bd.approx?' (ປະມານ)':'')); }).join(' · ');
+    return;
+  }
+  box.querySelector('.tbl-wrap').hidden=false; if(hintEl && hintEl.dataset.orig) hintEl.textContent=hintEl.dataset.orig;
+  const isOnline = state.meta.mode==='online';
+  const canEdit = !isOnline || (typeof session!=='undefined' && !!session && session.role==='admin');
+  const own = isOnline ? budgetsOf(online.settings) : budgetsOf(state.settings);
+  const smp = state.meta.mode==='sample' ? (state.sampleBudgets||{}) : {};
+  const today=todayRef(), cur=monthKey(today);
+  const inR=new Set();
+  if(state.range.from && state.range.to){ const to=state.range.to>today?today:state.range.to; for(let m=monthKey(state.range.from); m<=monthKey(to); m=addMonth(m,1)) inR.add(m); }
+  const months=[...new Set([cur, addMonth(cur,-1), ...inR, ...Object.keys(own), ...Object.keys(smp), ...state.rows.map(r=>monthKey(r.date))])]
+    .filter(m=>/^\d{4}-\d{2}$/.test(m) && m<=cur).sort().reverse().slice(0,24);
+  const key=months.join(',')+'|'+canEdit;
+  if(box.dataset.key!==key){
+    box.dataset.key=key;
+    box.querySelector('tbody').innerHTML = months.map(m=>`<tr data-m="${m}"><th scope="row" class="tab">${monthLabel(m)}${m===cur?'<span class="tag">ເດືອນນີ້ · ຍອດຮອດມື້ນີ້</span>':''}<span class="tag br in-range" hidden>ຢູ່ໃນຊ່ວງທີ່ເລືອກ</span></th>`+
+      BRANCHES.map((b,i)=>`<td><input id="bud-${m}-${i}" data-m="${m}" data-b="${i}" inputmode="numeric" autocomplete="off" aria-label="ງົບ ${esc(b)} ${monthLabel(m)} (ກີບ)" ${canEdit?'':'disabled'}></td>`).join('')+'</tr>').join('');
+  }
+  months.forEach(m=>{
+    box.querySelector(`tr[data-m="${m}"] .in-range`).hidden = !inR.has(m);
+    BRANCHES.forEach((b,i)=>{
+      const inp=$(`bud-${m}-${i}`); const v=String((own[m]||[])[i]??'').trim(); const sv=String((smp[m]||[])[i]??'');
+      const sample = v==='' && sv!=='';
+      if(document.activeElement!==inp) inp.value = v!=='' ? v : (sample ? sv : '');
+      const bad = v!=='' && parseNum(v)===null;
+      inp.classList.toggle('is-missing', (inR.has(m) && v==='' && !sample) || bad);
+      inp.classList.toggle('is-sample', sample);
+      inp.title = bad ? 'ຕົວເລກບໍ່ຖືກຕ້ອງ' : sample ? 'ຄ່າຕົວຢ່າງ (ບໍ່ແມ່ນຄ່າຈິງ)' : '';
+    });
+  });
+  const eff=effSettings();
+  const parts=BRANCHES.map((b,i)=>{ const bd=budgetForRange(budgetsOf(eff), state.range, i); return b+' '+(bd.amount===null ? '— ('+NODATA+(bd.missing.length?': '+bd.missing.map(monthLabel).join(', '):'')+')' : fmtKip(bd.amount)+(bd.approx?' (ປະມານ)':'')); });
+  $('budgetSum').textContent = 'ງົບທີ່ແດຊບອດໃຊ້ ສຳລັບ '+showDate(state.range.from)+' – '+showDate(state.range.to)+': '+parts.join(' · ');
+}
+$('budgetBox').addEventListener('input', e=>{
+  const m=e.target.dataset.m; if(!m) return;
+  const b=Number(e.target.dataset.b);
+  const tgt = state.meta.mode==='online' ? online.settings : state.settings;
+  const bud = {...budgetsOf(tgt)}; const row=(bud[m]||BRANCHES.map(()=>'')).slice(); row[b]=e.target.value.trim(); bud[m]=row; tgt.budgets=bud;
+  if(state.meta.mode==='online') queueSettingsSave(); else persistSettings();
+  render();
+});
+
+function missingSettings(s, per){
+  const miss=[], cant=new Set();
+  const empty=k=>parseNum(s[k])===null;
+  const nameOf=k=>FIELDS.find(f=>f.k===k).label.replace(/ \(.*\)$/,'');
+  if(empty('usd')){ miss.push(nameOf('usd')); cant.add('ຈຸດຄຸ້ມທຶນ'); cant.add('ລູກຄ້າໃໝ່ຂັ້ນຕ່ຳ'); }
+  if(empty('rate')){ miss.push(nameOf('rate')); cant.add('ຈຸດຄຸ້ມທຶນ'); cant.add('ລູກຄ້າໃໝ່ຂັ້ນຕ່ຳ'); }
+  if(empty('profit')||empty('life')||empty('divisor')){
+    ['profit','life','divisor'].filter(empty).forEach(k=>miss.push(nameOf(k)));
+    ['LTV','ເພດານ','ຜົນຕັດສິນ','ຈຸດຄຸ້ມທຶນ','ລູກຄ້າໃໝ່ຂັ້ນຕ່ຳ'].forEach(x=>cant.add(x));
+  }
+  BRANCHES.forEach((b,i)=>{ const bd=(s.__bud||[])[i]; if(bd && bd.amount===null){ miss.push('ງົບທີ່ໃຊ້ຈິງ '+b+(missText(bd)?' — '+missText(bd):'')); cant.add('ຕົ້ນທຶນຕໍ່ຄົນທັກ ແລະ ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ຂອງ '+b); cant.add('ຜົນຕັດສິນ'); } });
+  return {miss, cant:[...cant]};
+}
+
+function renderAlerts(hasData, rows, per, g, s){
+  const out=[];
+  if(!hasData){
+    out.push({t:'info', m:NODATA + ' — ກົດ “ນຳເຂົ້າຂໍ້ມູນ” ເພື່ອເລືອກໄຟລ໌ CSV ຫຼື ວາງຂໍ້ມູນ, ຫຼື ກົດ “ເບິ່ງຕົວຢ່າງ”'});
+  }else if(rows.length===0){
+    out.push({t:'info', m:'ບໍ່ມີແຖວໃນຊ່ວງວັນທີທີ່ເລືອກ — ກົດ “ທັງໝົດຂອງຂໍ້ມູນ” ເພື່ອເບິ່ງທຸກແຖວ'});
+  }
+  if(hasData){
+    const pend = per.reduce((a,p)=>a+p.pending,0);
+    if(pend>0) out.push({m:'ສນຫ ຍັງບໍ່ໄດ້ແຈ້ງຜົນ ' + pend + ' ລາຍ — ຍັງນັບເປັນລູກຄ້າໃໝ່ບໍ່ໄດ້',
+      sub: per.map((p,i)=>p.pending?BRANCHES[i]+' '+p.pending+' ລາຍ':'').filter(Boolean).join(' · ')});
+    per.forEach((p,i)=>{
+      if(p.n>0 && isNum(p.pFast) && p.pFast<TH_REPLY) out.push({m:'ສາຂາ ' + BRANCHES[i] + ' ຕອບບໍ່ທັນ — ອາດວຽກໜັກເກີນ ຄວນທົບທວນ', sub:'ຕອບທັນ 30 ນາທີ ' + fmtPct(p.pFast) + ' (ເກນ 70%)'});
+      if(p.n>0 && isNum(p.pOut) && p.pOut>TH_OUT) out.push({m:'ສາຂາ ' + BRANCHES[i] + ' ມີລູກຄ້ານອກເຂດຫຼາຍເກີນ — ຄວນແຄບລັດສະໝີໂຄສະນາ', sub:'ນອກເຂດ ' + fmtPct(p.pOut) + ' (ເກນ 40%)'});
+    });
+    const uns = per.reduce((a,p)=>a+p.unsure,0);
+    if(uns>0) out.push({m:'ມີ ' + uns + ' ລາຍທີ່ຍັງບໍ່ໄດ້ຕັດສິນວ່າໃນ ຫຼື ນອກເຂດ'});
+    const sk=state.meta.skipped||{};
+    const skN=(sk.otherBranch||0)+(sk.noBranch||0)+(sk.badDate||0);
+    if(state.meta.mode==='real' && skN>0) out.push({t:'info', m:'ຂ້າມ ' + skN + ' ແຖວທີ່ອ່ານບໍ່ໄດ້ ໃນໄຟລ໌', sub:skipText(sk)});
+  }
+  const {miss, cant} = missingSettings(s, per);
+  const viewOnly = state.meta.mode==='online' && !(session && session.role==='admin');
+  if(miss.length) out.push({m:'ຍັງບໍ່ໄດ້ຕື່ມໃນ ຕັ້ງຄ່າ: ' + miss.join(', '), sub:'ຍັງຄຳນວນບໍ່ໄດ້: ' + cant.join(', ') + (viewOnly?' — ແຈ້ງແອດມິນໃຫ້ຕື່ມ':''), act:!viewOnly});
+  const div=parseNum(s.divisor);
+  if(isNum(div) && div<=1) out.push({m:'ຕົວຫານເພດານ ຄວນຫຼາຍກວ່າ 1 — ຖ້າໃຊ້ 1 ຕົ້ນທຶນຈະເທົ່າກັບ LTV ພໍດີ (ບໍ່ມີກຳໄລ)'});
+  $('alerts').innerHTML = out.map(a=>`<div class="alert ${a.t||''}"><span class="dot" aria-hidden="true"></span><div><p>${esc(a.m)}</p>${a.sub?`<p class="sub">${esc(a.sub)}</p>`:''}${a.act?`<p class="no-print"><button class="chip" data-open-settings>ເປີດ ຕັ້ງຄ່າ</button></p>`:''}</div></div>`).join('');
+}
+function skipText(sk){
+  const p=[];
+  if(sk.otherBranch) p.push(sk.otherBranch+' ແຖວ ຊື່ສາຂາບໍ່ກົງ ('+(sk.otherNames||[]).join(', ')+')');
+  if(sk.noBranch) p.push(sk.noBranch+' ແຖວ ບໍ່ມີຊື່ສາຂາ');
+  if(sk.badDate) p.push(sk.badDate+' ແຖວ ວັນທີອ່ານບໍ່ໄດ້');
+  return p.join(' · ');
+}
+
+function noteList(p, hasData){
+  const n=[];
+  if(!hasData) return n;
+  if(p.n===0){ n.push({w:0, t:'ຍັງບໍ່ມີຄົນທັກໃນຊ່ວງນີ້ — ກວດເບິ່ງວ່າໂຄສະນາເປີດຢູ່ບໍ່'}); return n; }
+  if(isNum(p.pOut) && p.pOut>TH_OUT) n.push({w:1, t:'ນອກເຂດ '+fmtPct(p.pOut)+' — ຄວນແຄບລັດສະໝີໂຄສະນາ'});
+  if(isNum(p.pFast) && p.pFast<TH_REPLY) n.push({w:1, t:'ຕອບທັນ '+fmtPct(p.pFast)+' — ອາດວຽກໜັກເກີນ ຄວນທົບທວນກຳລັງຄົນ'});
+  if(p.newC===0 && p.hqWon===0) n.push({w:1, t:'ມີຄົນທັກແຕ່ຍັງບໍ່ມີລູກຄ້າໃໝ່ — ຄວນເບິ່ງຂັ້ນຕອນປິດການຂາຍ'});
+  if(p.pending>0) n.push({w:0, t:'ລໍຖ້າ ສນຫ ແຈ້ງຜົນ '+p.pending+' ລາຍ'});
+  if(!n.length) n.push({w:0, t:'ບໍ່ພົບຈຸດທີ່ຕ້ອງແກ້ໃນຊ່ວງນີ້'});
+  return n;
+}
+
+function renderCards(hasData, per, g){
+  $('cards').innerHTML = per.map((p,i)=>{
+    const v = p.verdict ? VERDICT[p.verdict] : null;
+    let why='';
+    if(!v){
+      if(!hasData) why=NODATA;
+      else if(!isNum(g.ceiling)) why='ຍັງບໍ່ມີ ເພດານ';
+      else if(!isNum(p.used)) why='ຍັງບໍ່ມີ ງົບທີ່ໃຊ້ຈິງ';
+      else if(p.newC+p.hqWon===0) why='ຍັງບໍ່ມີລູກຄ້າໃໝ່ (ຫານດ້ວຍສູນບໍ່ໄດ້)';
+      else why=NODATA;
+    }
+    const pill = v ? `<span class="pill ${v.cls}">${v.txt}</span>` : `<span class="pill none">ຍັງຕັດສິນບໍ່ໄດ້</span>`;
+    const costMissing = !isNum(p.costPerNew);
+    const vs = isNum(g.ceiling)
+      ? `ເພດານ <b class="tab">${fmtKip(g.ceiling)}</b>${isNum(p.ratio)?` · ເທົ່າກັບ <b class="tab">${fmtPct(p.ratio)}</b> ຂອງເພດານ`:''}`
+      : `ເພດານ — <span class="nodata">${NODATA}</span>`;
+    // gauge: 0 .. 2× ceiling ; zones 0–0.8 / 0.8–1.2 / 1.2–2.0
+    let gauge;
+    if(isNum(g.ceiling) && isNum(p.ratio)){
+      const pos=Math.max(0,Math.min(100, p.ratio/2*100));
+      gauge=`<div class="gauge" role="img" aria-label="ຕົ້ນທຶນ ${fmtPct(p.ratio)} ຂອງເພດານ"><div class="gauge-bar"><span class="z1"></span><span class="z2"></span><span class="z3"></span><i class="gauge-mark" style="left:${pos}%"></i></div>
+        <div class="gauge-ticks"><span style="left:0">0</span><span style="left:40%">80%</span><span style="left:60%">120%</span><span style="left:100%">200%+</span></div></div>`;
+    }else{
+      gauge=`<div class="gauge" aria-hidden="true"><div class="gauge-bar off"><span class="z1"></span><span class="z2"></span><span class="z3"></span></div></div>`;
+    }
+    const dd=(val, unit, sub)=> `<dd class="tab">${val}${val!=='—'&&unit?`<span class="u">${unit}</span>`:''}${sub?`<span class="s">${sub}</span>`:''}</dd>`;
+    const has = hasData;
+    const notes = noteList(p, hasData).map(x=>`<li class="${x.w?'w':''}">${esc(x.t)}</li>`).join('');
+    return `<article class="card ${v?'v-'+p.verdict:''}">
+      <div class="card-head"><h3><span class="swatch" style="background:${BR_COLOR[i]}"></span>${esc(BRANCHES[i])}</h3>
+        <div class="verdict">${pill}</div></div>
+      <p class="rule">${RULE_TXT}${!v?` · <span class="nodata">${esc(why)}</span>`:''}</p>
+      <div class="cost">
+        <div class="lbl">ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່</div>
+        <div class="big"><span class="num">${fmtInt(p.costPerNew)}</span>${costMissing?'':'<span class="unit">ກີບ</span>'}</div>
+        ${costMissing && !isNum(p.used) ? `<span class="nodata">${NODATA}: ງົບທີ່ໃຊ້ຈິງ${p.bud&&missText(p.bud)?' — '+missText(p.bud):''}</span>` : ''}
+        <div class="vs">${vs}</div>
+        ${isNum(p.used)?`<div class="small muted tab">ງົບທີ່ໃຊ້ໃນຊ່ວງ ${fmtKip(p.used)}${p.bud&&p.bud.approx?' (ປະມານ ຕາມສັດສ່ວນວັນ)':''}</div>`:''}
+      </div>
+      ${gauge}
+      <dl class="stats">
+        <div><dt>ຄົນທັກ</dt>${dd(has?fmtInt(p.n):'—','ຄົນ', has?'':NODATA)}</div>
+        <div><dt>ລູກຄ້າໃໝ່</dt>${dd(has?fmtInt(p.newC):'—','ຄົນ', has?('+ ສນຫ ປິດໄດ້ '+fmtInt(p.hqWon)+' ຄົນ'):NODATA)}</div>
+        <div><dt>% ປິດການຂາຍ</dt>${dd(fmtPct(p.pClose),'', '')}</div>
+        <div><dt>% ຕອບທັນ 30 ນາທີ</dt>${dd(fmtPct(p.pFast),'', '')}</div>
+        <div><dt>% ນອກເຂດ</dt>${dd(fmtPct(p.pOut),'', has?('ນອກເຂດ '+fmtInt(p.outZ)+' / ໃນເຂດ '+fmtInt(p.inZ)):'')}</div>
+        <div><dt>ລໍຖ້າ ສນຫ ແຈ້ງຜົນ</dt>${dd(has?fmtInt(p.pending):'—','ຄົນ', has?'ນອກເຂດທີ່ຍັງບໍ່ຮູ້ຜົນ':'')}</div>
+        <div><dt>ຕົ້ນທຶນຕໍ່ຄົນທັກ</dt>${dd(fmtInt(p.costPerLead),'ກີບ', !isNum(p.used)?NODATA:'')}</div>
+        <div><dt>ມູນຄ່າອໍເດີ້ແລກລວມ</dt>${dd(has?fmtInt(p.value):'—','ກີບ','')}</div>
+      </dl>
+      ${notes?`<ul class="notes">${notes}</ul>`:''}
+    </article>`;
+  }).join('');
+}
+
+function renderRefs(g, s){
+  const item=(t,v,u,miss)=>`<div><dt>${t}</dt><dd class="tab">${v}${v!=='—'&&u?`<span class="u">${u}</span>`:''}${v==='—'?` <span class="nodata">${NODATA}</span>`:''}</dd></div>`;
+  $('refs').innerHTML =
+    item('ງົບຕໍ່ເດືອນຕໍ່ສາຂາ', fmtInt(g.budget), 'ກີບ') +
+    item('LTV (ກຳໄລ × ອາຍຸລູກຄ້າ)', fmtInt(g.ltv), 'ກີບ') +
+    item('ເພດານ (LTV ÷ '+(isNum(g.div)?g.div:'—')+')', fmtInt(g.ceiling), 'ກີບ') +
+    item('ຈຸດຄຸ້ມທຶນ / ເດືອນ', fmtInt(g.breakEven), 'ຄົນ') +
+    item('ລູກຄ້າໃໝ່ຂັ້ນຕ່ຳ / ເດືອນ', fmtInt(g.minNew), 'ຄົນ');
+}
+
+/* ---------- charts (hand-written SVG) ---------- */
+function niceMax(v){ if(!(v>0)) return 4; const steps=[1,2,2.5,5,10]; const p=Math.pow(10,Math.floor(Math.log10(v))); for(const s of steps){ if(s*p>=v) return s*p; } return 10*p; }
+function emptyChart(t){ return `<div class="empty-chart">${esc(t)}</div>`; }
+
+function renderTrend(hasData, rows){
+  const lg=$('lgTrend'), ch=$('chTrend');
+  const lineSample=(c,dash)=>`<svg width="28" height="10" aria-hidden="true"><line x1="0" y1="5" x2="28" y2="5" stroke="${c}" stroke-width="3" ${dash?'stroke-dasharray="5 4"':''}/></svg>`;
+  lg.innerHTML = BRANCHES.map((b,i)=>`<span>${lineSample(BR_COLOR[i],false)}${esc(b)} ຄົນທັກ</span><span>${lineSample(BR_COLOR[i],true)}${esc(b)} ລູກຄ້າໃໝ່</span>`).join('');
+  if(!hasData || !rows.length){ ch.innerHTML=emptyChart(NODATA); return; }
+  let from=state.range.from || rows.reduce((a,r)=>r.date<a?r.date:a, rows[0].date);
+  let to=state.range.to || rows.reduce((a,r)=>r.date>a?r.date:a, rows[0].date);
+  const weeks=[]; for(let w=mondayOf(from); w<=to; w=addDays(w,7)) weeks.push(w);
+  if(weeks.length>60) weeks.splice(0, weeks.length-60);
+  const idx=new Map(weeks.map((w,i)=>[w,i]));
+  const series=BRANCHES.map(b=>({lead:weeks.map(()=>0), nw:weeks.map(()=>0)}));
+  rows.forEach(r=>{ const i=idx.get(mondayOf(r.date)); if(i===undefined) return; const bi=BRANCHES.indexOf(r.branch); series[bi].lead[i]++; if(r.status===ORDERED) series[bi].nw[i]++; });
+  const W=760,H=280,L=44,R=70,T=16,B=44, iw=W-L-R, ih=H-T-B;
+  const ymax=niceMax(Math.max(1,...series.flatMap(s=>s.lead)));
+  const x=i=> weeks.length===1 ? L+iw/2 : L + i*iw/(weeks.length-1);
+  const y=v=> T + ih - v/ymax*ih;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="ແນວໂນ້ມລາຍອາທິດ">`;
+  const ticks=5; for(let k=0;k<=ticks;k++){ const v=ymax*k/ticks; const yy=y(v);
+    svg+=`<line class="ax" x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke-width="1" ${k?'stroke-dasharray="2 4"':''}/>`;
+    svg+=`<text x="${L-8}" y="${yy+4}" text-anchor="end">${fmtInt(v)}</text>`; }
+  const every=Math.max(1,Math.ceil(weeks.length/10));
+  weeks.forEach((w,i)=>{ if(i%every===0||i===weeks.length-1){ const [yy,mm,dd]=w.split('-'); svg+=`<text x="${x(i)}" y="${H-B+18}" text-anchor="middle">${dd}/${mm}</text>`; }});
+  svg+=`<text x="${L}" y="${H-6}">ວັນຈັນທຳອິດຂອງອາທິດ (ວ/ດ)</text>`;
+  series.forEach((s,bi)=>{
+    const c=BR_COLOR[bi];
+    const pl=s.lead.map((v,i)=>`${x(i)},${y(v)}`), pn=s.nw.map((v,i)=>`${x(i)},${y(v)}`);
+    svg+=`<polygon points="${pl.join(' ')} ${pn.slice().reverse().join(' ')}" fill="${c}" fill-opacity="0.10" stroke="none"/>`;
+    svg+=`<polyline points="${pl.join(' ')}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    svg+=`<polyline points="${pn.join(' ')}" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="6 4" stroke-linejoin="round"/>`;
+    s.lead.forEach((v,i)=>svg+=`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${c}"/>`);
+    s.nw.forEach((v,i)=>svg+=`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="var(--bg)" stroke="${c}" stroke-width="2"/>`);
+  });
+  // end labels, nudged apart
+  const last=weeks.length-1;
+  const labs=[]; series.forEach((s,bi)=>{ labs.push({v:s.lead[last], c:BR_COLOR[bi], t:'ທັກ '+s.lead[last]}); labs.push({v:s.nw[last], c:BR_COLOR[bi], t:'ໃໝ່ '+s.nw[last]}); });
+  labs.forEach(l=>l.y=y(l.v)); labs.sort((a,b)=>a.y-b.y);
+  for(let i=1;i<labs.length;i++) if(labs[i].y-labs[i-1].y<14) labs[i].y=labs[i-1].y+14;
+  labs.forEach(l=>svg+=`<text x="${x(last)+8}" y="${Math.min(H-B,l.y)+4}" style="fill:${l.c};font-weight:700">${esc(l.t)}</text>`);
+  svg+=`</svg>`;
+  ch.innerHTML=svg;
+}
+
+function renderZone(hasData, per){
+  const lg=$('lgZone'), ch=$('chZone');
+  const sw=c=>`<svg width="12" height="12" aria-hidden="true"><rect width="12" height="12" rx="2" fill="${c}"/></svg>`;
+  lg.innerHTML=`<span>${sw('var(--zin)')}ໃນເຂດ</span><span>${sw('var(--zout)')}ນອກເຂດ</span><span>${sw('var(--zunk)')}ບໍ່ແນ່ໃຈ / ບໍ່ໄດ້ລະບຸ</span>`;
+  if(!hasData || per.every(p=>p.n===0)){ ch.innerHTML=emptyChart(NODATA); return; }
+  const W=560, L=96, R=16, rowH=58, T=10, H=T+rowH*per.length+26, iw=W-L-R;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="ສັດສ່ວນ ໃນເຂດ ນອກເຂດ">`;
+  [0,0.4,1].forEach(f=>{ const xx=L+iw*f; svg+=`<line class="ax" x1="${xx}" x2="${xx}" y1="${T}" y2="${H-22}" ${f===0.4?'stroke-dasharray="4 3"':''}/><text x="${xx}" y="${H-6}" text-anchor="middle">${f===0.4?'ເກນ 40%':Math.round(f*100)+'%'}</text>`; });
+  per.forEach((p,i)=>{
+    const yy=T+i*rowH+8, h=30;
+    svg+=`<text class="lbl-strong" x="${L-10}" y="${yy+h/2+5}" text-anchor="end">${esc(BRANCHES[i])}</text>`;
+    if(p.n===0){ svg+=`<text x="${L+6}" y="${yy+h/2+5}">ບໍ່ມີຄົນທັກ</text>`; return; }
+    const other=p.n-p.inZ-p.outZ;
+    const segs=[[p.inZ,'var(--zin)','var(--zin-ink)'],[p.outZ,'var(--zout)','var(--zout-ink)'],[other,'var(--zunk)','var(--zunk-ink)']];
+    let x0=L;
+    segs.forEach(([v,c,tc])=>{ if(!v) return; const w=iw*v/p.n;
+      svg+=`<rect x="${x0}" y="${yy}" width="${w}" height="${h}" fill="${c}"/>`;
+      if(w>44) svg+=`<text x="${x0+w/2}" y="${yy+h/2+4}" text-anchor="middle" style="fill:${tc};font-weight:700">${fmtPct(v/p.n)}</text>`;
+      x0+=w; });
+    svg+=`<text x="${L}" y="${yy+h+14}" style="font-size:11px">ໃນເຂດ ${p.inZ} · ນອກເຂດ ${p.outZ} · ບໍ່ແນ່ໃຈ ${other} (ລວມ ${p.n} ຄົນ)</text>`;
+  });
+  // re-draw the 40% guide above bars
+  svg+=`<line x1="${L+iw*0.4}" x2="${L+iw*0.4}" y1="${T}" y2="${H-22}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  svg+=`</svg>`;
+  ch.innerHTML=svg;
+}
+
+function renderCost(hasData, per, g){
+  const ch=$('chCost');
+  if(!hasData){ ch.innerHTML=emptyChart(NODATA); return; }
+  if(!isNum(g.ceiling)){ ch.innerHTML=emptyChart(NODATA+' — ຕ້ອງຕື່ມ ກຳໄລຂັ້ນຕົ້ນ ແລະ ອາຍຸລູກຄ້າສະເລ່ຍ ກ່ອນ'); return; }
+  const W=560,H=300,L=78,R=110,T=18,B=40, iw=W-L-R, ih=H-T-B;
+  const maxCost=Math.max(0,...per.map(p=>isNum(p.costPerNew)?p.costPerNew:0));
+  const ymax=niceMax(Math.max(g.ceiling*1.5, maxCost*1.1));
+  const y=v=>T+ih-v/ymax*ih;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ທຽບ ເພດານ">`;
+  for(let k=0;k<=4;k++){ const v=ymax*k/4, yy=y(v); svg+=`<line class="ax" x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" ${k?'stroke-dasharray="2 4"':''}/><text x="${L-8}" y="${yy+4}" text-anchor="end">${fmtInt(v)}</text>`; }
+  svg+=`<rect x="${L}" y="${y(g.ceiling*HI)}" width="${iw}" height="${y(g.ceiling*LO)-y(g.ceiling*HI)}" fill="var(--warn)" fill-opacity="0.18"/>`;
+  svg+=`<text x="${W-R+6}" y="${y(g.ceiling*HI)+4}" style="font-size:11px">+20% ${fmtInt(g.ceiling*HI)}</text>`;
+  svg+=`<text x="${W-R+6}" y="${y(g.ceiling*LO)+4}" style="font-size:11px">−20% ${fmtInt(g.ceiling*LO)}</text>`;
+  const bw=Math.min(90, iw/per.length*0.5);
+  per.forEach((p,i)=>{
+    const cx=L+iw*(i+0.5)/per.length;
+    svg+=`<text class="lbl-strong" x="${cx}" y="${H-B+20}" text-anchor="middle">${esc(BRANCHES[i])}</text>`;
+    if(!isNum(p.costPerNew)){ svg+=`<text x="${cx}" y="${y(0)-10}" text-anchor="middle">— ${NODATA}</text>`; return; }
+    const col = p.verdict==='grow'?'var(--good)':p.verdict==='stop'?'var(--bad)':'var(--warn)';
+    const top=y(Math.min(p.costPerNew, ymax));
+    svg+=`<rect x="${cx-bw/2}" y="${top}" width="${bw}" height="${y(0)-top}" fill="${col}" rx="3"/>`;
+    svg+=`<text class="lbl-strong" x="${cx}" y="${top-8}" text-anchor="middle">${fmtInt(p.costPerNew)}</text>`;
+  });
+  svg+=`<line x1="${L}" x2="${W-R}" y1="${y(g.ceiling)}" y2="${y(g.ceiling)}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5"/>`;
+  svg+=`<text class="lbl-strong" x="${W-R+6}" y="${y(g.ceiling)+4}">ເພດານ ${fmtInt(g.ceiling)}</text>`;
+  svg+=`<text x="${L}" y="${H-4}" style="font-size:11px">ໜ່ວຍ: ກີບ ຕໍ່ ລູກຄ້າໃໝ່ 1 ຄົນ</text>`;
+  svg+=`</svg>`;
+  ch.innerHTML=svg;
+}
+
+/* ---------- table ---------- */
+function renderTable(hasData, rows){
+  const fb=$('fBranch'), fs=$('fStatus');
+  if(!fb.options.length){
+    fb.innerHTML = `<option value="">ທັງໝົດ</option>` + BRANCHES.map(b=>`<option>${esc(b)}</option>`).join('');
+    fs.innerHTML = `<option value="">ທັງໝົດ</option>` + STATUS.map(s=>`<option>${esc(s)}</option>`).join('') + `<option value="__pending">ລໍຖ້າຜົນ ສນຫ</option>`;
+  }
+  const tb=$('tbody');
+  if(!hasData){ tb.innerHTML=`<tr><td colspan="12">${NODATA}</td></tr>`; $('tblCount').textContent=''; return; }
+  const q=canon($('fSearch').value).toLowerCase();
+  const list=rows.filter(r=>
+    (!fb.value || r.branch===fb.value) &&
+    (!fs.value || (fs.value==='__pending' ? isPendingHQ(r) : r.status===fs.value)) &&
+    (!q || canon([r.name,r.phone,r.place,r.product,r.note].join(' ')).toLowerCase().includes(q))
+  ).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
+  const show=list.slice(0,20);
+  $('tblCount').textContent = 'ສະແດງ ' + show.length + ' ລາຍການລ່າສຸດ ຈາກ ' + list.length + ' ລາຍການ';
+  if(!show.length){ tb.innerHTML=`<tr><td colspan="12">ບໍ່ພົບລາຍການທີ່ກົງກັບການຄົ້ນຫາ</td></tr>`; return; }
+  const hqTag=r=>{
+    if(r.zone!==ZONE.OUT) return r.hq?esc(r.hq):'';
+    if(r.hq===YES) return `<span class="tag ok">ແມ່ນ</span>`;
+    if(r.hq===NO) return `<span class="tag no">ບໍ່</span>`;
+    return `<span class="tag wait">ລໍຖ້າ ສນຫ</span>`;
+  };
+  tb.innerHTML = show.map(r=>`<tr class="${isPendingHQ(r)?'pending':''}">
+    <td class="tab">${showDate(r.date)}</td><td>${esc(r.branch)}</td><td>${esc(r.name)}</td><td class="tab col-phone">${esc(r.phone)}</td>
+    <td>${esc(r.place)}</td><td>${esc(r.product)}</td><td class="r tab">${isNum(r.qty)?fmtInt(r.qty):''}</td>
+    <td>${r.zone===ZONE.UNSURE?`<span class="tag wait">ບໍ່ແນ່ໃຈ</span>`:esc(r.zone)}</td><td>${esc(r.fast)}</td>
+    <td>${r.status===ORDERED?`<span class="tag ok">${esc(r.status)}</span>`:`<span class="tag">${esc(r.status)}</span>`}</td>
+    <td>${hqTag(r)}</td><td class="r tab">${isNum(r.value)?fmtInt(r.value):''}</td></tr>`).join('');
+}
+
+
+/* ---------- footer ---------- */
+function renderFoot(hasData, rows, s, g, per){
+  const m=state.meta;
+  const src = !hasData ? NODATA : m.mode==='sample' ? 'ຂໍ້ມູນສົມມຸດ (ສ້າງໃນໜ້ານີ້)' : m.source;
+  $('btnClear').hidden = m.mode==='online';
+  $('onlineBox').hidden = !(session && session.role!=='b0' && session.role!=='b1');
+  $('btnUseOnline').hidden = m.mode==='online';
+  const {miss} = missingSettings(s, per);
+  const gaps=[...miss.map(x=>'ຕັ້ງຄ່າ: '+x)];
+  if(hasData){
+    const pend=per.reduce((a,p)=>a+p.pending,0), uns=per.reduce((a,p)=>a+p.unsure,0);
+    if(pend) gaps.push('ຜົນ ສນຫ ຂອງລູກຄ້ານອກເຂດ '+pend+' ລາຍ');
+    if(uns) gaps.push('ການຕັດສິນ ໃນ/ນອກເຂດ '+uns+' ລາຍ');
+  }else gaps.unshift('ຂໍ້ມູນລູກຄ້າ (ແຜ່ນ ບັນທຶກລູກຄ້າ)');
+  $('foot').innerHTML = `
+    <div><h2>ທີ່ມາຂໍ້ມູນ</h2><ul>
+      <li>ແຫຼ່ງ: ${esc(src)}</li>
+      <li>${m.mode==='online' ? 'ຂໍ້ມູນ: ສາຂາກອກໃນລະບົບ, ຜົນ ສນຫ ກອກໂດຍ ສນຫ' : 'ແຜ່ນ: ບັນທຶກລູກຄ້າ · ອ່ານຖັນ A–P ຕາມຕຳແໜ່ງ'}</li>
+      <li>ຊ່ວງວັນທີ: ${showDate(state.range.from)} – ${showDate(state.range.to)}</li>
+      <li>ແຖວໃນຊ່ວງ: ${hasData?fmtInt(rows.length):'—'} · ແຖວທັງໝົດ: ${hasData?fmtInt(state.rows.length):'—'}</li>
+      ${m.mode==='real'?`<li>ຮູບແບບວັນທີທີ່ອ່ານ: ${m.dateFmt==='MDY'?'ດ/ວ/ປ':'ວ/ດ/ປ'}</li>`:''}
+      ${m.mode==='real' && skipText(m.skipped||{})?`<li>ແຖວທີ່ຂ້າມ: ${esc(skipText(m.skipped))}</li>`:''}
+      <li>${m.mode==='online' ? 'ຂໍ້ມູນອອນໄລນ໌ເກັບໃນຖານຂໍ້ມູນຂອງ Vari ເຂົ້າໄດ້ດ້ວຍ PIN ເທົ່ານັ້ນ' : 'ຂໍ້ມູນຈາກໄຟລ໌ຢູ່ໃນເຄື່ອງນີ້ເທົ່ານັ້ນ ບໍ່ສົ່ງອອກໄປໃສ'}</li>
+    </ul></div>
+    <div><h2>ຂໍ້ສົມມຸດທີ່ໃຊ້</h2><ul>
+      <li>ນັບທຸກຕົວເລກຕາມ ວັນທີທັກ (ຖັນ A) ໃນຊ່ວງທີ່ເລືອກ</li>
+      <li>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ = ງົບທີ່ໃຊ້ ÷ (ລູກຄ້າໃໝ່ຂອງສາຂາ + ນອກເຂດທີ່ ສນຫ ປິດໄດ້) — ໂຄງການນີ້ບໍ່ມີຄ່າສົ່ງຕໍ່ລູກຄ້ານອກເຂດ</li>
+      <li>ຈຸດຄຸ້ມທຶນ ແລະ ລູກຄ້າໃໝ່ຂັ້ນຕ່ຳ ໃຊ້ ງົບຕໍ່ເດືອນ (ໂດລາ × ອັດຕາແລກປ່ຽນ) ຕໍ່ 1 ສາຂາ ແລະ ປັດຂຶ້ນ</li>
+      <li>ງົບທີ່ໃຊ້ຈິງ = ລວມງົບລາຍເດືອນໃນຊ່ວງທີ່ເລືອກ · ເດືອນທີ່ບໍ່ເຕັມ ຄິດຕາມສັດສ່ວນວັນ (ເດືອນນີ້ ນັບຮອດມື້ນີ້)</li>
+      <li>ຂະຫຍາຍ ≤ 80% ຂອງເພດານ · ຢຸດ ≥ 120% · ລະຫວ່າງນັ້ນ = ຕໍ່ ແລະ ປັບ</li>
+      <li>ເກນເຕືອນ: ຕອບທັນ ຕ່ຳກວ່າ 70% · ນອກເຂດ ສູງກວ່າ 40%</li>
+      <li>${RULE_TXT}</li>
+    </ul></div>
+    <div><h2>ຂໍ້ມູນທີ່ຍັງຂາດ</h2><ul>${gaps.length?gaps.map(x=>`<li>${esc(x)}</li>`).join(''):'<li>ຄົບແລ້ວ</li>'}</ul></div>`;
+}
+
+/* ============ events ============ */
+function togglePanel(btn, id, force){
+  const p=$(id); const open = force!==undefined ? force : p.hidden;
+  p.hidden=!open; btn.setAttribute('aria-expanded', String(open));
+  if(open) p.scrollIntoView({behavior:SMOOTH, block:'nearest'});
+}
+$('btnLoad').addEventListener('click', ()=>togglePanel($('btnLoad'),'panelLoad'));
+$('btnSettings').addEventListener('click', ()=>togglePanel($('btnSettings'),'panelSettings'));
+$('alerts').addEventListener('click', e=>{ if(e.target.closest('[data-open-settings]')) togglePanel($('btnSettings'),'panelSettings',true); });
+
+$('fileCsv').addEventListener('change', e=>{
+  const f=e.target.files && e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{ loadText(String(rd.result||''), f.name); e.target.value=''; };
+  rd.onerror=()=>msg('ອ່ານໄຟລ໌ບໍ່ໄດ້ — ລອງ Save As ເປັນ “CSV UTF-8” ອີກຄັ້ງ','err');
+  rd.readAsText(f,'UTF-8');
+});
+$('btnPaste').addEventListener('click', ()=>{
+  const t=$('pasteBox').value;
+  if(!t.trim()) return msg('ຍັງບໍ່ໄດ້ວາງຂໍ້ມູນ','err');
+  loadText(t, 'ວາງຈາກ Excel'); $('pasteBox').value='';
+});
+$('btnSample').addEventListener('click', ()=>{
+  const smp=makeSample();
+  state.rows=smp.rows; state.range=smp.range; state.sampleBudgets=smp.budgets;
+  state.meta={mode:'sample', source:'', loadedAt:new Date().toISOString(), total:smp.rows.length, skipped:{}, dateFmt:''};
+  lsDel(LS.data); persistSettings(); render();
+  msg('ໂຫຼດຂໍ້ມູນສົມມຸດ '+smp.rows.length+' ແຖວ', 'ok');
+});
+let clearArmed=null;
+$('btnClear').addEventListener('click', ()=>{
+  const b=$('btnClear');
+  if(!clearArmed){ b.classList.add('armed'); b.textContent='ກົດອີກຄັ້ງເພື່ອຢືນຢັນການລຶບ';
+    clearArmed=setTimeout(()=>{ b.classList.remove('armed'); b.textContent='ລຶບຂໍ້ມູນ'; clearArmed=null; },4000); return; }
+  clearTimeout(clearArmed); clearArmed=null; b.classList.remove('armed'); b.textContent='ລຶບຂໍ້ມູນ';
+  const wasSample = state.meta.mode==='sample';
+  state.rows=[]; state.meta={mode:'none', source:'', loadedAt:'', total:0, skipped:{}, dateFmt:''};
+  if(wasSample) state.range=monthRange(todayYMD(),0);
+  lsDel(LS.data); persistSettings(); render(); msg('ລຶບຂໍ້ມູນລູກຄ້າແລ້ວ (ຕັ້ງຄ່າຍັງຢູ່)','ok');
+});
+['dFrom','dTo'].forEach(id=>$(id).addEventListener('change', ()=>{
+  state.range={from:$('dFrom').value, to:$('dTo').value};
+  if(state.range.from && state.range.to && state.range.from>state.range.to) state.range={from:state.range.to, to:state.range.from};
+  persistSettings(); render();
+}));
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click', ()=>{
+  const p=b.dataset.preset;
+  if(p==='this') state.range=monthRange(todayYMD(),0);
+  else if(p==='prev') state.range=monthRange(todayYMD(),-1);
+  else if(state.rows.length){ const ds=state.rows.map(r=>r.date).sort(); state.range={from:ds[0], to:ds[ds.length-1]}; }
+  persistSettings(); render();
+}));
+['fBranch','fStatus','fSearch'].forEach(id=>$(id).addEventListener('input', debounce(()=>{
+  const hasData=state.meta.mode!=='none'&&state.rows.length>0;
+  renderTable(hasData, hasData?inRange(state.rows,state.range):[]);
+}, id==='fSearch'?200:0)));
+
+/* theme */
+function effectiveDark(){ const t=document.documentElement.getAttribute('data-theme'); if(t) return t==='dark'; return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+function syncThemeBtn(){ $('btnTheme').textContent = effectiveDark() ? 'ໂໝດແຈ້ງ' : 'ໂໝດມືດ'; }
+$('btnTheme').addEventListener('click', ()=>{
+  const next = effectiveDark() ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next); lsSet(LS.theme, next); syncThemeBtn(); render();
+});
+try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncThemeBtn); }catch(e){}
+
+/* =====================================================================
+   ONLINE: PIN login + branch entry + HQ follow-up (Supabase edge function)
+   ===================================================================== */
+const API_URL = 'https://xpehjmiymlxqbydczppu.supabase.co/functions/v1/branch-ads';
+const LS_SESSION = 'vari-ads-session-v1';
+const ROLE_INFO = {
+  b0:{label:'ສາຂາ ໂນນຄໍ້', kind:'branch', branch:BRANCHES[0], home:'branch'},
+  b1:{label:'ສາຂາ ສີສະຫວາດ', kind:'branch', branch:BRANCHES[1], home:'branch'},
+  hq:{label:'ສນຫ', kind:'hq', home:'hq'},
+  admin:{label:'ແອດມິນ', kind:'admin', home:'dash'}
+};
+const VIEWS_FOR = { none:['dash','guide'], branch:['branch','budget','guide'], hq:['dash','hq','budget','guide'], admin:['dash','branch','hq','budget','admin','guide'] };
+const OUT_STATUS = 'ສົ່ງຕໍ່ສນຫແລ້ວ';
+let session = null;          // {token, role}
+let online = {leads:[], settings:{}, budget:[], today:'', loadedAt:''};
+let view = 'dash';
+let settingsSaveMsg = '';
+let settingsTimer = null;
+let brPeriod = 'this', brFilterV = 'all', hqFilterV = 'pending';
+const hqDrafts = {};          // id -> note being typed (survives refresh)
+let editing = null;           // lead being edited in the branch form
+
+function kindOf(){ return session ? ROLE_INFO[session.role].kind : 'none'; }
+function todayOnline(){ return online.today || todayYMD(); }
+
+/* ---------- API ---------- */
+async function api(action, data){
+  const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 30000);
+  let res;
+  try{
+    res = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action, token: session ? session.token : undefined, ...(data||{})}), signal: ctl.signal});
+  }catch(e){ throw {code:'network'}; }
+  finally{ clearTimeout(t); }
+  let j; try{ j = await res.json(); }catch(e){ throw {code:'server'}; }
+  if(!j.ok){
+    if(j.error==='auth' && action!=='login'){ logout(); toast('ໝົດເວລາເຂົ້າລະບົບ — ກະລຸນາເຂົ້າໃໝ່', true); }
+    throw {code:j.error, detail:j.detail};
+  }
+  return j;
+}
+function errText(e){
+  const c = e && e.code, d = e && e.detail;
+  if(c==='network') return 'ເຊື່ອມຕໍ່ບໍ່ໄດ້ — ກວດອິນເຕີເນັດ ແລ້ວລອງໃໝ່';
+  if(c==='bad_pin') return 'PIN ບໍ່ຖືກ' + (d!==undefined ? ' — ລອງໄດ້ອີກ '+d+' ຄັ້ງ' : '');
+  if(c==='locked') return 'ໃສ່ PIN ຜິດຫຼາຍຄັ້ງ — ລໍຖ້າ '+d+' ນາທີ ແລ້ວລອງໃໝ່';
+  if(c==='conflict') return 'ມີຄົນແກ້ລາຍການນີ້ກ່ອນແລ້ວ — ໂຫຼດຂໍ້ມູນໃໝ່ແລ້ວ ກະລຸນາລອງອີກຄັ້ງ';
+  if(c==='forbidden' && d==='delete_window') return 'ລຶບໄດ້ສະເພາະລາຍການທີ່ສ້າງບໍ່ເກີນ 48 ຊົ່ວໂມງ ແລະ ສນຫ ຍັງບໍ່ໄດ້ແຈ້ງຜົນ';
+  if(c==='forbidden') return 'ບໍ່ມີສິດເຮັດລາຍການນີ້';
+  if(c==='bad_input' && d==='name') return 'ໃສ່ ຊື່ລູກຄ້າ ຫຼື ເບີໂທ ຢ່າງໜ້ອຍ 1 ຢ່າງ';
+  if(c==='bad_input' && d==='periods') return 'ຈຳນວນງວດ ຕ້ອງເປັນ 1–12';
+  if(c==='bad_input' && d==='invoiceDay') return 'ວັນທີສົ່ງໃບບິນ ຕ້ອງເປັນ 1–28';
+  if(c==='bad_input' && d==='budget') return 'ງົບລາຍເດືອນ ຕ້ອງເປັນຕົວເລກ';
+  if(c==='bad_input' && d==='number') return 'ມີຊ່ອງທີ່ຕ້ອງເປັນຕົວເລກ ແຕ່ພິມຜິດ — ກວດແລ້ວລອງໃໝ່';
+  if(c==='bad_input' && d==='pin') return 'PIN ຕ້ອງເປັນຕົວເລກ 4–8 ຕົວ (ແອດມິນ 6–8 ຕົວ)';
+  if(c==='bad_input') return 'ຂໍ້ມູນບໍ່ຖືກຕ້ອງ ('+(d||'')+')';
+  if(c==='not_found') return 'ບໍ່ພົບລາຍການນີ້ ອາດຖືກລຶບແລ້ວ';
+  if(c==='auth') return 'ໝົດເວລາເຂົ້າລະບົບ — ກະລຸນາເຂົ້າໃໝ່';
+  return 'ເກີດຂໍ້ຜິດພາດ — ລອງໃໝ່ອີກຄັ້ງ';
+}
+let toastTimer=null;
+function toast(t, isErr){
+  const el=$('toast'); el.textContent=t; el.className='toast'+(isErr?' err':''); el.hidden=false;
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>{ el.hidden=true; }, isErr?6000:2800);
+}
+
+/* ---------- lead mapping ---------- */
+function fromServer(x){
+  return {id:x.id, version:x.version, branch:x.branch, date:x.lead_date, name:x.name||'', phone:x.phone||'', place:x.place||'',
+    product:x.product||'', qty: x.qty===null?null:Number(x.qty), zone:x.zone||'', fast:x.fast||'', status:x.status||'',
+    firstOrder:x.first_order||null, value: x.order_value===null?null:Number(x.order_value), hqDate:x.hq_date||null,
+    hq:x.hq_closed||'', hqNote:x.hq_note||'', note:x.note||'', createdAt:x.created_at, updatedAt:x.updated_at};
+}
+function applyBoot(j){
+  online.leads = (j.leads||[]).map(fromServer);
+  online.settings = j.settings || {};
+  online.today = j.today || todayYMD();
+  online.loadedAt = new Date().toISOString();
+  online.budget = Array.isArray(j.budget) ? j.budget : [];
+  if(kindOf()==='hq' || kindOf()==='admin'){
+    if(state.meta.mode==='none' || state.meta.mode==='online' || state.meta.mode==='sample' && !state._userPickedSample) useOnline(false);
+  }
+}
+function useOnline(resetRange){
+  const wasOther = state.meta.mode!=='online';
+  state.rows = online.leads;
+  state.meta = {mode:'online', source:'ຖານຂໍ້ມູນອອນໄລນ໌ (ສາຂາ ແລະ ສນຫ ກອກ)', loadedAt:online.loadedAt, total:online.leads.length, skipped:{}, dateFmt:''};
+  if(resetRange || wasOther && resetRange!==false) state.range = monthRange(todayOnline(),0);
+}
+function upsertLocal(raw){
+  const r = fromServer(raw);
+  const i = online.leads.findIndex(x=>x.id===r.id);
+  if(i>=0) online.leads[i]=r; else online.leads.unshift(r);
+  if(state.meta.mode==='online') state.rows = online.leads;
+  return r;
+}
+function removeLocal(id){
+  online.leads = online.leads.filter(x=>x.id!==id);
+  if(state.meta.mode==='online') state.rows = online.leads;
+}
+
+/* ---------- session ---------- */
+async function refresh(silent){
+  if(!session) return;
+  try{ applyBoot(await api('boot')); renderAll(); }
+  catch(e){ if(!silent) toast(errText(e), true); }
+}
+function logout(){
+  session=null; try{ localStorage.removeItem(LS_SESSION); }catch(e){}
+  online={leads:[], settings:{}, budget:[], today:'', loadedAt:''};
+  if(state.meta.mode==='online'){ state.rows=[]; state.meta={mode:'none', source:'', loadedAt:'', total:0, skipped:{}, dateFmt:''}; }
+  editing=null; resetForm();
+  setView('login');
+}
+function setView(v){
+  const allowed = v==='login' ? ['login'] : VIEWS_FOR[kindOf()];
+  if(!allowed.includes(v)) v = session ? ROLE_INFO[session.role].home : 'login';
+  view = v;
+  $('viewLogin').hidden = v!=='login';
+  $('viewDash').hidden = v!=='dash';
+  $('viewBranch').hidden = v!=='branch';
+  $('viewHq').hidden = v!=='hq';
+  $('viewAdmin').hidden = v!=='admin';
+  $('viewGuide').hidden = v!=='guide';
+  $('viewBudget').hidden = v!=='budget';
+  if(v==='guide'){ const k=kindOf(); document.querySelectorAll('[data-guide]').forEach(d=>{ d.open = (k==='none' ? !['terms','faq','budget'].includes(d.dataset.guide) : d.dataset.guide===k || (d.dataset.guide==='budget' && k==='hq')); }); }
+  renderAll();
+  try{ window.scrollTo({top:0}); }catch(e){}
+}
+function renderNav(){
+  const allowed = VIEWS_FOR[kindOf()];
+  document.querySelectorAll('#tabs .tab-btn').forEach(b=>{
+    b.hidden = !allowed.includes(b.dataset.view) || (!session && b.dataset.view!=='guide');
+    if(b.dataset.view===view) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+  });
+  $('who').innerHTML = session ? `ເຂົ້າລະບົບເປັນ <b>${esc(ROLE_INFO[session.role].label)}</b>` : '';
+  $('btnAuth').textContent = session ? 'ອອກຈາກລະບົບ' : 'ເຂົ້າລະບົບ';
+  $('btnAuth').hidden = !session && view==='login';
+  if(!session) document.querySelector('#tabs [data-view="guide"]').hidden = view==='guide';
+}
+function renderAll(){
+  renderNav();
+  if(view==='dash') render();
+  if(view==='branch') renderBranch();
+  if(view==='hq') renderHq();
+  if(view==='budget') renderBudgetView();
+  if(view==='admin') renderAdmin();
+}
+
+/* ---------- login view ---------- */
+let pickedRole = null;
+$('roleGrid').addEventListener('click', e=>{
+  const b=e.target.closest('[data-role]'); if(!b) return;
+  pickedRole=b.dataset.role;
+  document.querySelectorAll('#roleGrid .role-btn').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+  $('pinIn').disabled=false; $('btnLogin').disabled=false; $('pinIn').focus();
+  $('loginMsg').textContent='';
+});
+$('loginForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const pin=$('pinIn').value.trim();
+  if(!pickedRole) return;
+  if(!/^\d{4,8}$/.test(pin)){ $('loginMsg').textContent='PIN ຕ້ອງເປັນຕົວເລກ 4–8 ຕົວ'; $('loginMsg').className='msg err'; return; }
+  $('btnLogin').disabled=true; $('loginMsg').textContent='ກຳລັງເຂົ້າລະບົບ...'; $('loginMsg').className='msg';
+  try{
+    const j = await api('login', {role:pickedRole, pin});
+    session = {token:j.token, role:pickedRole};
+    lsSet(LS_SESSION, session);
+    $('pinIn').value=''; $('loginMsg').textContent='';
+    applyBoot(j);
+    if(kindOf()!=='branch') useOnline(true);
+    setView(ROLE_INFO[pickedRole].home);
+    toast('ເຂົ້າລະບົບແລ້ວ');
+  }catch(err){
+    $('loginMsg').textContent=errText(err); $('loginMsg').className='msg err';
+  }finally{ $('btnLogin').disabled=false; }
+});
+$('btnAuth').addEventListener('click', ()=>{ if(session){ logout(); toast('ອອກຈາກລະບົບແລ້ວ'); } else setView('login'); });
+document.addEventListener('click', e=>{
+  const b=e.target.closest('[data-view]'); if(!b || b.closest('#roleGrid')) return;
+  if(b.dataset.view==='dash' && !session){ view='dash'; ['viewLogin','viewBranch','viewHq','viewAdmin','viewGuide','viewBudget'].forEach(id=>$(id).hidden=true); $('viewDash').hidden=false; renderNav(); render(); return; }
+  setView(b.dataset.view);
+});
+
+/* ---------- branch view ---------- */
+const SEG_OPTS = {
+  zone:[[ZONE.IN,'ໃນເຂດ'],[ZONE.OUT,'ນອກເຂດ'],[ZONE.UNSURE,'ບໍ່ແນ່ໃຈ']],
+  fast:[[YES,'ທັນ'],[NO,'ບໍ່ທັນ']],
+  status:[['ກຳລັງຕອບ','ກຳລັງຕອບ'],[ORDERED,'ປິດການຂາຍໄດ້ (ສັ່ງຊື້ແລ້ວ)'],['ບໍ່ສົ່ງຜົນ','ບໍ່ສົ່ງຜົນ'],[OUT_STATUS,'ສົ່ງຕໍ່ ສນຫ']]
+};
+const form = {zone:'', fast:'', status:'ກຳລັງຕອບ', locked:false};
+document.querySelectorAll('#leadForm .seg').forEach(seg=>{
+  const name=seg.dataset.name;
+  seg.innerHTML = SEG_OPTS[name].map(([v,t])=>`<button type="button" data-v="${esc(v)}" aria-pressed="false">${esc(t)}</button>`).join('');
+  seg.addEventListener('click', e=>{
+    const b=e.target.closest('button[data-v]'); if(!b || b.disabled) return;
+    form[name]=b.dataset.v;
+    if(name==='zone' && form.zone===ZONE.OUT) form.status=OUT_STATUS;
+    if(name==='zone' && form.zone!==ZONE.OUT && form.status===OUT_STATUS) form.status='ກຳລັງຕອບ';
+    if(name==='status' && form.status===OUT_STATUS) form.zone=ZONE.OUT;
+    syncForm();
+  });
+});
+function syncForm(){
+  document.querySelectorAll('#leadForm .seg').forEach(seg=>{
+    const name=seg.dataset.name;
+    seg.querySelectorAll('button').forEach(b=>{
+      b.setAttribute('aria-pressed', String(form[name]===b.dataset.v));
+      if(name==='status') b.disabled = form.zone===ZONE.OUT && b.dataset.v!==OUT_STATUS;
+      if(form.locked && name!=='fast') b.disabled = true;
+    });
+  });
+  const ordered = form.status===ORDERED;
+  $('orderFields').hidden = !ordered;
+  if(ordered && !$('lfFirst').value) $('lfFirst').value = $('lfDate').value || todayOnline();
+  const h=$('statusHint');
+  if(form.locked){ h.textContent='ສນຫ ແຈ້ງຜົນແລ້ວ — ປ່ຽນເຂດ ຫຼື ຜົນບໍ່ໄດ້ (ແກ້ຂໍ້ມູນອື່ນໄດ້). ຖ້າຜິດ ແຈ້ງແອດມິນ'; h.className='hint on'; }
+  else if(form.zone===ZONE.OUT){ h.textContent='ລູກຄ້ານອກເຂດ ຈະຖືກສົ່ງໃຫ້ ສນຫ ຕິດຕາມ ແລະ ປິດການຂາຍ — ບັນທຶກໃນແອັບຄືການສົ່ງຕໍ່ ບໍ່ຕ້ອງສົ່ງທາງອື່ນ'; h.className='hint on'; }
+  else if(form.zone===ZONE.UNSURE){ h.textContent='ຖ້າຮູ້ແລ້ວວ່າຢູ່ນອກເຂດ ໃຫ້ກັບມາແກ້ເປັນ ນອກເຂດ ເພື່ອສົ່ງໃຫ້ ສນຫ'; h.className='hint'; }
+  else { h.textContent=''; h.className='hint'; }
+}
+function resetForm(){
+  editing=null;
+  ['lfName','lfPhone','lfPlace','lfProduct','lfQty','lfFirst','lfValue','lfNote'].forEach(id=>$(id).value='');
+  $('lfDate').value = todayOnline();
+  $('lfDate').max = todayOnline(); $('lfFirst').max = todayOnline();
+  form.zone=''; form.fast=''; form.status='ກຳລັງຕອບ'; form.locked=false;
+  $('formTitle').textContent='ເພີ່ມລູກຄ້າທີ່ທັກເຂົ້າມາ';
+  $('btnFormReset').hidden=true; $('btnSaveLead').textContent='ບັນທຶກ';
+  $('leadMsg').textContent='';
+  syncForm();
+}
+function loadIntoForm(r, presetStatus){
+  editing=r;
+  $('lfDate').value=r.date||''; $('lfName').value=r.name; $('lfPhone').value=r.phone; $('lfPlace').value=r.place;
+  $('lfProduct').value=r.product; $('lfQty').value=isNum(r.qty)?r.qty:''; $('lfFirst').value=r.firstOrder||'';
+  $('lfValue').value=isNum(r.value)?r.value:''; $('lfNote').value=r.note;
+  form.zone=r.zone; form.fast=r.fast; form.status=presetStatus||r.status||'ກຳລັງຕອບ';
+  if(form.status===OUT_STATUS) form.zone=ZONE.OUT;
+  form.locked = kindOf()==='branch' && (r.hq===YES || r.hq===NO);
+  $('formTitle').textContent='ແກ້ໄຂ: '+(r.name||r.phone);
+  $('btnFormReset').hidden=false; $('btnSaveLead').textContent='ບັນທຶກການແກ້ໄຂ';
+  syncForm();
+  $('leadFormWrap').scrollIntoView({behavior:SMOOTH, block:'start'});
+  if(presetStatus===ORDERED) setTimeout(()=>$('lfValue').focus(), 350);
+}
+$('btnFormReset').addEventListener('click', resetForm);
+$('leadForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const msgEl=$('leadMsg');
+  const bad = (t,focusId)=>{ msgEl.textContent=t; msgEl.className='msg err'; const f=focusId&&$(focusId); if(f){ f.focus(); f.scrollIntoView({behavior:SMOOTH, block:'center'}); } };
+  const name=$('lfName').value.trim(), phone=$('lfPhone').value.trim();
+  if(!name && !phone) return bad('ໃສ່ ຊື່ລູກຄ້າ ຫຼື ເບີໂທ ຢ່າງໜ້ອຍ 1 ຢ່າງ', 'lfName');
+  if(!form.zone) return void (bad('ເລືອກ ໃນເຂດ / ນອກເຂດ / ບໍ່ແນ່ໃຈ', null), document.querySelector('[data-name=zone] button').focus());
+  if(!form.fast) return void (bad('ເລືອກວ່າ ຕອບທັນ 30 ນາທີ ຫຼື ບໍ່', null), document.querySelector('[data-name=fast] button').focus());
+  const qty=$('lfQty').value.trim(), value=$('lfValue').value.trim();
+  if(qty && parseNum(qty)===null) return bad('ຈຳນວນ ຕ້ອງເປັນຕົວເລກ', 'lfQty');
+  if(value && parseNum(value)===null) return bad('ມູນຄ່າ ຕ້ອງເປັນຕົວເລກ', 'lfValue');
+  const lead = {date:$('lfDate').value||todayOnline(), name, phone, place:$('lfPlace').value.trim(), product:$('lfProduct').value.trim(),
+    qty: qty?parseNum(qty):'', zone:form.zone, fast:form.fast, status:form.status,
+    firstOrder: form.status===ORDERED ? ($('lfFirst').value||'') : '', value: form.status===ORDERED && value ? parseNum(value) : '',
+    note:$('lfNote').value.trim()};
+  if(kindOf()==='admin') lead.branch = editing ? editing.branch : $('brSel').value;
+  if(editing){ lead.id=editing.id; lead.version=editing.version; }
+  $('btnSaveLead').disabled=true; msgEl.textContent='ກຳລັງບັນທຶກ...'; msgEl.className='msg';
+  try{
+    const j = await api('saveLead', {lead});
+    const r = upsertLocal(j.lead);
+    toast(r.status===OUT_STATUS ? 'ບັນທຶກແລ້ວ — ສົ່ງໃຫ້ ສນຫ ຕິດຕາມແລ້ວ' : 'ບັນທຶກແລ້ວ');
+    resetForm(); renderBranch();
+  }catch(err){
+    bad(errText(err));
+    if(err.code==='conflict') refresh(true);
+  }finally{ $('btnSaveLead').disabled=false; }
+});
+
+function branchScope(){
+  const k=kindOf();
+  if(k==='branch') return ROLE_INFO[session.role].branch;
+  return $('brSel').value || BRANCHES[0];
+}
+function periodRange(p){
+  if(p==='this') return monthRange(todayOnline(),0);
+  if(p==='prev') return monthRange(todayOnline(),-1);
+  return {from:'', to:''};
+}
+function statusTag(r){
+  if(r.status===ORDERED) return `<span class="tag ok">ປິດການຂາຍໄດ້</span>`;
+  if(r.status===OUT_STATUS) return `<span class="tag br">ສົ່ງຕໍ່ ສນຫ</span>`;
+  if(r.status==='ບໍ່ສົ່ງຜົນ') return `<span class="tag no">ບໍ່ສົ່ງຜົນ</span>`;
+  if(r.status==='ກຳລັງຕອບ') return `<span class="tag">ກຳລັງຕອບ</span>`;
+  return r.status?`<span class="tag">${esc(r.status)}</span>`:'';
+}
+function hqTagFor(r){
+  if(r.zone!==ZONE.OUT) return '';
+  if(r.hq===YES) return `<span class="tag ok">ສນຫ ປິດໄດ້</span>`;
+  if(r.hq===NO) return `<span class="tag no">ສນຫ ປິດບໍ່ໄດ້</span>`;
+  return `<span class="tag wait">ລໍຖ້າ ສນຫ</span>`;
+}
+function zoneTag(r){
+  if(r.zone===ZONE.UNSURE) return `<span class="tag wait">ບໍ່ແນ່ໃຈເຂດ</span>`;
+  return r.zone?`<span class="tag">${esc(r.zone)}</span>`:'';
+}
+function renderBranch(){
+  if(!session) return;
+  const k=kindOf();
+  const sel=$('brSel');
+  if(!sel.options.length) sel.innerHTML = BRANCHES.map(b=>`<option>${esc(b)}</option>`).join('');
+  sel.hidden = k!=='admin';
+  const br = branchScope();
+  $('brTitle').textContent = 'ສາຂາ ' + br;
+  document.querySelectorAll('[data-bp]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.bp===brPeriod)));
+  const pr = periodRange(brPeriod);
+  $('brPeriod').textContent = brPeriod==='all' ? 'ຕົວເລກລຸ່ມນີ້: ທັງໝົດທີ່ບັນທຶກ' : 'ຕົວເລກລຸ່ມນີ້: '+showDate(pr.from)+' – '+showDate(pr.to)+' (ນັບຕາມວັນທີທັກ)';
+  const mine = online.leads.filter(r=>r.branch===br);
+  const inP = brPeriod==='all' ? mine : inRange(mine, pr);
+  const s = {usd:online.settings.usd};
+  const p = computeBranch(inP, s, BRANCHES.indexOf(br));
+  const kp=(t,v,u,cls)=>`<div class="${cls||''}"><dt>${t}</dt><dd class="tab">${v}${u&&v!=='—'?`<span class="u">${u}</span>`:''}</dd></div>`;
+  $('brKpis').innerHTML =
+    kp('ຄົນທັກ', fmtInt(p.n), 'ຄົນ') +
+    kp('ປິດການຂາຍໄດ້', fmtInt(p.newC), 'ຈຸດ', 'hl') +
+    kp('% ປິດການຂາຍ', fmtPct(p.pClose), '') +
+    kp('ສົ່ງຕໍ່ ສນຫ', fmtInt(p.outZ), 'ຄົນ') +
+    kp('ສນຫ ປິດໄດ້', fmtInt(p.hqWon), 'ຄົນ', 'hl') +
+    kp('ລໍຖ້າ ສນຫ', fmtInt(p.pending), 'ຄົນ', p.pending?'warn':'');
+  // list
+  const filters=[['all','ທັງໝົດ'],['talk','ກຳລັງຕອບ'],['won','ປິດໄດ້'],['out','ສົ່ງຕໍ່ ສນຫ'],['unsure','ບໍ່ແນ່ໃຈເຂດ']];
+  $('brFilter').innerHTML = filters.map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${v===brFilterV}">${t}</button>`).join('');
+  const q=canon($('brSearch').value).toLowerCase();
+  const list = inP.filter(r=>
+    (brFilterV==='all' || brFilterV==='talk'&&r.status==='ກຳລັງຕອບ' || brFilterV==='won'&&r.status===ORDERED || brFilterV==='out'&&r.zone===ZONE.OUT || brFilterV==='unsure'&&r.zone===ZONE.UNSURE) &&
+    (!q || canon([r.name,r.phone,r.place,r.product,r.note].join(' ')).toLowerCase().includes(q))
+  ).sort((a,b)=> a.date<b.date?1:a.date>b.date?-1:(a.createdAt<b.createdAt?1:-1));
+  $('brCount').textContent = list.length+' ລາຍການ';
+  $('brList').innerHTML = list.length ? list.slice(0,200).map(r=>{
+    const young = r.createdAt && (Date.now()-Date.parse(r.createdAt) < 48*3600e3);
+    const canDel = k==='admin' || (young && !r.hq);
+    const cls = r.zone===ZONE.OUT ? (r.hq===YES?'done':(isPendingHQ(r)?'pending':'')) : (r.status===ORDERED?'done':'');
+    const acts = [];
+    if(r.status==='ກຳລັງຕອບ'){
+      acts.push(`<button class="btn ok" data-act="won" data-id="${r.id}">ປິດການຂາຍໄດ້</button>`);
+      acts.push(`<button class="btn" data-act="lost" data-id="${r.id}">ບໍ່ສົ່ງຜົນ</button>`);
+      if(r.zone!==ZONE.IN) acts.push(`<button class="btn" data-act="out" data-id="${r.id}">ສົ່ງຕໍ່ ສນຫ</button>`);
+    }
+    acts.push(`<button class="btn" data-act="edit" data-id="${r.id}">ແກ້ໄຂ</button>`);
+    if(canDel) acts.push(`<button class="btn danger" data-act="del" data-id="${r.id}">ລຶບ</button>`);
+    const hqLine = r.zone===ZONE.OUT && (r.hq||r.hqNote) ? `<div class="lead-meta">ສນຫ: ${r.hq===YES?'ປິດໄດ້':r.hq===NO?'ປິດບໍ່ໄດ້':'ລໍຖ້າ'}${r.hqNote?' — '+esc(r.hqNote):''}</div>` : '';
+    return `<article class="lead ${cls}">
+      <div class="lead-top"><span class="lead-name">${esc(r.name||'(ບໍ່ມີຊື່)')}</span><span class="small muted tab">${showDate(r.date)}${k==='admin'?' · '+esc(r.branch):''}</span></div>
+      <div class="lead-meta">${r.phone?`<a class="phone" href="tel:${esc(r.phone.replace(/[^\d+]/g,''))}">${esc(r.phone)}</a> · `:''}${esc(r.place)}${r.product?' · '+esc(r.product):''}${isNum(r.qty)?' × '+fmtInt(r.qty):''}${r.status===ORDERED&&isNum(r.value)?' · '+fmtKip(r.value):''}</div>
+      ${r.note?`<div class="lead-meta">ໝາຍເຫດ: ${esc(r.note)}</div>`:''}
+      ${hqLine}
+      <div class="lead-tags">${zoneTag(r)}${statusTag(r)}${hqTagFor(r)}${r.fast===NO?'<span class="tag">ຕອບບໍ່ທັນ 30 ນາທີ</span>':''}</div>
+      <div class="lead-acts">${acts.join('')}</div>
+    </article>`;
+  }).join('') : `<div class="empty">ຍັງບໍ່ມີລູກຄ້າໃນຊ່ວງນີ້ — ເພີ່ມລູກຄ້າທີ່ທັກເຂົ້າມາໃນຟອມຂ້າງເທິງ</div>`;
+}
+document.querySelectorAll('[data-bp]').forEach(b=>b.addEventListener('click', ()=>{ brPeriod=b.dataset.bp; renderBranch(); }));
+$('brSel').addEventListener('change', ()=>{ resetForm(); renderBranch(); });
+$('brFilter').addEventListener('click', e=>{ const b=e.target.closest('button[data-v]'); if(!b) return; brFilterV=b.dataset.v; renderBranch(); });
+$('brSearch').addEventListener('input', debounce(renderBranch,200));
+const delArmed = {};
+$('brList').addEventListener('click', async e=>{
+  const b=e.target.closest('button[data-act]'); if(!b) return;
+  const r=online.leads.find(x=>x.id===b.dataset.id); if(!r) return;
+  const act=b.dataset.act;
+  if(act==='edit') return loadIntoForm(r);
+  if(act==='won') return loadIntoForm(r, ORDERED);
+  if(act==='del'){
+    if(!delArmed[r.id]){ delArmed[r.id]=setTimeout(()=>{ delete delArmed[r.id]; renderBranch(); },4000); b.textContent='ກົດອີກຄັ້ງເພື່ອລຶບ'; b.classList.add('armed'); return; }
+    clearTimeout(delArmed[r.id]); delete delArmed[r.id];
+    try{ await api('deleteLead',{id:r.id}); removeLocal(r.id); if(editing&&editing.id===r.id) resetForm(); toast('ລຶບແລ້ວ'); renderBranch(); }
+    catch(err){ toast(errText(err), true); }
+    return;
+  }
+  // quick status change: lost / out
+  const lead = {id:r.id, version:r.version, date:r.date, name:r.name, phone:r.phone, place:r.place, product:r.product,
+    qty: isNum(r.qty)?r.qty:'', zone: act==='out'?ZONE.OUT:r.zone, fast:r.fast||NO, status: act==='out'?OUT_STATUS:'ບໍ່ສົ່ງຜົນ',
+    firstOrder:'', value:'', note:r.note};
+  if(!r.fast){ return loadIntoForm(r, lead.status); }
+  if(kindOf()==='admin') lead.branch=r.branch;
+  b.disabled=true;
+  try{ const j=await api('saveLead',{lead}); upsertLocal(j.lead); toast(act==='out'?'ສົ່ງໃຫ້ ສນຫ ແລ້ວ':'ບັນທຶກແລ້ວ'); renderBranch(); }
+  catch(err){ toast(errText(err), true); if(err.code==='conflict') refresh(true); b.disabled=false; }
+});
+
+/* ---------- HQ view ---------- */
+function daysBetween(a,b){ return Math.round((utc(b)-utc(a))/864e5); }
+/* hours since the lead reached HQ: exact when it was created as out-of-zone, else from 00:00 (Vientiane) of the hand-over day */
+function hoursSince(r){
+  if(!r.hqDate) return 0;
+  let t=NaN;
+  if(r.createdAt){ const c=Date.parse(r.createdAt); if(!isNaN(c) && new Date(c+7*3600e3).toISOString().slice(0,10)===r.hqDate) t=c; }
+  if(isNaN(t)) t=Date.parse(r.hqDate+'T00:00:00+07:00');
+  return Math.max(0,(Date.now()-t)/3600e3);
+}
+function renderHq(){
+  if(!session) return;
+  const today=todayOnline();
+  const outs = online.leads.filter(r=>r.zone===ZONE.OUT || r.status===OUT_STATUS);
+  const pend = outs.filter(isPendingHQ);
+  const late = pend.filter(r=>hoursSince(r)>=24);
+  const mr = monthRange(today,0);
+  const wonM = outs.filter(r=>r.hq===YES && r.date>=mr.from && r.date<=mr.to).length;
+  const sentM = outs.filter(r=>r.date>=mr.from && r.date<=mr.to).length;
+  const kp=(t,v,u,cls)=>`<div class="${cls||''}"><dt>${t}</dt><dd class="tab">${v}${u&&v!=='—'?`<span class="u">${u}</span>`:''}</dd></div>`;
+  $('hqKpis').innerHTML = kp('ລໍຖ້າ ສນຫ ແຈ້ງຜົນ', fmtInt(pend.length),'ຄົນ', pend.length?'warn':'') +
+    kp('ເກີນ 24 ຊົ່ວໂມງ', fmtInt(late.length),'ຄົນ', late.length?'warn':'') +
+    kp('ສນຫ ປິດໄດ້ ເດືອນນີ້', fmtInt(wonM),'ຄົນ','hl') +
+    kp('ສາຂາສົ່ງມາ ເດືອນນີ້', fmtInt(sentM),'ຄົນ');
+  const filters=[['pending','ລໍຖ້າຜົນ'],['won','ປິດໄດ້'],['lost','ປິດບໍ່ໄດ້'],['all','ທັງໝົດ']];
+  $('hqFilter').innerHTML = filters.map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${v===hqFilterV}">${t}</button>`).join('');
+  const hb=$('hqBranch');
+  if(!hb.options.length) hb.innerHTML = `<option value="">ທຸກສາຂາ</option>`+BRANCHES.map(b=>`<option>${esc(b)}</option>`).join('');
+  const q=canon($('hqSearch').value).toLowerCase();
+  const list = outs.filter(r=>
+    (hqFilterV==='all' || hqFilterV==='pending'&&isPendingHQ(r) || hqFilterV==='won'&&r.hq===YES || hqFilterV==='lost'&&r.hq===NO) &&
+    (!hb.value || r.branch===hb.value) &&
+    (!q || canon([r.name,r.phone,r.place,r.product,r.note,r.hqNote].join(' ')).toLowerCase().includes(q))
+  ).sort((a,b)=> hqFilterV==='pending' ? ((a.hqDate||a.date)<(b.hqDate||b.date)?-1:1) : (a.date<b.date?1:-1));
+  $('hqList').innerHTML = list.length ? list.slice(0,300).map(r=>{
+    const age = hoursSince(r);
+    const pending = isPendingHQ(r);
+    const cls = r.hq===YES ? 'done' : pending ? (age>=24?'late':'pending') : '';
+    const ageTag = pending ? (age>=24?`<span class="tag late">ເກີນ 24 ຊົ່ວໂມງ</span>`:age>=12?`<span class="tag wait">ຄວນໂທດ່ວນ · ${Math.floor(age)} ຊມ</span>`:`<span class="tag">ສົ່ງມາ ${Math.floor(age)} ຊມ</span>`) : '';
+    const draft = hqDrafts[r.id]!==undefined ? hqDrafts[r.id] : r.hqNote;
+    const pr = v=>`aria-pressed="${r.hq===v}"`;
+    return `<article class="lead ${cls}">
+      <div class="lead-top"><span class="lead-name">${esc(r.name||'(ບໍ່ມີຊື່)')}</span><span class="lead-tags"><span class="tag br">${esc(r.branch)}</span>${ageTag}</span></div>
+      <div class="lead-meta">${r.phone?`<a class="phone" href="tel:${esc(r.phone.replace(/[^\d+]/g,''))}">${esc(r.phone)}</a> <button class="chip" data-copy="${esc(r.phone)}">ສຳເນົາເບີ</button> · `:''}${esc(r.place)}</div>
+      <div class="lead-meta">${esc(r.product)}${isNum(r.qty)?' × '+fmtInt(r.qty):''} · ທັກ ${showDate(r.date)}${r.hqDate?' · ສົ່ງໃຫ້ ສນຫ '+showDate(r.hqDate):''}</div>
+      ${r.note?`<div class="lead-meta">ສາຂາບອກ: ${esc(r.note)}</div>`:''}
+      <div class="hq-res">
+        <input id="hqn-${r.id}" data-note="${r.id}" placeholder="ບັນທຶກ ສນຫ (ເຊັ່ນ ໂທແລ້ວ ນັດສົ່ງວັນສຸກ)" value="${esc(draft)}" aria-label="ບັນທຶກ ສນຫ">
+      </div>
+      <div class="lead-acts">
+        <button class="btn ok" data-hq="${YES}" data-id="${r.id}" ${pr(YES)}>ປິດການຂາຍໄດ້</button>
+        <button class="btn no" data-hq="${NO}" data-id="${r.id}" ${pr(NO)}>ປິດບໍ່ໄດ້</button>
+        <button class="btn wait" data-hq="${WAIT}" data-id="${r.id}" ${pr(WAIT)}>ຍັງລໍຖ້າ</button>
+      </div>
+    </article>`;
+  }).join('') : `<div class="empty">${hqFilterV==='pending'?'ບໍ່ມີລູກຄ້ານອກເຂດທີ່ລໍຖ້າຜົນ':'ບໍ່ມີລາຍການ'}</div>`;
+}
+$('hqFilter').addEventListener('click', e=>{ const b=e.target.closest('button[data-v]'); if(!b) return; hqFilterV=b.dataset.v; renderHq(); });
+$('hqBranch').addEventListener('change', renderHq);
+$('hqSearch').addEventListener('input', debounce(renderHq,200));
+$('hqList').addEventListener('input', e=>{ const id=e.target.dataset.note; if(id) hqDrafts[id]=e.target.value; });
+$('hqList').addEventListener('click', async e=>{
+  const c=e.target.closest('[data-copy]');
+  if(c){ const t=c.dataset.copy; try{ await navigator.clipboard.writeText(t); toast('ສຳເນົາເບີແລ້ວ'); }catch(err){ toast(t); } return; }
+  const b=e.target.closest('button[data-hq]'); if(!b) return;
+  const r=online.leads.find(x=>x.id===b.dataset.id); if(!r) return;
+  const note = hqDrafts[r.id]!==undefined ? hqDrafts[r.id] : r.hqNote;
+  b.disabled=true;
+  try{
+    const j=await api('setHq',{id:r.id, version:r.version, hq:b.dataset.hq, hqNote:note});
+    upsertLocal(j.lead); delete hqDrafts[r.id];
+    toast(b.dataset.hq===YES?'ບັນທຶກແລ້ວ: ປິດການຂາຍໄດ້ — ນັບເປັນລູກຄ້າໃໝ່ຂອງສາຂາ':'ບັນທຶກແລ້ວ');
+    renderHq();
+  }catch(err){ toast(errText(err), true); b.disabled=false; if(err.code==='conflict') refresh(true); }
+});
+
+/* ---------- admin ---------- */
+function queueSettingsSave(){
+  clearTimeout(settingsTimer);
+  settingsSaveMsg='ກຳລັງບັນທຶກ...';
+  settingsTimer=setTimeout(async ()=>{
+    const s={}; FIELDS.forEach(f=>s[f.k]=String(online.settings[f.k]??'').trim());
+    s.budgets = budgetsOf(online.settings);
+    ['start','periods','invoiceDay'].forEach(k=>s[k]=String(online.settings[k]??'').trim());
+    const badBudget = Object.values(s.budgets).some(row=>row.some(v=>String(v??'').trim()!=='' && parseNum(v)===null));
+    if(badBudget || FIELDS.some(f=>s[f.k]!=='' && parseNum(s[f.k])===null)){ settingsSaveMsg='ມີຊ່ອງທີ່ບໍ່ແມ່ນຕົວເລກ — ຍັງບໍ່ໄດ້ບັນທຶກ'; renderSettings(); return; }
+    try{ const j=await api('saveSettings',{settings:s}); online.settings=j.settings; settingsSaveMsg='ບັນທຶກໃນລະບົບແລ້ວ ✓'; }
+    catch(err){ settingsSaveMsg=errText(err); }
+    renderSettings(); setTimeout(()=>{ settingsSaveMsg=''; if(view==='dash') renderSettings(); }, 3000);
+  }, 900);
+}
+$('btnGoSettings').addEventListener('click', ()=>{ setView('dash'); togglePanel($('btnSettings'),'panelSettings',true); });
+$('btnUseOnline').addEventListener('click', ()=>{ state._userPickedSample=false; useOnline(true); render(); msg('ກັບມາໃຊ້ຂໍ້ມູນອອນໄລນ໌ແລ້ວ','ok'); });
+$('pinForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const role=$('pfRole').value, p1=$('pfPin').value.trim(), p2=$('pfPin2').value.trim(), m=$('pinMsg');
+  const min = role==='admin'?6:4;
+  if(!new RegExp('^\\d{'+min+',8}$').test(p1)){ m.textContent='PIN ຕ້ອງເປັນຕົວເລກ '+min+'–8 ຕົວ'; m.className='msg err'; return; }
+  if(p1!==p2){ m.textContent='PIN 2 ຊ່ອງບໍ່ຄືກັນ'; m.className='msg err'; return; }
+  $('btnSetPin').disabled=true;
+  try{
+    const j=await api('setPin',{role, pin:p1});
+    if(j.token){ session.token=j.token; lsSet(LS_SESSION, session); }
+    $('pfPin').value=''; $('pfPin2').value='';
+    m.textContent='ປ່ຽນ PIN ຂອງ '+$('pfRole').selectedOptions[0].textContent+' ແລ້ວ'; m.className='msg ok';
+  }catch(err){ m.textContent=errText(err); m.className='msg err'; }
+  finally{ $('btnSetPin').disabled=false; }
+});
+function csvCell(v){ const s=String(v??''); return /[",\n\r]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+$('btnExport').addEventListener('click', ()=>{
+  const head=['ວັນທີ','ສາຂາ','ຊື່ລູກຄ້າ','ເບີໂທ','ບ້ານ / ພິກັດ','ສິນຄ້າທີ່ສົນໃຈ','ຈຳນວນ','ໃນເຂດ / ນອກເຂດ','ຕອບທັນ 30 ນາທີ','ສະຖານະ','ວັນທີສັ່ງຊື້ຄັ້ງທຳອິດ','ມູນຄ່າອໍເດີ້ແລກ (ກີບ)','ວັນທີສົ່ງຕໍ່ ສນຫ','ສນຫ ປິດການຂາຍໄດ້','(ບໍ່ໃຊ້ — ບໍ່ມີຄ່າສົ່ງຕໍ່)','ໝາຍເຫດ'];
+  const rows=online.leads.slice().sort((a,b)=>a.date<b.date?-1:1).map(r=>[showDate(r.date),r.branch,r.name,r.phone,r.place,r.product,isNum(r.qty)?r.qty:'',r.zone,r.fast,r.status,
+    showDate(r.firstOrder),isNum(r.value)?r.value:'',showDate(r.hqDate),r.hq,'',[r.note,r.hqNote?'ສນຫ: '+r.hqNote:''].filter(Boolean).join(' | ')]);
+  const csv='﻿'+[head,...rows].map(r=>r.map(csvCell).join(',')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='ບັນທຶກລູກຄ້າ_'+todayOnline()+'.csv';
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+});
+
+
+/* =====================================================================
+   BUDGET TRANSFERS & EVIDENCE (agreement v1.2, section 5)
+   period p = [start + (p-1) months, start + p months - 1 day]; transfer due on the first day of the period.
+   Money the branch still holds = all transfers so far - all spend so far (invoice; else latest Monday screenshot).
+   That balance is deducted from the next transfer; after the last period it is returned to HQ.
+   ===================================================================== */
+const BUDGET_STOP = 'ຢຸດໂອນງວດຖັດໄປ';
+function addMonthsYmd(ymd,n){ const [y,m,d]=ymd.split('-').map(Number); const last=new Date(Date.UTC(y,m-1+n+1,0)).getUTCDate(); return ymdFromUTC(new Date(Date.UTC(y,m-1+n,Math.min(d,last)))); }
+function projectPeriods(){
+  const s=online.settings||{}; const start=String(s.start||'');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(start)) return [];
+  const n=Math.min(12,Math.max(1,parseInt(s.periods,10)||3)); const out=[];
+  for(let i=0;i<n;i++) out.push({p:i+1, from:addMonthsYmd(start,i), to:addDays(addMonthsYmd(start,i+1),-1), last:i===n-1});
+  return out;
+}
+function budgetRec(branch,p){ return online.budget.find(x=>x.branch===branch && Number(x.period)===p) || null; }
+function mondaysIn(from,to){ const out=[]; let d=from; const wd=(utc(d).getUTCDay()+6)%7; if(wd) d=addDays(d,7-wd); for(;d<=to;d=addDays(d,7)) out.push(d); return out; }
+function invoiceDue(per){ const day=parseInt((online.settings||{}).invoiceDay,10); if(!(day>=1&&day<=28)) return null; return addMonth(monthKey(per.to),1)+'-'+pad(day); }
+function periodState(branch, per, prev){
+  const today=todayOnline(); const rec=budgetRec(branch,per.p); const d=(rec&&rec.data)||{};
+  const usd = parseNum(d.usd) ?? parseNum((online.settings||{}).usd) ?? 100;
+  const rate = parseNum(d.rate);
+  const plan = isNum(rate) ? Math.round(usd*rate) : null;
+  let held=0, approx=false, unknown=false;
+  prev.forEach(x=>{ if(isNum(x.transferred)) held+=x.transferred;
+    const sp = isNum(x.actual) ? x.actual : x.shotSpend;
+    if(isNum(sp)){ held-=sp; if(!isNum(x.actual)) approx=true; } else if(isNum(x.transferred)) unknown=true; });
+  const carry = Math.max(held,0);
+  const prevSt = prev.length ? prev[prev.length-1] : null;
+  const blocked = !!(prevSt && prevSt.status===BUDGET_STOP);
+  const toTransfer = (plan===null || unknown) ? null : Math.max(plan-carry,0);
+  const md = d.mondays||{};
+  const mondays = mondaysIn(per.from, per.to).map(date=>({date, s:(md[date]&&md[date].s)||'', spend:parseNum(md[date]&&md[date].spend), due:date<=today}));
+  const lastShot = mondays.filter(m=>isNum(m.spend)).pop();
+  const shotSpend = lastShot ? lastShot.spend : null;
+  const actual = parseNum(d.actual);
+  const started = today>=per.from, ended = today>per.to;
+  const due = invoiceDue(per);
+  const waitingShots = mondays.filter(m=>m.due && m.s==='');
+  const badShot = mondays.some(m=>m.s===NO);
+  const invoiceLate = !!(due && today>due && d.invoice!==YES);
+  let status, tone;
+  if(badShot || d.invoice===NO || invoiceLate){ status=BUDGET_STOP; tone='bad'; }
+  else if(!started){ status='ຍັງບໍ່ເລີ່ມ'; tone='none'; }
+  else if(!ended){ status='ກຳລັງດຳເນີນ'; tone='info'; }
+  else if(d.invoice===YES && isNum(actual) && waitingShots.length===0){ status = (isNum(plan) && actual>plan) ? 'ໃຊ້ເກີນງົບ — ກວດ' : 'ຄົບ'; tone = status==='ຄົບ' ? 'good' : 'warn'; }
+  else { status='ລໍຖ້າຫຼັກຖານ'; tone='warn'; }
+  return {per, rec, d, usd, rate, plan, carry, approx, unknown, blocked, toTransfer, transferred:parseNum(d.transferred), transferDate:d.transferDate||'',
+    mondays, waitingShots, shotSpend, actual, invoice:d.invoice||'', invoiceDate:d.invoiceDate||'', due, invoiceLate, status, tone,
+    leftover:(isNum(plan)&&isNum(actual))?plan-actual:null, started, ended, refund:parseNum(d.refund), refundDate:d.refundDate||''};
+}
+function branchPeriods(branch){ const out=[]; projectPeriods().forEach(per=>out.push(periodState(branch, per, out.slice()))); return out; }
+function branchTotals(list){
+  let sent=0, spent=0, approx=false, unknown=false;
+  list.forEach(x=>{ if(isNum(x.transferred)) sent+=x.transferred; const sp=isNum(x.actual)?x.actual:x.shotSpend; if(isNum(sp)){ spent+=sp; if(!isNum(x.actual)) approx=true; } else if(x.started && isNum(x.transferred)) unknown=true; });
+  return {sent, spent, held: unknown?null:sent-spent, approx};
+}
+/* spend segments per period, used by the dashboard (cost per lead / per new customer) */
+function spendSegments(bi){
+  const today=todayOnline();
+  return branchPeriods(BRANCHES[bi]).filter(x=>x.started).map(x=>{
+    const to = x.per.to<today ? x.per.to : today;
+    if(isNum(x.actual)) return {from:x.per.from, to:x.per.to, amount:x.actual, approx:false, label:'ງວດ '+x.per.p};
+    if(isNum(x.shotSpend)) return {from:x.per.from, to, amount:x.shotSpend, approx:true, label:'ງວດ '+x.per.p};
+    return {from:x.per.from, to, amount:null, label:'ງວດ '+x.per.p};
+  });
+}
+function spendForRange(segs, range){
+  const today=todayOnline();
+  if(!range.from || !range.to) return {amount:null, missing:[], approx:false, missingText:''};
+  if(!projectPeriods().length) return {amount:null, missing:['start'], approx:false, missingText:'ຍັງບໍ່ໄດ້ຕັ້ງ ວັນເລີ່ມໂຄງການ'};
+  const from=range.from, to=range.to>today?today:range.to;
+  let amount=0, approx=false; const missing=[];
+  segs.forEach(sg=>{ const a=from>sg.from?from:sg.from, b=to<sg.to?to:sg.to; if(a>b) return;
+    if(sg.amount===null){ missing.push(sg.label); return; }
+    const f=dayCount(a,b)/dayCount(sg.from,sg.to); if(f<1 || sg.approx) approx=true; amount+=sg.amount*f; });
+  return {amount: missing.length?null:amount, missing, approx, missingText: missing.length ? missing.join(', ')+' ຍັງບໍ່ມີພາບໜ້າຈໍ ຫຼື ໃບບິນ' : ''};
+}
+
+/* ---------- transfer view ---------- */
+let bgEdit = null;   // {branch, p}
+function shortDate(ymd){ if(!ymd) return ''; const [y,m,d]=ymd.split('-'); return d+'/'+m; }
+function renderBudgetView(){
+  if(!session) return;
+  const k=kindOf(), canEdit = k==='hq' || k==='admin', today=todayOnline();
+  const pers=projectPeriods();
+  const s=online.settings||{};
+  $('bgProject').textContent = pers.length
+    ? 'ໂຄງການ '+showDate(pers[0].from)+' – '+showDate(pers[pers.length-1].to)+' · '+pers.length+' ງວດ · ງົບ '+fmtInt(parseNum(s.usd)??100)+' ໂດລາ/ງວດ/ສາຂາ · ສົ່ງໃບບິນພາຍໃນວັນທີ '+(s.invoiceDay||'—')+' ຂອງເດືອນຖັດໄປ'
+    : '';
+  const branches = k==='branch' ? [ROLE_INFO[session.role].branch] : BRANCHES;
+  const alerts=[];
+  if(!pers.length) alerts.push({m: k==='admin' ? 'ຍັງບໍ່ໄດ້ຕັ້ງ ວັນເລີ່ມໂຄງການ — ຕັ້ງໃນແຖບ ແອດມິນ → ໄລຍະໂຄງການ' : 'ແອດມິນຍັງບໍ່ໄດ້ຕັ້ງ ວັນເລີ່ມໂຄງການ'});
+  if(pers.length && !s.invoiceDay) alerts.push({m:'ຍັງບໍ່ໄດ້ຕັ້ງ ກຳນົດສົ່ງໃບບິນ Facebook — ລະບົບຍັງກວດໃບບິນເກີນກຳນົດບໍ່ໄດ້', t:'info'});
+  const html = branches.map(b=>{
+    const list=branchPeriods(b), tot=branchTotals(list);
+    list.forEach((x,i)=>{
+      const soon = x.per.from<=addDays(today,3) && !x.ended;
+      if(k!=='branch'){
+        if(soon && !isNum(x.transferred)){
+          if(x.blocked) alerts.push({m:'ຫ້າມໂອນ ງວດ '+x.per.p+' ໃຫ້ '+b+' — ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ'});
+          else if(isNum(x.toTransfer)) alerts.push({m:'ໂອນງົບ ງວດ '+x.per.p+' ໃຫ້ '+b+': '+fmtKip(x.toTransfer)+' (ກຳນົດ '+showDate(x.per.from)+')', t:'info'});
+          else alerts.push({m:'ງວດ '+x.per.p+' ຂອງ '+b+': '+(x.unknown?'ຍັງບໍ່ຮູ້ເງິນເຫຼືອງວດກ່ອນ — ບັນທຶກພາບໜ້າຈໍ ຫຼື ໃບບິນກ່ອນ':'ໃສ່ອັດຕາແລກປ່ຽນເພື່ອຄຳນວນຍອດໂອນ'), t:'info'});
+        }
+        if(x.invoiceLate) alerts.push({m:'ໃບບິນ Facebook ງວດ '+x.per.p+' ຂອງ '+b+' ເກີນກຳນົດ '+showDate(x.due)+' → ຢຸດໂອນງວດຖັດໄປ'});
+      }else{
+        const nextMon = x.mondays.find(m=>m.date>=today);
+        if(x.started && !x.ended && nextMon) alerts.push({m:'ສົ່ງພາບໜ້າຈໍຜົນໂຄສະນາ (ເງິນທີ່ໃຊ້ · ຄົນເຫັນ · ຂໍ້ຄວາມ) ໃຫ້ ສນຫ ວັນຈັນ '+showDate(nextMon.date)+' ກ່ອນ 10:00', t:'info'});
+        if(x.ended && x.invoice!==YES && x.due && !x.invoiceLate) alerts.push({m:'ສົ່ງໃບບິນ Facebook ງວດ '+x.per.p+' ໃຫ້ ສນຫ ພາຍໃນ '+showDate(x.due), t:'info'});
+        if(x.status===BUDGET_STOP) alerts.push({m:'ງວດ '+x.per.p+': ຫຼັກຖານຍັງບໍ່ຄົບ — ສົ່ງໃຫ້ ສນຫ ເພື່ອໃຫ້ໂອນງວດຖັດໄປໄດ້'});
+      }
+    });
+    const waiting=list.flatMap(x=>x.waitingShots.map(m=>m.date));
+    if(k!=='branch' && waiting.length) alerts.push({m:'ພາບໜ້າຈໍວັນຈັນ ຂອງ '+b+' ຍັງບໍ່ໄດ້ບັນທຶກ '+waiting.length+' ຄັ້ງ: '+waiting.map(shortDate).join(', ')});
+    const lastP=list[list.length-1];
+    if(lastP && lastP.ended && isNum(tot.held) && tot.held>0 && !isNum(lastP.refund)) alerts.push({m:b+' ຕ້ອງສົ່ງຄືນເງິນເຫຼືອ '+fmtKip(tot.held)+(tot.approx?' (ປະມານ — ຕົວເລກສຸດທ້າຍຕາມໃບບິນ)':'')+' ໃຫ້ ສນຫ (ຈົບໂຄງການ)'});
+    const kp=(t,v,u,cls)=>`<div class="${cls||''}"><dt>${t}</dt><dd class="tab">${v}${u&&v!=='—'?`<span class="u">${u}</span>`:''}</dd></div>`;
+    const cards = list.map(x=>{
+      const chips = x.mondays.length ? x.mondays.map(m=>{
+        const cls = m.s===YES?'ok':m.s===NO?'no':(m.due?'due':'');
+        const sym = m.s===YES?'✓':m.s===NO?'✗':(m.due?'ລໍຖ້າ':'·');
+        return `<span class="mchip ${cls}" title="${m.s===YES?'ໄດ້ຮັບ':m.s===NO?'ບໍ່ໄດ້ຮັບ':m.due?'ຍັງບໍ່ໄດ້ບັນທຶກ':'ຍັງບໍ່ຮອດ'}">${sym} ${shortDate(m.date)}${isNum(m.spend)?' · '+fmtInt(m.spend):''}</span>`;
+      }).join('') : '<span class="muted small">ບໍ່ມີວັນຈັນໃນງວດນີ້</span>';
+      const planTxt = isNum(x.plan) ? `${fmtInt(x.usd)} ໂດລາ × ${fmtInt(x.rate)} = <b>${fmtKip(x.plan)}</b>` : `${fmtInt(x.usd)} ໂດລາ · <span class="nodata">ຍັງບໍ່ໄດ້ໃສ່ອັດຕາແລກປ່ຽນ</span>`;
+      const carryTxt = x.per.p===1 ? '0 ກີບ' : x.unknown ? '<span class="nodata">ຍັງບໍ່ຮູ້ — ລໍພາບໜ້າຈໍ ຫຼື ໃບບິນງວດກ່ອນ</span>' : fmtKip(x.carry)+(x.approx?' (ປະມານ ຈາກພາບໜ້າຈໍ)':'');
+      const toTxt = x.blocked ? '<span class="spill bad">ຫ້າມໂອນ — ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ</span>' : isNum(x.toTransfer) ? fmtKip(x.toTransfer) : '—';
+      const sentTxt = isNum(x.transferred) ? fmtKip(x.transferred)+(x.transferDate?' · '+showDate(x.transferDate):'') : 'ຍັງບໍ່ໂອນ · ກຳນົດ '+showDate(x.per.from);
+      const invTxt = x.invoice===YES ? 'ໄດ້ຮັບ'+(x.invoiceDate?' '+showDate(x.invoiceDate):'')+(isNum(x.actual)?' · ໃຊ້ຈິງ <b>'+fmtKip(x.actual)+'</b>':' · <span class="nodata">ຍັງບໍ່ໃສ່ຈຳນວນ</span>')
+                   : x.invoice===NO ? '<span class="spill bad">ບໍ່ສົ່ງ / ບໍ່ຖືກຕ້ອງ</span>'
+                   : 'ຍັງບໍ່ໄດ້ຮັບ'+(x.due?' · ກຳນົດ '+showDate(x.due):'')+(x.invoiceLate?' <span class="spill bad">ເກີນກຳນົດ</span>':'');
+      const leftTxt = isNum(x.leftover) ? fmtKip(x.leftover)+(x.leftover<0?' (ໃຊ້ເກີນ)':'') : '—';
+      const refundTxt = x.per.last && x.ended ? `<div><dt>ສົ່ງຄືນ ສນຫ</dt><dd>${isNum(x.refund)?fmtKip(x.refund)+(x.refundDate?' · '+showDate(x.refundDate):''):(isNum(tot.held)?(tot.held>0?'ຕ້ອງສົ່ງຄືນ '+fmtKip(tot.held)+(tot.approx?' (ປະມານ — ລໍໃບບິນ)':''):'ບໍ່ມີເງິນເຫຼືອ'):'—')}</dd></div>` : '';
+      return `<article class="pcard t-${x.tone}">
+        <div class="lead-top"><b>ງວດທີ ${x.per.p} · ${showDate(x.per.from)} – ${showDate(x.per.to)}</b><span class="spill ${x.tone}">${esc(x.status)}</span></div>
+        <dl class="pgrid">
+          <div><dt>ງົບຕາມແຜນ</dt><dd class="tab">${planTxt}</dd></div>
+          <div><dt>ຫັກເງິນເຫຼືອທີ່ສາຂາຖືຢູ່</dt><dd class="tab">${carryTxt}</dd></div>
+          <div><dt>ຍອດທີ່ຕ້ອງໂອນ</dt><dd class="big tab">${toTxt}</dd></div>
+          <div><dt>ໂອນແລ້ວ</dt><dd class="tab">${sentTxt}</dd></div>
+          <div><dt>ພາບໜ້າຈໍວັນຈັນ</dt><dd><span class="mchips">${chips}</span></dd></div>
+          <div><dt>ໃບບິນ Facebook</dt><dd class="tab">${invTxt}</dd></div>
+          <div><dt>ງົບເຫຼືອ (ແຜນ − ໃຊ້ຈິງ)</dt><dd class="tab">${leftTxt}</dd></div>
+          ${refundTxt}
+        </dl>
+        ${x.d.note?`<div class="lead-meta">ໝາຍເຫດ: ${esc(x.d.note)}</div>`:''}
+        ${canEdit?`<div class="lead-acts"><button class="btn" data-bg-edit="${esc(b)}" data-p="${x.per.p}">ບັນທຶກ / ແກ້ໄຂ</button></div>`:''}
+      </article>`;
+    }).join('');
+    return `<section class="bsec">
+      <h2>ສາຂາ ${esc(b)}</h2>
+      <dl class="kpis">${kp('ໂອນແລ້ວລວມ',fmtInt(tot.sent),'ກີບ')}${kp('ໃຊ້ຈິງລວມ'+(tot.approx?' *':''),fmtInt(tot.spent),'ກີບ')}${kp('ເງິນທີ່ສາຂາຖືຢູ່', isNum(tot.held)?fmtInt(tot.held):'—','ກີບ','hl')}</dl>
+      ${tot.approx?'<p class="hint">* ບາງງວດຍັງບໍ່ມີໃບບິນ ໃຊ້ຕົວເລກຈາກພາບໜ້າຈໍວັນຈັນລ່າສຸດ</p>':''}
+      ${list.length?`<div class="pcards">${cards}</div>`:'<div class="empty">ຍັງບໍ່ມີງວດ — ຕັ້ງ ວັນເລີ່ມໂຄງການ ກ່ອນ</div>'}
+    </section>`;
+  }).join('');
+  $('bgAlerts').innerHTML = alerts.map(a=>`<div class="alert ${a.t||''}"><span class="dot" aria-hidden="true"></span><div><p>${esc(a.m)}</p></div></div>`).join('');
+  $('bgBranches').innerHTML = html;
+  if(bgEdit && !canEdit) closeBgForm();
+}
+function closeBgForm(){ bgEdit=null; $('bgFormWrap').hidden=true; }
+function bgCalc(){
+  if(!bgEdit) return;
+  const usd=parseNum($('bfUsd').value), rate=parseNum($('bfRate').value);
+  const x = branchPeriods(bgEdit.branch).find(y=>y.per.p===bgEdit.p);
+  const plan = isNum(usd)&&isNum(rate) ? Math.round(usd*rate) : null;
+  const to = (plan===null || !x || x.unknown) ? null : Math.max(plan - x.carry, 0);
+  bgEdit.to = to;
+  $('bfCalc').textContent = x && x.blocked ? 'ຫ້າມໂອນງວດນີ້ — ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ' :
+    plan===null ? 'ໃສ່ ງົບ ແລະ ອັດຕາແລກປ່ຽນ ເພື່ອຄຳນວນຍອດທີ່ຕ້ອງໂອນ' :
+    'ງົບຕາມແຜນ '+fmtKip(plan)+' − ເງິນເຫຼືອທີ່ສາຂາຖືຢູ່ '+(x.unknown?'(ຍັງບໍ່ຮູ້)':fmtKip(x.carry))+' = ຍອດທີ່ຕ້ອງໂອນ '+(isNum(to)?fmtKip(to):'—');
+  $('bfFill').disabled = !isNum(to) || (x && x.blocked);
+}
+function openBgForm(branch, p){
+  const x = branchPeriods(branch).find(y=>y.per.p===p); if(!x) return;
+  bgEdit = {branch, p, version: x.rec ? x.rec.version : 0};
+  const d=x.d;
+  $('bgFormTitle').textContent = 'ບັນທຶກ: ສາຂາ '+branch+' · ງວດທີ '+p+' ('+showDate(x.per.from)+' – '+showDate(x.per.to)+')';
+  $('bfUsd').value = d.usd || (online.settings.usd || '100');
+  $('bfRate').value = d.rate || (online.settings.rate || '');
+  $('bfDate').value = d.transferDate || ''; $('bfAmt').value = d.transferred || ''; $('bfNote1').value = d.transferNote || '';
+  $('bfInv').value = d.invoice || ''; $('bfInvDate').value = d.invoiceDate || ''; $('bfActual').value = d.actual || '';
+  $('bfRefundBox').hidden = !x.per.last; $('bfRefund').value = d.refund || ''; $('bfRefundDate').value = d.refundDate || '';
+  $('bfNote').value = d.note || '';
+  ['bfDate','bfInvDate','bfRefundDate'].forEach(id=>$(id).max=todayOnline());
+  $('bfMondays').innerHTML = x.mondays.length ? x.mondays.map(m=>`<div class="mrow" data-date="${m.date}">
+      <span class="tab"><b>${showDate(m.date)}</b>${m.due?'':' <span class="muted small">(ຍັງບໍ່ຮອດ)</span>'}</span>
+      <select aria-label="ພາບໜ້າຈໍ ${showDate(m.date)}"><option value="">ລໍຖ້າ / ຍັງບໍ່ໄດ້ບັນທຶກ</option><option value="ແມ່ນ" ${m.s===YES?'selected':''}>ໄດ້ຮັບ</option><option value="ບໍ່" ${m.s===NO?'selected':''}>ບໍ່ໄດ້ຮັບ</option></select>
+      <input inputmode="numeric" autocomplete="off" placeholder="ເງິນທີ່ໃຊ້ຮອດວັນນີ້ (ກີບ)" aria-label="ເງິນທີ່ໃຊ້ຮອດ ${showDate(m.date)} (ກີບ)" value="${isNum(m.spend)?m.spend:''}">
+    </div>`).join('') : '<p class="hint">ບໍ່ມີວັນຈັນໃນງວດນີ້</p>';
+  $('bfMsg').textContent=''; $('bgFormWrap').hidden=false; bgCalc();
+  $('bgFormWrap').scrollIntoView({behavior:SMOOTH, block:'start'});
+}
+$('bgBranches').addEventListener('click', e=>{ const b=e.target.closest('[data-bg-edit]'); if(b) openBgForm(b.dataset.bgEdit, Number(b.dataset.p)); });
+$('bgCancel').addEventListener('click', closeBgForm);
+['bfUsd','bfRate'].forEach(id=>$(id).addEventListener('input', bgCalc));
+$('bfFill').addEventListener('click', ()=>{ if(bgEdit && isNum(bgEdit.to)){ $('bfAmt').value=String(bgEdit.to); if(!$('bfDate').value) $('bfDate').value=todayOnline(); } });
+$('bgForm').addEventListener('submit', async e=>{
+  e.preventDefault(); if(!bgEdit) return;
+  const m=$('bfMsg'); const bad=(t,id)=>{ m.textContent=t; m.className='msg err'; if(id) $(id).focus(); };
+  for(const [id,label] of [['bfUsd','ງົບ'],['bfRate','ອັດຕາແລກປ່ຽນ'],['bfAmt','ຈຳນວນທີ່ໂອນ'],['bfActual','ເງິນທີ່ໃຊ້ຈິງ'],['bfRefund','ຈຳນວນສົ່ງຄືນ']]){
+    const v=$(id).value.trim(); if(v && parseNum(v)===null) return bad(label+' ຕ້ອງເປັນຕົວເລກ', id);
+  }
+  if($('bfInv').value===YES && !$('bfActual').value.trim()) return bad('ໄດ້ຮັບໃບບິນແລ້ວ — ໃສ່ ເງິນທີ່ໃຊ້ຈິງຕາມໃບບິນ ດ້ວຍ', 'bfActual');
+  const mondays={};
+  for(const row of $('bfMondays').querySelectorAll('.mrow')){
+    const sel=row.querySelector('select').value, sp=row.querySelector('input').value.trim();
+    if(sp && parseNum(sp)===null) return bad('ເງິນທີ່ໃຊ້ ວັນຈັນ '+showDate(row.dataset.date)+' ຕ້ອງເປັນຕົວເລກ');
+    if(sel || sp) mondays[row.dataset.date]={s:sel, spend:sp?String(parseNum(sp)):''};
+  }
+  const num=id=>{ const v=$(id).value.trim(); return v?String(parseNum(v)):''; };
+  const data={usd:num('bfUsd'), rate:num('bfRate'), transferDate:$('bfDate').value, transferred:num('bfAmt'), transferNote:$('bfNote1').value.trim(),
+    mondays, invoice:$('bfInv').value, invoiceDate:$('bfInvDate').value, actual:num('bfActual'),
+    refund:num('bfRefund'), refundDate:$('bfRefundDate').value, note:$('bfNote').value.trim()};
+  $('bfSave').disabled=true; m.textContent='ກຳລັງບັນທຶກ...'; m.className='msg';
+  try{
+    const j=await api('saveBudget',{branch:bgEdit.branch, period:bgEdit.p, version:bgEdit.version, data});
+    online.budget = online.budget.filter(x=>!(x.branch===j.budget.branch && Number(x.period)===Number(j.budget.period)));
+    online.budget.push(j.budget);
+    toast('ບັນທຶກແລ້ວ'); closeBgForm(); renderBudgetView();
+  }catch(err){ bad(errText(err)); if(err.code==='conflict') refresh(true); }
+  finally{ $('bfSave').disabled=false; }
+});
+
+/* ---------- admin: project period ---------- */
+function renderAdmin(){
+  const s=online.settings||{};
+  if(document.activeElement!==$('pjStart')) $('pjStart').value = s.start || '';
+  if(document.activeElement!==$('pjPeriods')) $('pjPeriods').value = s.periods || '';
+  if(document.activeElement!==$('pjInvDay')) $('pjInvDay').value = s.invoiceDay || '';
+}
+$('projForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const m=$('pjMsg'); const per=$('pjPeriods').value.trim(), inv=$('pjInvDay').value.trim();
+  if(per && !(/^\d+$/.test(per) && +per>=1 && +per<=12)){ m.textContent='ຈຳນວນງວດ ຕ້ອງເປັນ 1–12'; m.className='msg err'; return; }
+  if(inv && !(/^\d+$/.test(inv) && +inv>=1 && +inv<=28)){ m.textContent='ວັນທີສົ່ງໃບບິນ ຕ້ອງເປັນ 1–28'; m.className='msg err'; return; }
+  const s={}; FIELDS.forEach(f=>s[f.k]=String(online.settings[f.k]??'').trim());
+  s.budgets=budgetsOf(online.settings); s.start=$('pjStart').value; s.periods=per; s.invoiceDay=inv;
+  $('pjSave').disabled=true;
+  try{ const j=await api('saveSettings',{settings:s}); online.settings=j.settings; m.textContent='ບັນທຶກແລ້ວ'; m.className='msg ok'; }
+  catch(err){ m.textContent=errText(err); m.className='msg err'; }
+  finally{ $('pjSave').disabled=false; }
+});
+$('btnExportBudget').addEventListener('click', ()=>{
+  const head=['ງວດ','ເລີ່ມ','ຈົບ','ສາຂາ','ງົບ (ໂດລາ)','ອັດຕາແລກປ່ຽນ','ງົບຕາມແຜນ (ກີບ)','ຫັກເງິນເຫຼືອ (ກີບ)','ຍອດທີ່ຕ້ອງໂອນ (ກີບ)','ວັນທີໂອນ','ໂອນຈິງ (ກີບ)','ພາບໜ້າຈໍວັນຈັນ (ໄດ້ຮັບ/ທັງໝົດ)','ໃບບິນ Facebook','ເງິນທີ່ໃຊ້ຈິງ (ກີບ)','ງົບເຫຼືອ (ກີບ)','ສະຖານະ','ສົ່ງຄືນ (ກີບ)','ໝາຍເຫດ'];
+  const rows=[];
+  BRANCHES.forEach(b=>branchPeriods(b).forEach(x=>rows.push([x.per.p, showDate(x.per.from), showDate(x.per.to), b, x.usd, isNum(x.rate)?x.rate:'', isNum(x.plan)?x.plan:'', x.unknown?'':x.carry,
+    x.blocked?'ຫ້າມໂອນ':(isNum(x.toTransfer)?x.toTransfer:''), showDate(x.transferDate), isNum(x.transferred)?x.transferred:'',
+    x.mondays.filter(m=>m.s===YES).length+'/'+x.mondays.length, x.invoice, isNum(x.actual)?x.actual:'', isNum(x.leftover)?x.leftover:'', x.status, isNum(x.refund)?x.refund:'', x.d.note||''])));
+  const csv='﻿'+[head,...rows].map(r=>r.map(csvCell).join(',')).join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='ໂອນງົບ_'+todayOnline()+'.csv'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+});
+
+/* keep sample choice when logged in */
+$('btnSample').addEventListener('click', ()=>{ state._userPickedSample=true; });
+
+/* auto refresh every 60 s while visible (not while typing in the branch form) */
+setInterval(()=>{
+  if(!session || document.visibilityState!=='visible') return;
+  const a=document.activeElement;
+  if(a && a.matches && a.matches('input, textarea, select')) return;
+  refresh(true);
+}, 60000);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible' && session) refresh(true); });
+
+/* ============ boot ============ */
+(function boot(){
+  const th=lsGet(LS.theme); if(th==='dark'||th==='light') document.documentElement.setAttribute('data-theme', th);
+  const st=lsGet(LS.set);
+  if(st && st.settings){ for(const f of FIELDS){ if(typeof st.settings[f.k]==='string') state.settings[f.k]=st.settings[f.k]; } if(st.settings.budgets && typeof st.settings.budgets==='object') state.settings.budgets=st.settings.budgets; }
+  if(st && st.range && typeof st.range.from==='string') state.range={from:st.range.from, to:st.range.to||''};
+  const d=lsGet(LS.data);
+  if(d && Array.isArray(d.rows) && d.rows.length && d.meta && d.meta.mode!=='online'){ state.rows=d.rows; state.meta=d.meta; }
+  syncThemeBtn();
+  resetForm();
+  const s=lsGet(LS_SESSION);
+  if(s && s.token && ROLE_INFO[s.role]){
+    session=s;
+    setView(ROLE_INFO[s.role].home);
+    toast('ກຳລັງໂຫຼດຂໍ້ມູນ...');
+    api('boot').then(j=>{ applyBoot(j); if(kindOf()!=='branch') useOnline(true); renderAll(); $('toast').hidden=true; })
+      .catch(err=>{ if(err.code!=='auth') toast(errText(err), true); });
+  }else{
+    setView('login');
+  }
+})();
+</script>
