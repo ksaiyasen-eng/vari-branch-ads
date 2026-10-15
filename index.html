@@ -307,6 +307,13 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
 .mchip{display:inline-block;border-radius:6px;padding:1px 7px;font-size:.78rem;font-weight:600;background:var(--surface-2);color:var(--muted)}
 .mchip.ok{background:var(--good-soft);color:var(--good-ink)} .mchip.no{background:var(--bad);color:var(--on-bad)} .mchip.due{background:var(--warn);color:var(--on-warn)}
 .bsec{display:flex;flex-direction:column;gap:12px}
+.capbar{height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.capbar span{display:block;height:100%;background:var(--good)}
+.capbar.warn span{background:var(--warn)} .capbar.bad span{background:var(--bad)}
+.days{display:flex;flex-wrap:wrap;gap:6px}
+.days .mchip{min-height:32px;display:inline-flex;align-items:center;border:1px solid transparent;font:inherit;font-size:.8rem;font-weight:600;cursor:default}
+.days button.mchip{cursor:pointer;border-color:var(--line)}
+.days .mchip.lock{background:var(--surface-2);color:var(--ink)}
 .mrow{display:grid;grid-template-columns:minmax(0,7em) minmax(0,10em) minmax(0,1fr);gap:8px;align-items:center}
 .mrow select,.mrow input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--bg);width:100%;min-width:0}
 @media (max-width:480px){ .mrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .mrow input{grid-column:1/-1} .pgrid div{grid-template-columns:minmax(0,1fr)} }
@@ -355,7 +362,7 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
       <button class="tab-btn" data-view="dash">ແດຊບອດ</button>
       <button class="tab-btn" data-view="branch">ບັນທຶກລູກຄ້າ</button>
       <button class="tab-btn" data-view="hq">ສນຫ ຕິດຕາມ</button>
-      <button class="tab-btn" data-view="budget">ໂອນງົບ</button>
+      <button class="tab-btn" data-view="budget">ເງິນໂຄສະນາ</button>
       <button class="tab-btn" data-view="admin">ແອດມິນ</button>
       <button class="tab-btn" data-view="guide">ຄູ່ມື</button>
       <span class="spacer"></span>
@@ -394,7 +401,8 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
       <ol class="flow">
         <li><b>ສາຂາ</b> ບັນທຶກລູກຄ້າທີ່ທັກເຂົ້າມາ ແລະ ຜົນການຂາຍ</li>
         <li><b>ສນຫ</b> ໂທຫາລູກຄ້ານອກເຂດ ພາຍໃນ 24 ຊົ່ວໂມງ ແລ້ວແຈ້ງຜົນ</li>
-        <li><b>ເຈົ້າຂອງ / ຜູ້ຈັດການ</b> ເບິ່ງແດຊບອດ ແລະ ຕິດຕາມການໂອນງົບ</li>
+        <li><b>ສາຂາ</b> ຈ່າຍຄ່າໂຄສະນາເອງ ບັນທຶກເງິນທີ່ໃຊ້ທຸກມື້ ແລະ ຍື່ນເຄລມຄືນທຸກອາທິດ</li>
+        <li><b>ເຈົ້າຂອງ / ຜູ້ຈັດການ</b> ເບິ່ງແດຊບອດ, ກວດ ແລະ ຄືນເງິນເຄລມ</li>
       </ol>
     </section>
 
@@ -430,16 +438,16 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
       <h3>ເລີ່ມໃຊ້ຄັ້ງທຳອິດ</h3>
       <ol>
         <li>ເຂົ້າລະບົບເປັນ ແອດມິນ → ແຖບ ແອດມິນ → ປ່ຽນ PIN ຂອງແອດມິນກ່ອນ.</li>
-        <li>ແຖບ ແອດມິນ → ໄລຍະໂຄງການ: ຕັ້ງ ວັນເລີ່ມໂຄງການ, ຈຳນວນງວດ (3) ແລະ ວັນທີສົ່ງໃບບິນ Facebook — ແຖບ ໂອນງົບ ຈະສ້າງງວດໃຫ້ເອງ.</li>
+        <li>ແຖບ ແອດມິນ → ໄລຍະໂຄງການ: ຕັ້ງ ວັນເລີ່ມໂຄງການ ແລະ ຈຳນວນເດືອນ (3) — ງົບ 100 ໂດລາ ນັບເປັນເດືອນລະ 1 ຮອບ ຈາກວັນເລີ່ມ.</li>
         <li>ກົດ ເປີດ ຕັ້ງຄ່າ ແລ້ວຕື່ມ: ອັດຕາແລກປ່ຽນ, ກຳໄລຂັ້ນຕົ້ນຕໍ່ລູກຄ້າຕໍ່ເດືອນ ແລະ ອາຍຸລູກຄ້າສະເລ່ຍ. ລະບົບບັນທຶກເອງ ທຸກຄົນເຫັນຄືກັນ.</li>
         <li>ແຈກ PIN ໃຫ້ສາຂາ ແລະ ສນຫ ແບບສ່ວນຕົວ (ບໍ່ສົ່ງໃນກຸ່ມ). ສົ່ງລິ້ງໜ້ານີ້ໃຫ້ເຂົາເຈົ້າເປີດໃນມືຖື ແລະ ເພີ່ມໃສ່ໜ້າຫຼັກ (Add to Home Screen).</li>
       </ol>
       <h3>ທຸກວັນຈັນ (10 ນາທີ)</h3>
       <ol>
         <li>ເປີດ ແດຊບອດ (ຊ່ວງ ເດືອນນີ້). ອ່ານແຖບເຕືອນສີເຫຼືອງກ່ອນ.</li>
-        <li>ກວດແຖບ ໂອນງົບ ວ່າ ສນຫ ບັນທຶກພາບໜ້າຈໍວັນຈັນ ແລະ ໃບບິນຄົບ — ແດຊບອດເອົາເງິນທີ່ໃຊ້ຈິງຈາກບ່ອນນັ້ນໄປຄຳນວນເອງ. ປ່ຽນຊ່ວງວັນທີໄດ້ເລີຍ.</li>
+        <li>ກວດແຖບ ເງິນໂຄສະນາ: ທຸກສາຂາບັນທຶກເງິນທີ່ໃຊ້ຄົບທຸກມື້ ແລະ ເຄລມອາທິດກ່ອນຖືກກວດແລ້ວ — ແດຊບອດເອົາເງິນທີ່ໃຊ້ຈາກບ່ອນນັ້ນໄປຄຳນວນເອງ.</li>
         <li>ເບິ່ງປ້າຍຜົນຕັດສິນຂອງແຕ່ລະສາຂາ: ຂະຫຍາຍ / ຕໍ່ ແລະ ປັບ / ຢຸດ. ຕັດສິນໄດ້ ເມື່ອໄດ້ຜົນຄືກັນ 2 ເດືອນຕິດຕໍ່ກັນ.</li>
-        <li>ທ້າຍງວດ: ກວດແຖບ ໂອນງົບ ວ່າຫຼັກຖານຄົບ ກ່ອນອະນຸມັດໂອນງວດຖັດໄປ.</li>
+        <li>ກວດເຄລມທີ່ ສນຫ ອະນຸມັດແລ້ວ ແລະ ຄືນເງິນໃຫ້ສາຂາ — ກົດ ບັນທຶກວ່າຄືນເງິນແລ້ວ ພ້ອມຈຳນວນ ແລະ ວັນທີ.</li>
       </ol>
       <h3>ອື່ນໆ</h3>
       <ul>
@@ -451,25 +459,25 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
     </details>
 
     <details class="panel" data-guide="budget">
-      <summary><h2>ໂອນງົບ ແລະ ຫຼັກຖານ (ແຖບ ໂອນງົບ)</h2></summary>
-      <p>ຕາມຂໍ້ຕົກລົງ ພາກ 5: ສນຫ ໂອນ 100 ໂດລາ/ເດືອນ ເປັນກີບຕາມອັດຕາວັນໂອນ. ສາຂາຈ່າຍ Facebook ເອງ ແລະ ສົ່ງຫຼັກຖານ. ໂຄງການແບ່ງເປັນງວດລະ 1 ເດືອນ ນັບຈາກວັນເລີ່ມໂຄງການ.</p>
+      <summary><h2>ເງິນໂຄສະນາ: ບັນທຶກລາຍວັນ ແລະ ເຄລມ (ແຖບ ເງິນໂຄສະນາ)</h2></summary>
+      <p>ສາຂາຈ່າຍຄ່າໂຄສະນາ Facebook ເອງ (ບັດ ຫຼື ບັນຊີຂອງສາຂາ) ແລ້ວເຄລມຄືນຈາກ ສນຫ ທຸກອາທິດ. ງົບ 100 ໂດລາ ຕໍ່ເດືອນ ຕໍ່ສາຂາ. <b>ຫ້າມເກີນ — ເມື່ອໃຊ້ຮອດ 100 ໂດລາ ຕ້ອງຢຸດໂຄສະນາ</b>. ສ່ວນທີ່ເກີນ ເຄລມບໍ່ໄດ້.</p>
+      <h3>ສຳລັບສາຂາ</h3>
+      <ol>
+        <li><b>ທຸກມື້:</b> ເປີດ Ads Manager ເບິ່ງ ຈຳນວນທີ່ໃຊ້ (Amount spent) ຂອງມື້ນັ້ນ → ແຖບ ເງິນໂຄສະນາ → ໃສ່ວັນທີ ແລະ ເງິນທີ່ໃຊ້ເປັນໂດລາ → ບັນທຶກ. ມື້ທີ່ບໍ່ໄດ້ຍິງ ໃສ່ 0. ບັນທຶກມື້ກ່ອນໄດ້ ຖ້າລືມ.</li>
+        <li><b>ເບິ່ງແຖບສີ:</b> ສະແດງວ່າເດືອນນີ້ໃຊ້ໄປເທົ່າໃດ ຈາກ 100 ໂດລາ. ຮອດ 80% ຂຶ້ນເຕືອນ. ຮອດ 100% ຢຸດໂຄສະນາທັນທີ. ແນະນຳຕັ້ງວົງເງິນໃນ Ads Manager ບໍ່ໃຫ້ເກີນ 100 ໂດລາ/ເດືອນ.</li>
+        <li><b>ທຸກວັນຈັນ:</b> ຍື່ນເຄລມອາທິດທີ່ຜ່ານມາ (ຈັນ–ອາທິດ): ກົດ ຍື່ນເຄລມ → ໃສ່ຍອດກີບ ຕາມໃບບິນ Facebook ຫຼື ລາຍການບັດຂອງສາຂາ ແລະ ເລກອ້າງອີງ.</li>
+        <li>ຄືນເງິນ = ຍອດກີບ × (ໂດລາທີ່ເຄລມໄດ້ ÷ ໂດລາທີ່ໃຊ້). ຖ້າບໍ່ເກີນງົບ ໄດ້ຄືນເຕັມຍອດກີບ.</li>
+        <li>ຫຼັງຍື່ນເຄລມ ແກ້ເງິນລາຍວັນຂອງອາທິດນັ້ນບໍ່ໄດ້. ຖ້າ ສນຫ ສົ່ງກັບໃຫ້ແກ້ ອ່ານໝາຍເຫດ, ແກ້ ແລ້ວຍື່ນໃໝ່.</li>
+      </ol>
       <h3>ສຳລັບ ສນຫ</h3>
       <ol>
-        <li><b>ວັນເລີ່ມງວດ:</b> ເປີດແຖບ ໂອນງົບ → ກົດ ບັນທຶກ / ແກ້ໄຂ ຂອງງວດນັ້ນ → ໃສ່ອັດຕາແລກປ່ຽນວັນໂອນ. ລະບົບຄຳນວນ ຍອດທີ່ຕ້ອງໂອນ = ງົບຕາມແຜນ − ເງິນເຫຼືອທີ່ສາຂາຍັງຖືຢູ່.</li>
-        <li>ໂອນເງິນ ແລ້ວໃສ່ ວັນທີໂອນ ແລະ ຈຳນວນທີ່ໂອນຈິງ (ກົດ ໃສ່ຈຳນວນຕາມຍອດທີ່ຕ້ອງໂອນ ໄດ້).</li>
-        <li><b>ທຸກວັນຈັນ:</b> ເມື່ອສາຂາສົ່ງພາບໜ້າຈໍ ເລືອກ ໄດ້ຮັບ ແລະ ໃສ່ເງິນທີ່ໃຊ້ຮອດວັນນັ້ນ. ຖ້າສາຂາບໍ່ສົ່ງ ເລືອກ ບໍ່ໄດ້ຮັບ.</li>
-        <li><b>ສິ້ນງວດ:</b> ເມື່ອໄດ້ຮັບໃບບິນ Facebook ເລືອກ ໄດ້ຮັບແລ້ວ ແລະ ໃສ່ ເງິນທີ່ໃຊ້ຈິງຕາມໃບບິນ.</li>
-        <li>ຖ້າຂຶ້ນ <b>ຫ້າມໂອນ</b> = ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ (ມີວັນຈັນ ບໍ່ໄດ້ຮັບ, ໃບບິນບໍ່ສົ່ງ ຫຼື ເກີນກຳນົດ). ຢ່າໂອນ ຈົນກວ່າສາຂາສົ່ງຄົບ ແລະ ແກ້ບັນທຶກງວດກ່ອນ.</li>
-        <li><b>ຈົບໂຄງການ:</b> ງວດສຸດທ້າຍຈະສະແດງ ເງິນທີ່ສາຂາຕ້ອງສົ່ງຄືນ. ເມື່ອໄດ້ຮັບຄືນ ບັນທຶກຈຳນວນ ແລະ ວັນທີ.</li>
+        <li>ທຸກວັນຈັນ–ອັງຄານ: ເປີດແຖບ ເງິນໂຄສະນາ ກວດເຄລມທີ່ຂຶ້ນ ລໍ ສນຫ ກວດ. ທຽບຍອດກີບ ກັບໃບບິນ/ລາຍການບັດທີ່ສາຂາສົ່ງໃຫ້.</li>
+        <li>ຖືກຕ້ອງ ກົດ <b>ອະນຸມັດ</b>. ບໍ່ຖືກ ກົດ <b>ສົ່ງກັບໃຫ້ແກ້</b> ແລະ ຂຽນເຫດຜົນ.</li>
+        <li>ເມື່ອໂອນເງິນຄືນໃຫ້ສາຂາແລ້ວ ກົດ <b>ບັນທຶກວ່າຄືນເງິນແລ້ວ</b> ໃສ່ຈຳນວນ ແລະ ວັນທີ.</li>
+        <li>ເບິ່ງ 14 ມື້ລ່າສຸດຂອງແຕ່ລະສາຂາ: ມື້ສີເຫຼືອງ = ຍັງບໍ່ໄດ້ບັນທຶກ — ທັກສາຂາໃຫ້ບັນທຶກ.</li>
       </ol>
-      <h3>ສຳລັບສາຂາ</h3>
-      <ul>
-        <li>ແຖບ ໂອນງົບ ສະແດງວ່າ ສນຫ ໂອນໃຫ້ເທົ່າໃດ, ຫຼັກຖານໃດສົ່ງແລ້ວ ແລະ ກຳນົດສົ່ງຄັ້ງຕໍ່ໄປ (ເບິ່ງໄດ້ຢ່າງດຽວ).</li>
-        <li>ທຸກວັນຈັນ ກ່ອນ 10:00 ສົ່ງພາບໜ້າຈໍຜົນໂຄສະນາ (ເງິນທີ່ໃຊ້ · ຄົນເຫັນ · ຂໍ້ຄວາມ). ສິ້ນງວດ ສົ່ງໃບບິນ Facebook ກ່ອນວັນທີກຳນົດ.</li>
-        <li>ເງິນທີ່ໃຊ້ບໍ່ໝົດ ບໍ່ເສຍ — ຖືກຫັກອອກຈາກງວດຖັດໄປ ແລະ ງວດສຸດທ້າຍສົ່ງຄືນ ສນຫ.</li>
-      </ul>
       <h3>ຜົນຕໍ່ແດຊບອດ</h3>
-      <p>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່ ໃຊ້ເງິນທີ່ໃຊ້ຈິງຈາກໃບບິນຂອງແຕ່ລະງວດ. ຖ້າຍັງບໍ່ມີໃບບິນ ໃຊ້ພາບໜ້າຈໍວັນຈັນລ່າສຸດ ແລະ ຂຶ້ນວ່າ ປະມານ — ບໍ່ຕ້ອງກອກງົບຊ້ຳໃນ ຕັ້ງຄ່າ.</p>
+      <p>ງົບທີ່ໃຊ້ໃນຊ່ວງ = ລວມເງິນລາຍວັນ × ອັດຕາ. ອາທິດທີ່ເຄລມແລ້ວ ໃຊ້ອັດຕາຈາກໃບບິນ (ຍອດກີບ ÷ ໂດລາ). ອາທິດທີ່ຍັງບໍ່ເຄລມ ໃຊ້ອັດຕາແລກປ່ຽນໃນ ຕັ້ງຄ່າ ແລະ ຂຶ້ນວ່າ ປະມານ. ຖ້າມີມື້ທີ່ຍັງບໍ່ໄດ້ບັນທຶກ ລະບົບບອກມື້ນັ້ນ ແລະ ບໍ່ຄຳນວນ.</p>
     </details>
 
     <details class="panel" data-guide="terms">
@@ -479,7 +487,7 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
         <dt>ລູກຄ້າໃໝ່ຂອງສາຂາ</dt><dd>ລູກຄ້າທີ່ມີຜົນ ປິດການຂາຍໄດ້ (ສັ່ງຊື້ແລ້ວ)</dd>
         <dt>ນອກເຂດທີ່ ສນຫ ປິດໄດ້</dt><dd>ລູກຄ້ານອກເຂດທີ່ ສນຫ ແຈ້ງວ່າ ປິດການຂາຍໄດ້</dd>
         <dt>ລໍຖ້າ ສນຫ ແຈ້ງຜົນ</dt><dd>ລູກຄ້ານອກເຂດທີ່ ສນຫ ຍັງບໍ່ໄດ້ບັນທຶກວ່າ ປິດໄດ້ ຫຼື ປິດບໍ່ໄດ້ — ຍັງບໍ່ນັບເປັນລູກຄ້າໃໝ່</dd>
-        <dt>ງົບທີ່ໃຊ້ໃນຊ່ວງ</dt><dd>ລວມງົບລາຍເດືອນຂອງເດືອນທີ່ຢູ່ໃນຊ່ວງວັນທີ. ເດືອນທີ່ຢູ່ໃນຊ່ວງບໍ່ເຕັມເດືອນ ຄິດຕາມສັດສ່ວນວັນ ແລະ ຂຶ້ນຄຳວ່າ ປະມານ. ຖ້າເດືອນໃດຍັງບໍ່ໃສ່ງົບ ລະບົບບອກຊື່ເດືອນນັ້ນ ແລະ ບໍ່ຄຳນວນ</dd>
+        <dt>ງົບທີ່ໃຊ້ໃນຊ່ວງ</dt><dd>ໃນລະບົບອອນໄລນ໌: ລວມເງິນທີ່ສາຂາບັນທຶກລາຍວັນ ເປັນກີບ (ເບິ່ງ ຄູ່ມື ເງິນໂຄສະນາ). ໃນໄຟລ໌ CSV: ລວມງົບລາຍເດືອນ, ເດືອນທີ່ບໍ່ເຕັມຊ່ວງ ຄິດຕາມສັດສ່ວນວັນ. ຂຶ້ນ ປະມານ ເມື່ອບໍ່ແມ່ນຕົວເລກສຸດທ້າຍ. ຖ້າຂາດຂໍ້ມູນ ລະບົບບອກວ່າຂາດຫຍັງ ແລະ ບໍ່ຄຳນວນ</dd>
         <dt>ຕົ້ນທຶນຕໍ່ລູກຄ້າໃໝ່</dt><dd>ງົບທີ່ໃຊ້ໃນຊ່ວງ ÷ (ລູກຄ້າໃໝ່ຂອງສາຂາ + ນອກເຂດທີ່ ສນຫ ປິດໄດ້)</dd>
         <dt>LTV</dt><dd>ກຳໄລຂັ້ນຕົ້ນຕໍ່ລູກຄ້າຕໍ່ເດືອນ × ອາຍຸລູກຄ້າສະເລ່ຍ (ເດືອນ)</dd>
         <dt>ເພດານ</dt><dd>LTV ÷ ຕົວຫານເພດານ (ຄ່າຕັ້ງຕົ້ນ 2) = ຕົ້ນທຶນສູງສຸດທີ່ຍອມຈ່າຍຕໍ່ລູກຄ້າໃໝ່ 1 ຄົນ</dd>
@@ -581,46 +589,49 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
     </section>
   </main>
 
-  <!-- ===== budget transfers & evidence ===== -->
+  <!-- ===== ad spend: daily log & weekly claims ===== -->
   <main class="view" id="viewBudget" hidden>
     <section>
-      <div class="sec-head"><h2>ໂອນງົບ ແລະ ຫຼັກຖານການໃຊ້ງົບ</h2><span class="small muted">ຂໍ້ຕົກລົງ ສະບັບ 1.2 ພາກ 5</span></div>
-      <p class="hint" id="bgProject"></p>
+      <div class="sec-head"><h2>ເງິນໂຄສະນາ: ບັນທຶກລາຍວັນ ແລະ ເຄລມຄືນ</h2><span class="small muted">ສາຂາຈ່າຍ Facebook ເອງ → ເຄລມຄືນຈາກ ສນຫ ທຸກອາທິດ</span></div>
+      <p class="hint" id="spRule"></p>
       <div class="alerts" id="bgAlerts"></div>
     </section>
 
-    <section class="panel" id="bgFormWrap" hidden>
-      <div class="panel-head"><h2 id="bgFormTitle">ບັນທຶກ</h2><button type="button" class="btn" id="bgCancel">ປິດ</button></div>
-      <form id="bgForm" novalidate style="display:flex;flex-direction:column;gap:16px">
-        <h3>1. ການໂອນ</h3>
-        <div class="form-grid">
-          <div class="field"><label for="bfUsd">ງົບ (ໂດລາ)</label><input id="bfUsd" inputmode="decimal" autocomplete="off"></div>
-          <div class="field"><label for="bfRate">ອັດຕາແລກປ່ຽນວັນໂອນ (ກີບ / 1 ໂດລາ)</label><input id="bfRate" inputmode="decimal" autocomplete="off"></div>
-          <div class="field"><label for="bfDate">ວັນທີໂອນ</label><input type="date" id="bfDate"></div>
-          <div class="field"><label for="bfAmt">ຈຳນວນທີ່ໂອນຈິງ (ກີບ)</label><input id="bfAmt" inputmode="numeric" autocomplete="off"></div>
-        </div>
-        <p class="hint on" id="bfCalc"></p>
-        <div><button type="button" class="chip" id="bfFill">ໃສ່ຈຳນວນຕາມຍອດທີ່ຕ້ອງໂອນ</button></div>
-        <div class="field"><label for="bfNote1">ໝາຍເຫດການໂອນ (ເຊັ່ນ ເລກອ້າງອີງ)</label><input id="bfNote1" autocomplete="off"></div>
-        <h3>2. ພາບໜ້າຈໍຜົນໂຄສະນາ ທຸກວັນຈັນ</h3>
-        <p class="hint">ຕື່ມເງິນທີ່ໃຊ້ຮອດວັນນັ້ນເປັນກີບ (ຖ້າ Facebook ສະແດງເປັນໂດລາ ໃຫ້ຄູນອັດຕາແລກປ່ຽນ). ເລືອກ ບໍ່ໄດ້ຮັບ = ຢຸດໂອນງວດຖັດໄປ</p>
-        <div id="bfMondays" style="display:flex;flex-direction:column;gap:8px"></div>
-        <h3>3. ໃບບິນ Facebook ຂອງງວດ</h3>
-        <div class="form-grid">
-          <div class="field"><label for="bfInv">ໃບບິນ</label><select id="bfInv"><option value="">ຍັງບໍ່ໄດ້ຮັບ</option><option value="ແມ່ນ">ໄດ້ຮັບແລ້ວ</option><option value="ບໍ່">ບໍ່ສົ່ງ / ບໍ່ຖືກຕ້ອງ</option></select></div>
-          <div class="field"><label for="bfInvDate">ວັນທີໄດ້ຮັບ</label><input type="date" id="bfInvDate"></div>
-          <div class="field"><label for="bfActual">ເງິນທີ່ໃຊ້ຈິງຕາມໃບບິນ (ກີບ)</label><input id="bfActual" inputmode="numeric" autocomplete="off"></div>
-        </div>
-        <div id="bfRefundBox" hidden>
-          <h3>4. ສົ່ງຄືນເງິນເຫຼືອ (ງວດສຸດທ້າຍ)</h3>
-          <div class="form-grid">
-            <div class="field"><label for="bfRefund">ຈຳນວນທີ່ສາຂາສົ່ງຄືນ (ກີບ)</label><input id="bfRefund" inputmode="numeric" autocomplete="off"></div>
-            <div class="field"><label for="bfRefundDate">ວັນທີສົ່ງຄືນ</label><input type="date" id="bfRefundDate"></div>
-          </div>
-        </div>
-        <div class="field"><label for="bfNote">ໝາຍເຫດ</label><input id="bfNote" autocomplete="off"></div>
-        <div class="form-actions"><button class="btn primary big" id="bfSave">ບັນທຶກ</button><span class="msg" id="bfMsg" role="status"></span></div>
+    <section class="panel" id="spFormWrap" hidden>
+      <h2>ບັນທຶກເງິນທີ່ໃຊ້ປະຈຳວັນ</h2>
+      <p class="hint">ເບິ່ງ ຈຳນວນທີ່ໃຊ້ (Amount spent) ຂອງມື້ນັ້ນໃນ Ads Manager ແລ້ວໃສ່ເປັນໂດລາ. ມື້ທີ່ບໍ່ໄດ້ຍິງ ໃສ່ 0.</p>
+      <form id="spForm" class="form-grid" novalidate>
+        <div class="field" id="spBrWrap" hidden><label for="spBranch">ສາຂາ</label><select id="spBranch"></select></div>
+        <div class="field"><label for="spDay">ວັນທີ</label><input type="date" id="spDay"></div>
+        <div class="field"><label for="spUsd">ເງິນທີ່ໃຊ້ (ໂດລາ)</label><input id="spUsd" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+        <div class="field"><label for="spNote">ໝາຍເຫດ (ຖ້າມີ)</label><input id="spNote" autocomplete="off"></div>
+        <div class="field" style="justify-content:flex-end"><button class="btn primary big" id="spSave">ບັນທຶກ</button></div>
       </form>
+      <div class="msg" id="spMsg" role="status"></div>
+    </section>
+
+    <section class="panel" id="clFormWrap" hidden>
+      <div class="panel-head"><h2 id="clTitle">ຍື່ນເຄລມ</h2><button type="button" class="btn" id="clCancel">ປິດ</button></div>
+      <p class="hint on" id="clCalc"></p>
+      <form id="clForm" class="form-grid" novalidate>
+        <div class="field"><label for="clKip">ຍອດກີບ ຕາມໃບບິນ / ລາຍການບັດ ຂອງອາທິດນີ້</label><input id="clKip" inputmode="numeric" autocomplete="off"></div>
+        <div class="field"><label for="clRef">ເລກອ້າງອີງ ໃບບິນ / ລາຍການບັດ</label><input id="clRef" autocomplete="off"></div>
+        <div class="field" style="justify-content:flex-end"><button class="btn primary big" id="clSave">ຍື່ນເຄລມ</button></div>
+      </form>
+      <p class="hint" id="clPreview" role="status"></p>
+      <div class="msg" id="clMsg" role="status"></div>
+    </section>
+
+    <section class="panel" id="rvFormWrap" hidden>
+      <div class="panel-head"><h2 id="rvTitle">ກວດເຄລມ</h2><button type="button" class="btn" id="rvCancel">ປິດ</button></div>
+      <p class="hint on" id="rvInfo"></p>
+      <form id="rvForm" class="form-grid" novalidate>
+        <div class="field" id="rvKipWrap"><label for="rvKip">ຈຳນວນທີ່ຄືນໃຫ້ສາຂາ (ກີບ)</label><input id="rvKip" inputmode="numeric" autocomplete="off"></div>
+        <div class="field" id="rvDateWrap"><label for="rvDate">ວັນທີຄືນເງິນ</label><input type="date" id="rvDate"></div>
+        <div class="field"><label for="rvNote" id="rvNoteLbl">ໝາຍເຫດ</label><input id="rvNote" autocomplete="off"></div>
+        <div class="field" style="justify-content:flex-end"><button class="btn primary big" id="rvSave">ບັນທຶກ</button></div>
+      </form>
+      <div class="msg" id="rvMsg" role="status"></div>
     </section>
 
     <div id="bgBranches" style="display:flex;flex-direction:column;gap:24px"></div>
@@ -630,11 +641,11 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
   <main class="view" id="viewAdmin" hidden>
     <section class="panel">
       <h2>ໄລຍະໂຄງການ</h2>
-      <p class="hint">ໃຊ້ແບ່ງງວດໂອນງົບ: ງວດທີ 1 ເລີ່ມວັນເລີ່ມໂຄງການ, ແຕ່ລະງວດຍາວ 1 ເດືອນ. ວັນໂອນ = ວັນເລີ່ມຂອງແຕ່ລະງວດ</p>
+      <p class="hint">ງົບ 100 ໂດລາ ນັບເປັນເດືອນລະ 1 ຮອບ: ເດືອນທີ 1 ເລີ່ມວັນເລີ່ມໂຄງການ, ແຕ່ລະຮອບຍາວ 1 ເດືອນ. ຖ້າບໍ່ຕັ້ງ ລະບົບນັບຕາມເດືອນປະຕິທິນ (ວັນທີ 1 – ສິ້ນເດືອນ)</p>
       <form id="projForm" class="form-grid" novalidate>
         <div class="field"><label for="pjStart">ວັນເລີ່ມໂຄງການ</label><input type="date" id="pjStart"></div>
-        <div class="field"><label for="pjPeriods">ຈຳນວນງວດ (ເດືອນ)</label><input id="pjPeriods" inputmode="numeric" autocomplete="off" placeholder="3"></div>
-        <div class="field"><label for="pjInvDay">ສົ່ງໃບບິນ Facebook ພາຍໃນວັນທີ (ຂອງເດືອນຖັດໄປ)</label><input id="pjInvDay" inputmode="numeric" autocomplete="off" placeholder="1–28"></div>
+        <div class="field"><label for="pjPeriods">ຈຳນວນເດືອນຂອງໂຄງການ</label><input id="pjPeriods" inputmode="numeric" autocomplete="off" placeholder="3"></div>
+        <div class="field" hidden><label for="pjInvDay">ສົ່ງໃບບິນ Facebook ພາຍໃນວັນທີ (ຂອງເດືອນຖັດໄປ)</label><input id="pjInvDay" inputmode="numeric" autocomplete="off" placeholder="1–28"></div>
         <div class="field" style="justify-content:flex-end"><button class="btn primary" id="pjSave">ບັນທຶກ</button></div>
       </form>
       <div class="msg" id="pjMsg" role="status"></div>
@@ -658,7 +669,7 @@ legend{font-size:.88rem;font-weight:700;padding:0;margin-bottom:6px}
     <section class="panel">
       <h2>ສົ່ງອອກເປັນ Excel</h2>
       <p class="hint">ດາວໂຫຼດລູກຄ້າທັງໝົດເປັນໄຟລ໌ CSV ທີ່ມີຖັນ A–P ຄືກັບແຜ່ນ ບັນທຶກລູກຄ້າ — ເປີດດ້ວຍ Excel ຫຼື ວາງຕໍ່ໃນໄຟລ໌ຕິດຕາມໄດ້ເລີຍ</p>
-      <div><button class="btn primary" id="btnExport">ດາວໂຫຼດ CSV ລູກຄ້າ</button> <button class="btn" id="btnExportBudget">ດາວໂຫຼດ CSV ໂອນງົບ</button></div>
+      <div><button class="btn primary" id="btnExport">ດາວໂຫຼດ CSV ລູກຄ້າ</button> <button class="btn" id="btnExportSpend">ດາວໂຫຼດ CSV ເງິນລາຍວັນ</button> <button class="btn" id="btnExportClaims">ດາວໂຫຼດ CSV ເຄລມ</button></div>
     </section>
   </main>
 
@@ -1105,7 +1116,7 @@ function persistSettings(){ lsSet(LS.set, {settings:state.settings, range:state.
 function render(){
   const s = effSettings();
   const g = computeGlobal(s);
-  s.__bud = BRANCHES.map((b,i)=> state.meta.mode==='online' ? spendForRange(spendSegments(i), state.range) : budgetForRange(budgetsOf(s), state.range, i));
+  s.__bud = BRANCHES.map((b,i)=> state.meta.mode==='online' ? spendDaily(i, state.range) : budgetForRange(budgetsOf(s), state.range, i));
   s.__bud.forEach((bd,i)=>{ s['used'+i]=bd.amount; });
   const hasData = state.meta.mode!=='none' && state.rows.length>0;
   const rows = hasData ? inRange(state.rows, state.range) : [];
@@ -1177,9 +1188,9 @@ function renderBudgets(){
   const hintEl=$('budgetHint'); if(hintEl && !hintEl.dataset.orig) hintEl.dataset.orig=hintEl.textContent;
   if(state.meta.mode==='online'){
     box.querySelector('.tbl-wrap').hidden=true;
-    hintEl.textContent='ໃນລະບົບອອນໄລນ໌ ງົບທີ່ໃຊ້ຈິງ ມາຈາກແຖບ ໂອນງົບ ອັດຕະໂນມັດ: ໃຊ້ຕົວເລກໃບບິນ Facebook ຂອງແຕ່ລະງວດ — ຖ້າຍັງບໍ່ມີ ໃຊ້ພາບໜ້າຈໍວັນຈັນລ່າສຸດ ແລະ ຂຶ້ນວ່າ ປະມານ';
+    hintEl.textContent='ໃນລະບົບອອນໄລນ໌ ງົບທີ່ໃຊ້ຈິງ ມາຈາກແຖບ ເງິນໂຄສະນາ ອັດຕະໂນມັດ: ເງິນລາຍວັນ (ໂດລາ) × ອັດຕາຈາກໃບບິນຂອງເຄລມ — ອາທິດທີ່ຍັງບໍ່ເຄລມ ໃຊ້ອັດຕາແລກປ່ຽນໃນ ຕັ້ງຄ່າ ແລະ ຂຶ້ນວ່າ ປະມານ';
     const eff=effSettings();
-    $('budgetSum').textContent='ງົບທີ່ແດຊບອດໃຊ້ ສຳລັບ '+showDate(state.range.from)+' – '+showDate(state.range.to)+': '+BRANCHES.map((b,i)=>{ const bd=spendForRange(spendSegments(i), state.range); return b+' '+(bd.amount===null?'— ('+NODATA+(missText(bd)?': '+missText(bd):'')+')':fmtKip(bd.amount)+(bd.approx?' (ປະມານ)':'')); }).join(' · ');
+    $('budgetSum').textContent='ງົບທີ່ແດຊບອດໃຊ້ ສຳລັບ '+showDate(state.range.from)+' – '+showDate(state.range.to)+': '+BRANCHES.map((b,i)=>{ const bd=spendDaily(i, state.range); return b+' '+(bd.amount===null?'— ('+NODATA+(missText(bd)?': '+missText(bd):'')+')':fmtKip(bd.amount)+(bd.approx?' (ປະມານ)':'')); }).join(' · ');
     return;
   }
   box.querySelector('.tbl-wrap').hidden=false; if(hintEl && hintEl.dataset.orig) hintEl.textContent=hintEl.dataset.orig;
@@ -1322,7 +1333,7 @@ function renderCards(hasData, per, g){
         <div class="big"><span class="num">${fmtInt(p.costPerNew)}</span>${costMissing?'':'<span class="unit">ກີບ</span>'}</div>
         ${costMissing && !isNum(p.used) ? `<span class="nodata">${NODATA}: ງົບທີ່ໃຊ້ຈິງ${p.bud&&missText(p.bud)?' — '+missText(p.bud):''}</span>` : ''}
         <div class="vs">${vs}</div>
-        ${isNum(p.used)?`<div class="small muted tab">ງົບທີ່ໃຊ້ໃນຊ່ວງ ${fmtKip(p.used)}${p.bud&&p.bud.approx?' (ປະມານ ຕາມສັດສ່ວນວັນ)':''}</div>`:''}
+        ${isNum(p.used)?`<div class="small muted tab">ງົບທີ່ໃຊ້ໃນຊ່ວງ ${fmtKip(p.used)}${p.bud&&p.bud.approx?' (ປະມານ)':''}</div>`:''}
       </div>
       ${gauge}
       <dl class="stats">
@@ -1602,7 +1613,7 @@ const ROLE_INFO = {
 const VIEWS_FOR = { none:['dash','guide'], branch:['branch','budget','guide'], hq:['dash','hq','budget','guide'], admin:['dash','branch','hq','budget','admin','guide'] };
 const OUT_STATUS = 'ສົ່ງຕໍ່ສນຫແລ້ວ';
 let session = null;          // {token, role}
-let online = {leads:[], settings:{}, budget:[], today:'', loadedAt:''};
+let online = {leads:[], settings:{}, spend:[], claims:[], today:'', loadedAt:''};
 let view = 'dash';
 let settingsSaveMsg = '';
 let settingsTimer = null;
@@ -1636,9 +1647,19 @@ function errText(e){
   if(c==='locked') return 'ໃສ່ PIN ຜິດຫຼາຍຄັ້ງ — ລໍຖ້າ '+d+' ນາທີ ແລ້ວລອງໃໝ່';
   if(c==='conflict') return 'ມີຄົນແກ້ລາຍການນີ້ກ່ອນແລ້ວ — ໂຫຼດຂໍ້ມູນໃໝ່ແລ້ວ ກະລຸນາລອງອີກຄັ້ງ';
   if(c==='forbidden' && d==='delete_window') return 'ລຶບໄດ້ສະເພາະລາຍການທີ່ສ້າງບໍ່ເກີນ 48 ຊົ່ວໂມງ ແລະ ສນຫ ຍັງບໍ່ໄດ້ແຈ້ງຜົນ';
+  if(c==='forbidden' && d==='claimed') return 'ອາທິດນີ້ຍື່ນເຄລມແລ້ວ — ແກ້ເງິນລາຍວັນບໍ່ໄດ້. ຖ້າຕ້ອງແກ້ ແຈ້ງ ສນຫ ໃຫ້ສົ່ງເຄລມກັບມາແກ້';
+  if(c==='forbidden' && d==='claim_done') return 'ເຄລມນີ້ ສນຫ ອະນຸມັດ ຫຼື ຄືນເງິນແລ້ວ — ແກ້ບໍ່ໄດ້';
+  if(c==='forbidden' && d==='state') return 'ສະຖານະເຄລມປ່ຽນແລ້ວ — ໂຫຼດຂໍ້ມູນໃໝ່ ແລ້ວລອງອີກຄັ້ງ';
   if(c==='forbidden') return 'ບໍ່ມີສິດເຮັດລາຍການນີ້';
+  if(c==='bad_input' && d==='future') return 'ບັນທຶກລ່ວງໜ້າບໍ່ໄດ້ — ເລືອກມື້ນີ້ ຫຼື ມື້ກ່ອນ';
+  if(c==='bad_input' && d==='date') return 'ວັນທີບໍ່ຖືກຕ້ອງ';
+  if(c==='bad_input' && d==='monday') return 'ອາທິດຕ້ອງເລີ່ມວັນຈັນ';
+  if(c==='bad_input' && d==='week_open') return 'ອາທິດນີ້ຍັງບໍ່ຈົບ — ຍື່ນເຄລມໄດ້ຕັ້ງແຕ່ວັນຈັນຖັດໄປ';
+  if(c==='bad_input' && d==='no_spend') return 'ອາທິດນີ້ບໍ່ມີເງິນທີ່ໃຊ້ — ບໍ່ຕ້ອງເຄລມ';
+  if(c==='bad_input' && d==='kip') return 'ໃສ່ຍອດກີບເປັນຕົວເລກ';
+  if(c==='bad_input' && d==='reason') return 'ຂຽນເຫດຜົນທີ່ສົ່ງກັບໃຫ້ແກ້ ເພື່ອໃຫ້ສາຂາຮູ້ວ່າຕ້ອງແກ້ຫຍັງ';
   if(c==='bad_input' && d==='name') return 'ໃສ່ ຊື່ລູກຄ້າ ຫຼື ເບີໂທ ຢ່າງໜ້ອຍ 1 ຢ່າງ';
-  if(c==='bad_input' && d==='periods') return 'ຈຳນວນງວດ ຕ້ອງເປັນ 1–12';
+  if(c==='bad_input' && d==='periods') return 'ຈຳນວນເດືອນ ຕ້ອງເປັນ 1–12';
   if(c==='bad_input' && d==='invoiceDay') return 'ວັນທີສົ່ງໃບບິນ ຕ້ອງເປັນ 1–28';
   if(c==='bad_input' && d==='budget') return 'ງົບລາຍເດືອນ ຕ້ອງເປັນຕົວເລກ';
   if(c==='bad_input' && d==='number') return 'ມີຊ່ອງທີ່ຕ້ອງເປັນຕົວເລກ ແຕ່ພິມຜິດ — ກວດແລ້ວລອງໃໝ່';
@@ -1666,7 +1687,8 @@ function applyBoot(j){
   online.settings = j.settings || {};
   online.today = j.today || todayYMD();
   online.loadedAt = new Date().toISOString();
-  online.budget = Array.isArray(j.budget) ? j.budget : [];
+  online.spend = Array.isArray(j.spend) ? j.spend : [];
+  online.claims = Array.isArray(j.claims) ? j.claims : [];
   if(kindOf()==='hq' || kindOf()==='admin'){
     if(state.meta.mode==='none' || state.meta.mode==='online' || state.meta.mode==='sample' && !state._userPickedSample) useOnline(false);
   }
@@ -1697,7 +1719,7 @@ async function refresh(silent){
 }
 function logout(){
   session=null; try{ localStorage.removeItem(LS_SESSION); }catch(e){}
-  online={leads:[], settings:{}, budget:[], today:'', loadedAt:''};
+  online={leads:[], settings:{}, spend:[], claims:[], today:'', loadedAt:''};
   if(state.meta.mode==='online'){ state.rows=[]; state.meta={mode:'none', source:'', loadedAt:'', total:0, skipped:{}, dateFmt:''}; }
   editing=null; resetForm();
   setView('login');
@@ -1713,7 +1735,7 @@ function setView(v){
   $('viewAdmin').hidden = v!=='admin';
   $('viewGuide').hidden = v!=='guide';
   $('viewBudget').hidden = v!=='budget';
-  if(v==='guide'){ const k=kindOf(); document.querySelectorAll('[data-guide]').forEach(d=>{ d.open = (k==='none' ? !['terms','faq','budget'].includes(d.dataset.guide) : d.dataset.guide===k || (d.dataset.guide==='budget' && k==='hq')); }); }
+  if(v==='guide'){ const k=kindOf(); document.querySelectorAll('[data-guide]').forEach(d=>{ d.open = (k==='none' ? !['terms','faq','budget'].includes(d.dataset.guide) : d.dataset.guide===k || (d.dataset.guide==='budget' && (k==='hq' || k==='branch'))); }); }
   renderAll();
   try{ window.scrollTo({top:0}); }catch(e){}
 }
@@ -2097,226 +2119,308 @@ $('btnExport').addEventListener('click', ()=>{
 
 
 /* =====================================================================
-   BUDGET TRANSFERS & EVIDENCE (agreement v1.2, section 5)
-   period p = [start + (p-1) months, start + p months - 1 day]; transfer due on the first day of the period.
-   Money the branch still holds = all transfers so far - all spend so far (invoice; else latest Monday screenshot).
-   That balance is deducted from the next transfer; after the last period it is returned to HQ.
+   AD SPEND: the branch pays Facebook itself, logs the USD spent every day and
+   claims the kip back from HQ every week (Mon–Sun).
+   Cap = settings.usd (100) per month; month = 1 month from settings.start (else calendar month).
+   Spend over the cap cannot be claimed (the server computes usd_claimable, same rule as claimableFor).
    ===================================================================== */
-const BUDGET_STOP = 'ຢຸດໂອນງວດຖັດໄປ';
+const CLAIM_LABEL = {submitted:'ລໍ ສນຫ ກວດ', approved:'ອະນຸມັດແລ້ວ — ລໍຄືນເງິນ', rejected:'ສົ່ງກັບໃຫ້ແກ້', paid:'ຄືນເງິນແລ້ວ'};
+const CLAIM_TONE = {submitted:'info', approved:'warn', rejected:'bad', paid:'good'};
 function addMonthsYmd(ymd,n){ const [y,m,d]=ymd.split('-').map(Number); const last=new Date(Date.UTC(y,m-1+n+1,0)).getUTCDate(); return ymdFromUTC(new Date(Date.UTC(y,m-1+n,Math.min(d,last)))); }
-function projectPeriods(){
-  const s=online.settings||{}; const start=String(s.start||'');
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(start)) return [];
-  const n=Math.min(12,Math.max(1,parseInt(s.periods,10)||3)); const out=[];
-  for(let i=0;i<n;i++) out.push({p:i+1, from:addMonthsYmd(start,i), to:addDays(addMonthsYmd(start,i+1),-1), last:i===n-1});
+function shortDate(ymd){ if(!ymd) return ''; const [y,m,d]=ymd.split('-'); return d+'/'+m; }
+function fmtUsd(v){ return isNum(v) ? Number(v).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2})+' ໂດລາ' : '—'; }
+function capUsd(){ return parseNum((online.settings||{}).usd) ?? 100; }
+function projStart(){ const s=String((online.settings||{}).start||''); return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : ''; }
+function projectEnd(){ const st=projStart(); if(!st) return null; const n=Math.min(12,Math.max(1,parseInt((online.settings||{}).periods,10)||3)); return addDays(addMonthsYmd(st,n),-1); }
+function periodOf(day){
+  const st=projStart();
+  if(st && day>=st){ let k=0; while(addMonthsYmd(st,k+1)<=day) k++; return {from:addMonthsYmd(st,k), to:addDays(addMonthsYmd(st,k+1),-1), n:k+1}; }
+  const m=day.slice(0,7)+'-01'; return {from:m, to:addDays(addMonthsYmd(m,1),-1), n:0};
+}
+function mondayOf(day){ return addDays(day, -((utc(day).getUTCDay()+6)%7)); }
+function spendRows(branch){ return online.spend.filter(x=>x.branch===branch); }
+function spendMap(branch){ const m={}; spendRows(branch).forEach(x=>{ m[x.day]=x; }); return m; }
+function claimOf(branch, ws){ return online.claims.find(c=>c.branch===branch && c.week_start===ws) || null; }
+function isLocked(branch, day){ const c=claimOf(branch, mondayOf(day)); return !!(c && c.status!=='rejected'); }
+/* first day the branch is expected to log: project start, else its first record */
+function trackStart(branch){ const st=projStart(); if(st) return st; const d=spendRows(branch).map(x=>x.day).sort(); return d[0]||null; }
+function missingDays(branch, upTo){
+  const st=trackStart(branch); if(!st) return [];
+  const map=spendMap(branch), end=projectEnd(), last = end && end<upTo ? end : upTo, out=[];
+  for(let d=st; d<=last; d=addDays(d,1)) if(!map[d]) out.push(d);
   return out;
 }
-function budgetRec(branch,p){ return online.budget.find(x=>x.branch===branch && Number(x.period)===p) || null; }
-function mondaysIn(from,to){ const out=[]; let d=from; const wd=(utc(d).getUTCDay()+6)%7; if(wd) d=addDays(d,7-wd); for(;d<=to;d=addDays(d,7)) out.push(d); return out; }
-function invoiceDue(per){ const day=parseInt((online.settings||{}).invoiceDay,10); if(!(day>=1&&day<=28)) return null; return addMonth(monthKey(per.to),1)+'-'+pad(day); }
-function periodState(branch, per, prev){
-  const today=todayOnline(); const rec=budgetRec(branch,per.p); const d=(rec&&rec.data)||{};
-  const usd = parseNum(d.usd) ?? parseNum((online.settings||{}).usd) ?? 100;
-  const rate = parseNum(d.rate);
-  const plan = isNum(rate) ? Math.round(usd*rate) : null;
-  let held=0, approx=false, unknown=false;
-  prev.forEach(x=>{ if(isNum(x.transferred)) held+=x.transferred;
-    const sp = isNum(x.actual) ? x.actual : x.shotSpend;
-    if(isNum(sp)){ held-=sp; if(!isNum(x.actual)) approx=true; } else if(isNum(x.transferred)) unknown=true; });
-  const carry = Math.max(held,0);
-  const prevSt = prev.length ? prev[prev.length-1] : null;
-  const blocked = !!(prevSt && prevSt.status===BUDGET_STOP);
-  const toTransfer = (plan===null || unknown) ? null : Math.max(plan-carry,0);
-  const md = d.mondays||{};
-  const mondays = mondaysIn(per.from, per.to).map(date=>({date, s:(md[date]&&md[date].s)||'', spend:parseNum(md[date]&&md[date].spend), due:date<=today}));
-  const lastShot = mondays.filter(m=>isNum(m.spend)).pop();
-  const shotSpend = lastShot ? lastShot.spend : null;
-  const actual = parseNum(d.actual);
-  const started = today>=per.from, ended = today>per.to;
-  const due = invoiceDue(per);
-  const waitingShots = mondays.filter(m=>m.due && m.s==='');
-  const badShot = mondays.some(m=>m.s===NO);
-  const invoiceLate = !!(due && today>due && d.invoice!==YES);
-  let status, tone;
-  if(badShot || d.invoice===NO || invoiceLate){ status=BUDGET_STOP; tone='bad'; }
-  else if(!started){ status='ຍັງບໍ່ເລີ່ມ'; tone='none'; }
-  else if(!ended){ status='ກຳລັງດຳເນີນ'; tone='info'; }
-  else if(d.invoice===YES && isNum(actual) && waitingShots.length===0){ status = (isNum(plan) && actual>plan) ? 'ໃຊ້ເກີນງົບ — ກວດ' : 'ຄົບ'; tone = status==='ຄົບ' ? 'good' : 'warn'; }
-  else { status='ລໍຖ້າຫຼັກຖານ'; tone='warn'; }
-  return {per, rec, d, usd, rate, plan, carry, approx, unknown, blocked, toTransfer, transferred:parseNum(d.transferred), transferDate:d.transferDate||'',
-    mondays, waitingShots, shotSpend, actual, invoice:d.invoice||'', invoiceDate:d.invoiceDate||'', due, invoiceLate, status, tone,
-    leftover:(isNum(plan)&&isNum(actual))?plan-actual:null, started, ended, refund:parseNum(d.refund), refundDate:d.refundDate||''};
+function periodUse(branch, day){ const per=periodOf(day); let used=0; spendRows(branch).forEach(x=>{ if(x.day>=per.from && x.day<=per.to) used+=Number(x.usd); }); return {per, used, cap:capUsd()}; }
+function claimableFor(branch, ws){
+  const we=addDays(ws,6), cap=capUsd(), run={}; let c=0;
+  spendRows(branch).filter(x=>x.day>=periodOf(ws).from && x.day<=we).sort((a,b)=>a.day<b.day?-1:1).forEach(x=>{
+    const p=periodOf(x.day).from, before=run[p]||0, v=Number(x.usd); run[p]=before+v;
+    if(x.day>=ws) c+=Math.max(0, Math.min(v, cap-before)); });
+  return Math.round(c*100)/100;
 }
-function branchPeriods(branch){ const out=[]; projectPeriods().forEach(per=>out.push(periodState(branch, per, out.slice()))); return out; }
-function branchTotals(list){
-  let sent=0, spent=0, approx=false, unknown=false;
-  list.forEach(x=>{ if(isNum(x.transferred)) sent+=x.transferred; const sp=isNum(x.actual)?x.actual:x.shotSpend; if(isNum(sp)){ spent+=sp; if(!isNum(x.actual)) approx=true; } else if(x.started && isNum(x.transferred)) unknown=true; });
-  return {sent, spent, held: unknown?null:sent-spent, approx};
-}
-/* spend segments per period, used by the dashboard (cost per lead / per new customer) */
-function spendSegments(bi){
-  const today=todayOnline();
-  return branchPeriods(BRANCHES[bi]).filter(x=>x.started).map(x=>{
-    const to = x.per.to<today ? x.per.to : today;
-    if(isNum(x.actual)) return {from:x.per.from, to:x.per.to, amount:x.actual, approx:false, label:'ງວດ '+x.per.p};
-    if(isNum(x.shotSpend)) return {from:x.per.from, to, amount:x.shotSpend, approx:true, label:'ງວດ '+x.per.p};
-    return {from:x.per.from, to, amount:null, label:'ງວດ '+x.per.p};
+function weeksOf(branch){
+  const today=todayOnline(), st=trackStart(branch), set=new Set();
+  spendRows(branch).forEach(x=>set.add(mondayOf(x.day)));
+  online.claims.filter(c=>c.branch===branch).forEach(c=>set.add(c.week_start));
+  if(st){ const end=projectEnd(); for(let w=mondayOf(st); w<=today && (!end || w<=end); w=addDays(w,7)) set.add(w); }
+  return [...set].sort().reverse().map(ws=>{
+    const we=addDays(ws,6), rows=spendRows(branch).filter(x=>x.day>=ws && x.day<=we);
+    let miss=0; for(let d=ws; d<=we && d<today; d=addDays(d,1)) if(st && d>=st && !rows.some(x=>x.day===d)) miss++;
+    return {ws, we, rows, miss, usd:rows.reduce((a,x)=>a+Number(x.usd),0), done:we<today, claim:claimOf(branch,ws), claimable:claimableFor(branch,ws)};
   });
 }
-function spendForRange(segs, range){
-  const today=todayOnline();
+function refundKip(c){ const u=Number(c.usd); return u>0 ? Math.round(Number(c.kip)*Number(c.usd_claimable)/u) : 0; }
+function upsertSpend(x){ online.spend=online.spend.filter(y=>!(y.branch===x.branch && y.day===x.day)); online.spend.push(x); }
+function upsertClaim(c){ online.claims=online.claims.filter(y=>y.id!==c.id); online.claims.push(c); }
+
+/* dashboard: spend in kip for a date range. Claimed weeks use the bill rate (kip ÷ usd);
+   other weeks use settings.rate and are marked approximate. Missing past days → no number. */
+function spendDaily(bi, range){
+  const b=BRANCHES[bi], today=todayOnline();
   if(!range.from || !range.to) return {amount:null, missing:[], approx:false, missingText:''};
-  if(!projectPeriods().length) return {amount:null, missing:['start'], approx:false, missingText:'ຍັງບໍ່ໄດ້ຕັ້ງ ວັນເລີ່ມໂຄງການ'};
-  const from=range.from, to=range.to>today?today:range.to;
-  let amount=0, approx=false; const missing=[];
-  segs.forEach(sg=>{ const a=from>sg.from?from:sg.from, b=to<sg.to?to:sg.to; if(a>b) return;
-    if(sg.amount===null){ missing.push(sg.label); return; }
-    const f=dayCount(a,b)/dayCount(sg.from,sg.to); if(f<1 || sg.approx) approx=true; amount+=sg.amount*f; });
-  return {amount: missing.length?null:amount, missing, approx, missingText: missing.length ? missing.join(', ')+' ຍັງບໍ່ມີພາບໜ້າຈໍ ຫຼື ໃບບິນ' : ''};
+  const st=trackStart(b);
+  if(!st) return {amount:null, missing:['none'], approx:false, missingText:'ສາຂານີ້ຍັງບໍ່ມີບັນທຶກເງິນໂຄສະນາລາຍວັນ'};
+  const end=projectEnd();
+  const from = range.from>st ? range.from : st;
+  let to = range.to>today ? today : range.to; if(end && to>end) to=end;
+  if(from>to) return {amount:0, missing:[], approx:false, missingText:''};
+  const map=spendMap(b), rate=parseNum((online.settings||{}).rate), miss=[];
+  let amount=0, approx = to===today, noRate=false;
+  for(let d=from; d<=to; d=addDays(d,1)){
+    const x=map[d]; if(!x){ if(d<today) miss.push(d); continue; }
+    const c=claimOf(b, mondayOf(d)); let r;
+    if(c && c.status!=='rejected' && Number(c.usd)>0) r=Number(c.kip)/Number(c.usd); else { r=rate; approx=true; }
+    if(!isNum(r)){ if(Number(x.usd)>0) noRate=true; continue; }
+    amount+=Number(x.usd)*r;
+  }
+  if(miss.length) return {amount:null, missing:miss, approx, missingText:'ຂາດບັນທຶກເງິນລາຍວັນ '+miss.length+' ມື້ ('+miss.slice(0,5).map(shortDate).join(', ')+(miss.length>5?' …':'')+')'};
+  if(noRate) return {amount:null, missing:['rate'], approx, missingText:'ຍັງບໍ່ໄດ້ຕັ້ງ ອັດຕາແລກປ່ຽນ (ໃຊ້ກັບອາທິດທີ່ຍັງບໍ່ເຄລມ)'};
+  return {amount, missing:[], approx, missingText:''};
 }
 
-/* ---------- transfer view ---------- */
-let bgEdit = null;   // {branch, p}
-function shortDate(ymd){ if(!ymd) return ''; const [y,m,d]=ymd.split('-'); return d+'/'+m; }
+/* ---------- view ---------- */
+let clEdit = null;   // {branch, ws, version}
+let rvEdit = null;   // {id, act, version}
+function spBranch(){ return kindOf()==='branch' ? ROLE_INFO[session.role].branch : $('spBranch').value; }
+function spPrefill(){
+  const x=spendMap(spBranch())[$('spDay').value];
+  $('spUsd').value = x ? String(Number(x.usd)) : ''; $('spNote').value = x ? (x.note||'') : '';
+  const locked = $('spDay').value && isLocked(spBranch(), $('spDay').value);
+  $('spSave').disabled = !!locked;
+  $('spMsg').textContent = locked ? 'ອາທິດນີ້ຍື່ນເຄລມແລ້ວ — ແກ້ບໍ່ໄດ້' : x ? 'ວັນທີນີ້ບັນທຶກແລ້ວ '+fmtUsd(Number(x.usd))+' — ບັນທຶກອີກຄັ້ງ = ແກ້ໄຂ' : '';
+  $('spMsg').className='msg';
+}
 function renderBudgetView(){
   if(!session) return;
-  const k=kindOf(), canEdit = k==='hq' || k==='admin', today=todayOnline();
-  const pers=projectPeriods();
-  const s=online.settings||{};
-  $('bgProject').textContent = pers.length
-    ? 'ໂຄງການ '+showDate(pers[0].from)+' – '+showDate(pers[pers.length-1].to)+' · '+pers.length+' ງວດ · ງົບ '+fmtInt(parseNum(s.usd)??100)+' ໂດລາ/ງວດ/ສາຂາ · ສົ່ງໃບບິນພາຍໃນວັນທີ '+(s.invoiceDay||'—')+' ຂອງເດືອນຖັດໄປ'
-    : '';
+  const k=kindOf(), today=todayOnline(), yest=addDays(today,-1), cap=capUsd();
+  const canLog = k==='branch' || k==='admin', canReview = k==='hq' || k==='admin';
+  const st=projStart(), end=projectEnd();
+  $('spRule').textContent = 'ງົບ '+fmtInt(cap)+' ໂດລາ ຕໍ່ເດືອນ ຕໍ່ສາຂາ — ຫ້າມເກີນ: ໃຊ້ຮອດ '+fmtInt(cap)+' ໂດລາ ຕ້ອງຢຸດໂຄສະນາ (ສ່ວນທີ່ເກີນ ເຄລມບໍ່ໄດ້). ບັນທຶກເງິນທີ່ໃຊ້ທຸກມື້ ແລະ ຍື່ນເຄລມທຸກວັນຈັນ ສຳລັບອາທິດທີ່ຜ່ານມາ (ຈັນ–ອາທິດ).'
+    + (st ? ' ໂຄງການ '+showDate(st)+' – '+showDate(end)+'.' : '');
   const branches = k==='branch' ? [ROLE_INFO[session.role].branch] : BRANCHES;
-  const alerts=[];
-  if(!pers.length) alerts.push({m: k==='admin' ? 'ຍັງບໍ່ໄດ້ຕັ້ງ ວັນເລີ່ມໂຄງການ — ຕັ້ງໃນແຖບ ແອດມິນ → ໄລຍະໂຄງການ' : 'ແອດມິນຍັງບໍ່ໄດ້ຕັ້ງ ວັນເລີ່ມໂຄງການ'});
-  if(pers.length && !s.invoiceDay) alerts.push({m:'ຍັງບໍ່ໄດ້ຕັ້ງ ກຳນົດສົ່ງໃບບິນ Facebook — ລະບົບຍັງກວດໃບບິນເກີນກຳນົດບໍ່ໄດ້', t:'info'});
+  $('spFormWrap').hidden = !canLog;
+  $('spBrWrap').hidden = k!=='admin';
+  if(canLog){
+    if(!$('spBranch').options.length) $('spBranch').innerHTML = BRANCHES.map(b=>`<option>${esc(b)}</option>`).join('');
+    $('spDay').max = today; if(st) $('spDay').min = st;
+    if(!$('spDay').value){ $('spDay').value = today; }
+    if(document.activeElement!==$('spUsd') && document.activeElement!==$('spNote')) spPrefill();
+  }
+  const alerts=[], pre = b => k==='branch' ? '' : b+': ';
   const html = branches.map(b=>{
-    const list=branchPeriods(b), tot=branchTotals(list);
-    list.forEach((x,i)=>{
-      const soon = x.per.from<=addDays(today,3) && !x.ended;
-      if(k!=='branch'){
-        if(soon && !isNum(x.transferred)){
-          if(x.blocked) alerts.push({m:'ຫ້າມໂອນ ງວດ '+x.per.p+' ໃຫ້ '+b+' — ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ'});
-          else if(isNum(x.toTransfer)) alerts.push({m:'ໂອນງົບ ງວດ '+x.per.p+' ໃຫ້ '+b+': '+fmtKip(x.toTransfer)+' (ກຳນົດ '+showDate(x.per.from)+')', t:'info'});
-          else alerts.push({m:'ງວດ '+x.per.p+' ຂອງ '+b+': '+(x.unknown?'ຍັງບໍ່ຮູ້ເງິນເຫຼືອງວດກ່ອນ — ບັນທຶກພາບໜ້າຈໍ ຫຼື ໃບບິນກ່ອນ':'ໃສ່ອັດຕາແລກປ່ຽນເພື່ອຄຳນວນຍອດໂອນ'), t:'info'});
-        }
-        if(x.invoiceLate) alerts.push({m:'ໃບບິນ Facebook ງວດ '+x.per.p+' ຂອງ '+b+' ເກີນກຳນົດ '+showDate(x.due)+' → ຢຸດໂອນງວດຖັດໄປ'});
-      }else{
-        const nextMon = x.mondays.find(m=>m.date>=today);
-        if(x.started && !x.ended && nextMon) alerts.push({m:'ສົ່ງພາບໜ້າຈໍຜົນໂຄສະນາ (ເງິນທີ່ໃຊ້ · ຄົນເຫັນ · ຂໍ້ຄວາມ) ໃຫ້ ສນຫ ວັນຈັນ '+showDate(nextMon.date)+' ກ່ອນ 10:00', t:'info'});
-        if(x.ended && x.invoice!==YES && x.due && !x.invoiceLate) alerts.push({m:'ສົ່ງໃບບິນ Facebook ງວດ '+x.per.p+' ໃຫ້ ສນຫ ພາຍໃນ '+showDate(x.due), t:'info'});
-        if(x.status===BUDGET_STOP) alerts.push({m:'ງວດ '+x.per.p+': ຫຼັກຖານຍັງບໍ່ຄົບ — ສົ່ງໃຫ້ ສນຫ ເພື່ອໃຫ້ໂອນງວດຖັດໄປໄດ້'});
-      }
-    });
-    const waiting=list.flatMap(x=>x.waitingShots.map(m=>m.date));
-    if(k!=='branch' && waiting.length) alerts.push({m:'ພາບໜ້າຈໍວັນຈັນ ຂອງ '+b+' ຍັງບໍ່ໄດ້ບັນທຶກ '+waiting.length+' ຄັ້ງ: '+waiting.map(shortDate).join(', ')});
-    const lastP=list[list.length-1];
-    if(lastP && lastP.ended && isNum(tot.held) && tot.held>0 && !isNum(lastP.refund)) alerts.push({m:b+' ຕ້ອງສົ່ງຄືນເງິນເຫຼືອ '+fmtKip(tot.held)+(tot.approx?' (ປະມານ — ຕົວເລກສຸດທ້າຍຕາມໃບບິນ)':'')+' ໃຫ້ ສນຫ (ຈົບໂຄງການ)'});
+    const u=periodUse(b,today), pct = u.cap>0 ? u.used/u.cap : 0;
+    if(end && today>end){ /* project over: no cap alerts */ }
+    else if(pct>=1) alerts.push({m:pre(b)+'ໃຊ້ຄົບ '+fmtUsd(u.cap)+' ຂອງເດືອນນີ້ແລ້ວ — ຕ້ອງຢຸດໂຄສະນາ ໃນ Ads Manager ທັນທີ'+(u.used>u.cap?' (ສ່ວນເກີນ '+fmtUsd(u.used-u.cap)+' ເຄລມບໍ່ໄດ້)':'')});
+    else if(pct>=0.8) alerts.push({m:pre(b)+'ໃຊ້ແລ້ວ '+Math.round(pct*100)+'% ຂອງງົບເດືອນນີ້ — ເຫຼືອ '+fmtUsd(u.cap-u.used)+'. ກວດວົງເງິນໃນ Ads Manager ບໍ່ໃຫ້ເກີນ', t:'info'});
+    const miss=missingDays(b, yest);
+    if(miss.length) alerts.push({m:pre(b)+'ຍັງບໍ່ໄດ້ບັນທຶກເງິນທີ່ໃຊ້ '+miss.length+' ມື້: '+miss.slice(-7).map(shortDate).join(', ')+(miss.length>7?' …':'')});
+    const weeks=weeksOf(b);
+    const toClaim=weeks.filter(w=>w.done && w.usd>0 && !w.claim);
+    if(toClaim.length && k!=='hq') alerts.push({m:pre(b)+'ຍື່ນເຄລມໄດ້ '+toClaim.length+' ອາທິດ: '+toClaim.map(w=>shortDate(w.ws)+'–'+shortDate(w.we)).join(', '), t:'info'});
+    weeks.filter(w=>w.claim && w.claim.status==='rejected').forEach(w=>{ if(k!=='hq') alerts.push({m:pre(b)+'ເຄລມອາທິດ '+shortDate(w.ws)+'–'+shortDate(w.we)+' ຖືກສົ່ງກັບໃຫ້ແກ້'+(w.claim.hq_note?': '+w.claim.hq_note:'')}); });
+    if(canReview){
+      const sub=weeks.filter(w=>w.claim && w.claim.status==='submitted'), apr=weeks.filter(w=>w.claim && w.claim.status==='approved');
+      if(sub.length) alerts.push({m:b+': ເຄລມລໍກວດ '+sub.length+' ອາທິດ ('+sub.map(w=>shortDate(w.ws)).join(', ')+')', t:'info'});
+      if(apr.length) alerts.push({m:b+': ອະນຸມັດແລ້ວ ລໍຄືນເງິນ '+apr.length+' ອາທິດ — ລວມ '+fmtKip(apr.reduce((a,w)=>a+refundKip(w.claim),0)), t:'info'});
+    }
+    const mine=online.claims.filter(c=>c.branch===b);
+    const waitKip=mine.filter(c=>c.status==='submitted'||c.status==='approved').reduce((a,c)=>a+refundKip(c),0);
+    const paidKip=mine.filter(c=>c.status==='paid').reduce((a,c)=>a+Number(c.paid_kip||0),0);
     const kp=(t,v,u,cls)=>`<div class="${cls||''}"><dt>${t}</dt><dd class="tab">${v}${u&&v!=='—'?`<span class="u">${u}</span>`:''}</dd></div>`;
-    const cards = list.map(x=>{
-      const chips = x.mondays.length ? x.mondays.map(m=>{
-        const cls = m.s===YES?'ok':m.s===NO?'no':(m.due?'due':'');
-        const sym = m.s===YES?'✓':m.s===NO?'✗':(m.due?'ລໍຖ້າ':'·');
-        return `<span class="mchip ${cls}" title="${m.s===YES?'ໄດ້ຮັບ':m.s===NO?'ບໍ່ໄດ້ຮັບ':m.due?'ຍັງບໍ່ໄດ້ບັນທຶກ':'ຍັງບໍ່ຮອດ'}">${sym} ${shortDate(m.date)}${isNum(m.spend)?' · '+fmtInt(m.spend):''}</span>`;
-      }).join('') : '<span class="muted small">ບໍ່ມີວັນຈັນໃນງວດນີ້</span>';
-      const planTxt = isNum(x.plan) ? `${fmtInt(x.usd)} ໂດລາ × ${fmtInt(x.rate)} = <b>${fmtKip(x.plan)}</b>` : `${fmtInt(x.usd)} ໂດລາ · <span class="nodata">ຍັງບໍ່ໄດ້ໃສ່ອັດຕາແລກປ່ຽນ</span>`;
-      const carryTxt = x.per.p===1 ? '0 ກີບ' : x.unknown ? '<span class="nodata">ຍັງບໍ່ຮູ້ — ລໍພາບໜ້າຈໍ ຫຼື ໃບບິນງວດກ່ອນ</span>' : fmtKip(x.carry)+(x.approx?' (ປະມານ ຈາກພາບໜ້າຈໍ)':'');
-      const toTxt = x.blocked ? '<span class="spill bad">ຫ້າມໂອນ — ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ</span>' : isNum(x.toTransfer) ? fmtKip(x.toTransfer) : '—';
-      const sentTxt = isNum(x.transferred) ? fmtKip(x.transferred)+(x.transferDate?' · '+showDate(x.transferDate):'') : 'ຍັງບໍ່ໂອນ · ກຳນົດ '+showDate(x.per.from);
-      const invTxt = x.invoice===YES ? 'ໄດ້ຮັບ'+(x.invoiceDate?' '+showDate(x.invoiceDate):'')+(isNum(x.actual)?' · ໃຊ້ຈິງ <b>'+fmtKip(x.actual)+'</b>':' · <span class="nodata">ຍັງບໍ່ໃສ່ຈຳນວນ</span>')
-                   : x.invoice===NO ? '<span class="spill bad">ບໍ່ສົ່ງ / ບໍ່ຖືກຕ້ອງ</span>'
-                   : 'ຍັງບໍ່ໄດ້ຮັບ'+(x.due?' · ກຳນົດ '+showDate(x.due):'')+(x.invoiceLate?' <span class="spill bad">ເກີນກຳນົດ</span>':'');
-      const leftTxt = isNum(x.leftover) ? fmtKip(x.leftover)+(x.leftover<0?' (ໃຊ້ເກີນ)':'') : '—';
-      const refundTxt = x.per.last && x.ended ? `<div><dt>ສົ່ງຄືນ ສນຫ</dt><dd>${isNum(x.refund)?fmtKip(x.refund)+(x.refundDate?' · '+showDate(x.refundDate):''):(isNum(tot.held)?(tot.held>0?'ຕ້ອງສົ່ງຄືນ '+fmtKip(tot.held)+(tot.approx?' (ປະມານ — ລໍໃບບິນ)':''):'ບໍ່ມີເງິນເຫຼືອ'):'—')}</dd></div>` : '';
-      return `<article class="pcard t-${x.tone}">
-        <div class="lead-top"><b>ງວດທີ ${x.per.p} · ${showDate(x.per.from)} – ${showDate(x.per.to)}</b><span class="spill ${x.tone}">${esc(x.status)}</span></div>
-        <dl class="pgrid">
-          <div><dt>ງົບຕາມແຜນ</dt><dd class="tab">${planTxt}</dd></div>
-          <div><dt>ຫັກເງິນເຫຼືອທີ່ສາຂາຖືຢູ່</dt><dd class="tab">${carryTxt}</dd></div>
-          <div><dt>ຍອດທີ່ຕ້ອງໂອນ</dt><dd class="big tab">${toTxt}</dd></div>
-          <div><dt>ໂອນແລ້ວ</dt><dd class="tab">${sentTxt}</dd></div>
-          <div><dt>ພາບໜ້າຈໍວັນຈັນ</dt><dd><span class="mchips">${chips}</span></dd></div>
-          <div><dt>ໃບບິນ Facebook</dt><dd class="tab">${invTxt}</dd></div>
-          <div><dt>ງົບເຫຼືອ (ແຜນ − ໃຊ້ຈິງ)</dt><dd class="tab">${leftTxt}</dd></div>
-          ${refundTxt}
-        </dl>
-        ${x.d.note?`<div class="lead-meta">ໝາຍເຫດ: ${esc(x.d.note)}</div>`:''}
-        ${canEdit?`<div class="lead-acts"><button class="btn" data-bg-edit="${esc(b)}" data-p="${x.per.p}">ບັນທຶກ / ແກ້ໄຂ</button></div>`:''}
+    const barCls = pct>=1 ? 'bad' : pct>=0.8 ? 'warn' : '';
+    /* last 14 days */
+    const map=spendMap(b), first=trackStart(b), days=[];
+    for(let i=13;i>=0;i--){ const d=addDays(today,-i); if(first && d<first) continue; if(end && d>end) continue; days.push(d); }
+    const chips = days.map(d=>{
+      const x=map[d], lock=isLocked(b,d);
+      const cls = x ? (lock?'lock':'ok') : (d<today?'due':'');
+      const txt = shortDate(d)+' · '+(x ? Number(x.usd).toFixed(2) : (d<today?'ຍັງບໍ່ບັນທຶກ':'—'));
+      const title = x ? (lock?'ຍື່ນເຄລມແລ້ວ':'ບັນທຶກແລ້ວ')+(x.note?' — '+x.note:'') : (d<today?'ຍັງບໍ່ໄດ້ບັນທຶກ':'ມື້ນີ້');
+      return canLog && !lock ? `<button type="button" class="mchip ${cls}" data-sp-day="${d}" data-sp-br="${esc(b)}" title="${esc(title)}">${txt}</button>`
+                             : `<span class="mchip ${cls}" title="${esc(title)}">${txt}</span>`;
+    }).join('');
+    /* weeks */
+    const cards = weeks.slice(0,8).map(w=>{
+      const c=w.claim;
+      let status, tone;
+      if(c){ status=CLAIM_LABEL[c.status]||c.status; tone=CLAIM_TONE[c.status]||'none'; }
+      else if(!w.done){ status='ອາທິດນີ້ — ກຳລັງດຳເນີນ'; tone='info'; }
+      else if(w.usd===0 && !w.miss){ status='ບໍ່ມີເງິນໃຊ້'; tone='none'; }
+      else { status='ຍັງບໍ່ຍື່ນເຄລມ'; tone='warn'; }
+      const cUsd = c ? Number(c.usd) : w.usd, cOk = c ? Number(c.usd_claimable) : w.claimable;
+      const over = cUsd - cOk;
+      const rows = [
+        `<div><dt>ເງິນທີ່ໃຊ້</dt><dd class="big tab">${fmtUsd(cUsd)}</dd></div>`,
+        over>0.004 ? `<div><dt>ເຄລມໄດ້</dt><dd class="tab">${fmtUsd(cOk)} <span class="spill bad">ເກີນງົບ ${fmtUsd(over)} ເຄລມບໍ່ໄດ້</span></dd></div>` : '',
+        w.miss ? `<div><dt>ຂາດບັນທຶກ</dt><dd><span class="nodata">${w.miss} ມື້</span></dd></div>` : '',
+        c ? `<div><dt>ຍອດກີບຕາມໃບບິນ</dt><dd class="tab">${fmtKip(Number(c.kip))}${c.ref?' · '+esc(c.ref):''}</dd></div>` : '',
+        c ? `<div><dt>ຍອດທີ່ຈະໄດ້ຄືນ</dt><dd class="tab"><b>${fmtKip(refundKip(c))}</b></dd></div>` : '',
+        c && c.status==='paid' ? `<div><dt>ຄືນແລ້ວ</dt><dd class="tab">${fmtKip(Number(c.paid_kip))}${c.paid_date?' · '+showDate(c.paid_date):''}</dd></div>` : '',
+        c && c.hq_note ? `<div><dt>ໝາຍເຫດ ສນຫ</dt><dd>${esc(c.hq_note)}</dd></div>` : '',
+      ].join('');
+      const acts=[];
+      if(canLog && w.done && w.usd>0 && (!c || c.status==='submitted' || c.status==='rejected')){
+        const lbl = !c ? 'ຍື່ນເຄລມ' : c.status==='rejected' ? 'ແກ້ ແລະ ຍື່ນໃໝ່' : 'ແກ້ເຄລມ';
+        acts.push(`<button class="btn${!c||c.status==='rejected'?' primary':''}" data-cl="${w.ws}" data-cl-br="${esc(b)}">${lbl}</button>`);
+      }
+      if(canReview && c && c.status==='submitted') acts.push(`<button class="btn primary" data-rv="approve" data-id="${c.id}">ອະນຸມັດ</button>`);
+      if(canReview && c && c.status==='approved') acts.push(`<button class="btn primary" data-rv="paid" data-id="${c.id}">ບັນທຶກວ່າຄືນເງິນແລ້ວ</button>`);
+      if(canReview && c && (c.status==='submitted' || c.status==='approved')) acts.push(`<button class="btn" data-rv="reject" data-id="${c.id}">ສົ່ງກັບໃຫ້ແກ້</button>`);
+      return `<article class="pcard t-${tone}">
+        <div class="lead-top"><b>ອາທິດ ${shortDate(w.ws)} – ${showDate(w.we)}</b><span class="spill ${tone}">${esc(status)}</span></div>
+        <dl class="pgrid">${rows}</dl>
+        ${acts.length?`<div class="lead-acts">${acts.join('')}</div>`:''}
       </article>`;
     }).join('');
+    const perTxt = u.per.n ? 'ເດືອນທີ '+u.per.n+' ('+showDate(u.per.from)+' – '+showDate(u.per.to)+')' : 'ເດືອນນີ້ ('+showDate(u.per.from)+' – '+showDate(u.per.to)+')';
     return `<section class="bsec">
       <h2>ສາຂາ ${esc(b)}</h2>
-      <dl class="kpis">${kp('ໂອນແລ້ວລວມ',fmtInt(tot.sent),'ກີບ')}${kp('ໃຊ້ຈິງລວມ'+(tot.approx?' *':''),fmtInt(tot.spent),'ກີບ')}${kp('ເງິນທີ່ສາຂາຖືຢູ່', isNum(tot.held)?fmtInt(tot.held):'—','ກີບ','hl')}</dl>
-      ${tot.approx?'<p class="hint">* ບາງງວດຍັງບໍ່ມີໃບບິນ ໃຊ້ຕົວເລກຈາກພາບໜ້າຈໍວັນຈັນລ່າສຸດ</p>':''}
-      ${list.length?`<div class="pcards">${cards}</div>`:'<div class="empty">ຍັງບໍ່ມີງວດ — ຕັ້ງ ວັນເລີ່ມໂຄງການ ກ່ອນ</div>'}
+      <dl class="kpis">${kp('ໃຊ້ແລ້ວ '+(u.per.n?'ເດືອນທີ '+u.per.n:'ເດືອນນີ້'), u.used.toFixed(2), '/ '+fmtInt(u.cap)+' ໂດລາ', pct>=1?'warn':'hl')}${kp('ເຫຼືອ', Math.max(u.cap-u.used,0).toFixed(2), 'ໂດລາ')}${kp('ລໍຄືນເງິນ', fmtInt(waitKip), 'ກີບ')}${kp('ຄືນແລ້ວລວມ', fmtInt(paidKip), 'ກີບ')}</dl>
+      <div class="capbar ${barCls}" role="progressbar" aria-label="ງົບທີ່ໃຊ້ ${esc(perTxt)}" aria-valuemin="0" aria-valuemax="${u.cap}" aria-valuenow="${Math.min(u.used,u.cap).toFixed(2)}"><span style="width:${Math.min(pct,1)*100}%"></span></div>
+      <p class="small muted">${esc(perTxt)}</p>
+      <h3>14 ມື້ລ່າສຸດ (ໂດລາ)</h3>
+      ${days.length?`<div class="days">${chips}</div>`:'<div class="empty">ຍັງບໍ່ມີບັນທຶກ</div>'}
+      ${canLog && days.length?'<p class="hint">ກົດມື້ເພື່ອບັນທຶກ ຫຼື ແກ້ໄຂ. ສີເຫຼືອງ = ຍັງບໍ່ໄດ້ບັນທຶກ, ສີເທົາ = ຍື່ນເຄລມແລ້ວ</p>':''}
+      <h3>ເຄລມລາຍອາທິດ</h3>
+      ${cards?`<div class="pcards">${cards}</div>`:'<div class="empty">ຍັງບໍ່ມີອາທິດທີ່ມີເງິນໃຊ້</div>'}
     </section>`;
   }).join('');
   $('bgAlerts').innerHTML = alerts.map(a=>`<div class="alert ${a.t||''}"><span class="dot" aria-hidden="true"></span><div><p>${esc(a.m)}</p></div></div>`).join('');
   $('bgBranches').innerHTML = html;
-  if(bgEdit && !canEdit) closeBgForm();
+  if(clEdit && !canLog) closeClaim();
+  if(rvEdit && !canReview) closeReview();
 }
-function closeBgForm(){ bgEdit=null; $('bgFormWrap').hidden=true; }
-function bgCalc(){
-  if(!bgEdit) return;
-  const usd=parseNum($('bfUsd').value), rate=parseNum($('bfRate').value);
-  const x = branchPeriods(bgEdit.branch).find(y=>y.per.p===bgEdit.p);
-  const plan = isNum(usd)&&isNum(rate) ? Math.round(usd*rate) : null;
-  const to = (plan===null || !x || x.unknown) ? null : Math.max(plan - x.carry, 0);
-  bgEdit.to = to;
-  $('bfCalc').textContent = x && x.blocked ? 'ຫ້າມໂອນງວດນີ້ — ຫຼັກຖານງວດກ່ອນບໍ່ຄົບ' :
-    plan===null ? 'ໃສ່ ງົບ ແລະ ອັດຕາແລກປ່ຽນ ເພື່ອຄຳນວນຍອດທີ່ຕ້ອງໂອນ' :
-    'ງົບຕາມແຜນ '+fmtKip(plan)+' − ເງິນເຫຼືອທີ່ສາຂາຖືຢູ່ '+(x.unknown?'(ຍັງບໍ່ຮູ້)':fmtKip(x.carry))+' = ຍອດທີ່ຕ້ອງໂອນ '+(isNum(to)?fmtKip(to):'—');
-  $('bfFill').disabled = !isNum(to) || (x && x.blocked);
-}
-function openBgForm(branch, p){
-  const x = branchPeriods(branch).find(y=>y.per.p===p); if(!x) return;
-  bgEdit = {branch, p, version: x.rec ? x.rec.version : 0};
-  const d=x.d;
-  $('bgFormTitle').textContent = 'ບັນທຶກ: ສາຂາ '+branch+' · ງວດທີ '+p+' ('+showDate(x.per.from)+' – '+showDate(x.per.to)+')';
-  $('bfUsd').value = d.usd || (online.settings.usd || '100');
-  $('bfRate').value = d.rate || (online.settings.rate || '');
-  $('bfDate').value = d.transferDate || ''; $('bfAmt').value = d.transferred || ''; $('bfNote1').value = d.transferNote || '';
-  $('bfInv').value = d.invoice || ''; $('bfInvDate').value = d.invoiceDate || ''; $('bfActual').value = d.actual || '';
-  $('bfRefundBox').hidden = !x.per.last; $('bfRefund').value = d.refund || ''; $('bfRefundDate').value = d.refundDate || '';
-  $('bfNote').value = d.note || '';
-  ['bfDate','bfInvDate','bfRefundDate'].forEach(id=>$(id).max=todayOnline());
-  $('bfMondays').innerHTML = x.mondays.length ? x.mondays.map(m=>`<div class="mrow" data-date="${m.date}">
-      <span class="tab"><b>${showDate(m.date)}</b>${m.due?'':' <span class="muted small">(ຍັງບໍ່ຮອດ)</span>'}</span>
-      <select aria-label="ພາບໜ້າຈໍ ${showDate(m.date)}"><option value="">ລໍຖ້າ / ຍັງບໍ່ໄດ້ບັນທຶກ</option><option value="ແມ່ນ" ${m.s===YES?'selected':''}>ໄດ້ຮັບ</option><option value="ບໍ່" ${m.s===NO?'selected':''}>ບໍ່ໄດ້ຮັບ</option></select>
-      <input inputmode="numeric" autocomplete="off" placeholder="ເງິນທີ່ໃຊ້ຮອດວັນນີ້ (ກີບ)" aria-label="ເງິນທີ່ໃຊ້ຮອດ ${showDate(m.date)} (ກີບ)" value="${isNum(m.spend)?m.spend:''}">
-    </div>`).join('') : '<p class="hint">ບໍ່ມີວັນຈັນໃນງວດນີ້</p>';
-  $('bfMsg').textContent=''; $('bgFormWrap').hidden=false; bgCalc();
-  $('bgFormWrap').scrollIntoView({behavior:SMOOTH, block:'start'});
-}
-$('bgBranches').addEventListener('click', e=>{ const b=e.target.closest('[data-bg-edit]'); if(b) openBgForm(b.dataset.bgEdit, Number(b.dataset.p)); });
-$('bgCancel').addEventListener('click', closeBgForm);
-['bfUsd','bfRate'].forEach(id=>$(id).addEventListener('input', bgCalc));
-$('bfFill').addEventListener('click', ()=>{ if(bgEdit && isNum(bgEdit.to)){ $('bfAmt').value=String(bgEdit.to); if(!$('bfDate').value) $('bfDate').value=todayOnline(); } });
-$('bgForm').addEventListener('submit', async e=>{
-  e.preventDefault(); if(!bgEdit) return;
-  const m=$('bfMsg'); const bad=(t,id)=>{ m.textContent=t; m.className='msg err'; if(id) $(id).focus(); };
-  for(const [id,label] of [['bfUsd','ງົບ'],['bfRate','ອັດຕາແລກປ່ຽນ'],['bfAmt','ຈຳນວນທີ່ໂອນ'],['bfActual','ເງິນທີ່ໃຊ້ຈິງ'],['bfRefund','ຈຳນວນສົ່ງຄືນ']]){
-    const v=$(id).value.trim(); if(v && parseNum(v)===null) return bad(label+' ຕ້ອງເປັນຕົວເລກ', id);
-  }
-  if($('bfInv').value===YES && !$('bfActual').value.trim()) return bad('ໄດ້ຮັບໃບບິນແລ້ວ — ໃສ່ ເງິນທີ່ໃຊ້ຈິງຕາມໃບບິນ ດ້ວຍ', 'bfActual');
-  const mondays={};
-  for(const row of $('bfMondays').querySelectorAll('.mrow')){
-    const sel=row.querySelector('select').value, sp=row.querySelector('input').value.trim();
-    if(sp && parseNum(sp)===null) return bad('ເງິນທີ່ໃຊ້ ວັນຈັນ '+showDate(row.dataset.date)+' ຕ້ອງເປັນຕົວເລກ');
-    if(sel || sp) mondays[row.dataset.date]={s:sel, spend:sp?String(parseNum(sp)):''};
-  }
-  const num=id=>{ const v=$(id).value.trim(); return v?String(parseNum(v)):''; };
-  const data={usd:num('bfUsd'), rate:num('bfRate'), transferDate:$('bfDate').value, transferred:num('bfAmt'), transferNote:$('bfNote1').value.trim(),
-    mondays, invoice:$('bfInv').value, invoiceDate:$('bfInvDate').value, actual:num('bfActual'),
-    refund:num('bfRefund'), refundDate:$('bfRefundDate').value, note:$('bfNote').value.trim()};
-  $('bfSave').disabled=true; m.textContent='ກຳລັງບັນທຶກ...'; m.className='msg';
+
+/* daily spend form */
+$('spDay').addEventListener('change', spPrefill);
+$('spBranch').addEventListener('change', ()=>{ spPrefill(); });
+$('spForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const m=$('spMsg'); const bad=(t,id)=>{ m.textContent=t; m.className='msg err'; if(id) $(id).focus(); };
+  const branch=spBranch(), day=$('spDay').value, today=todayOnline();
+  if(!day) return bad('ເລືອກວັນທີ', 'spDay');
+  if(day>today) return bad('ບັນທຶກລ່ວງໜ້າບໍ່ໄດ້ — ເລືອກມື້ນີ້ ຫຼື ມື້ກ່ອນ', 'spDay');
+  const v=$('spUsd').value.trim(), usd=parseNum(v);
+  if(v==='' || usd===null || usd<0) return bad('ໃສ່ເງິນທີ່ໃຊ້ເປັນໂດລາ (ມື້ທີ່ບໍ່ໄດ້ຍິງ ໃສ່ 0)', 'spUsd');
+  if(usd>1000) return bad('ຕົວເລກສູງເກີນ — ກວດວ່າໃສ່ເປັນໂດລາ ບໍ່ແມ່ນກີບ', 'spUsd');
+  if(isLocked(branch, day)) return bad('ອາທິດນີ້ຍື່ນເຄລມແລ້ວ — ແກ້ບໍ່ໄດ້');
+  const cur=spendMap(branch)[day];
+  $('spSave').disabled=true; m.textContent='ກຳລັງບັນທຶກ...'; m.className='msg';
   try{
-    const j=await api('saveBudget',{branch:bgEdit.branch, period:bgEdit.p, version:bgEdit.version, data});
-    online.budget = online.budget.filter(x=>!(x.branch===j.budget.branch && Number(x.period)===Number(j.budget.period)));
-    online.budget.push(j.budget);
-    toast('ບັນທຶກແລ້ວ'); closeBgForm(); renderBudgetView();
+    const j=await api('saveSpend',{branch, day, usd, note:$('spNote').value.trim(), version: cur?cur.version:0});
+    upsertSpend(j.spend);
+    const u=periodUse(branch, day);
+    renderBudgetView(); render();
+    m.textContent = 'ບັນທຶກແລ້ວ ✓ '+showDate(day)+' '+fmtUsd(usd)+' · ເດືອນນີ້ໃຊ້ແລ້ວ '+fmtUsd(u.used)+' / '+fmtUsd(u.cap);
+    m.className = 'msg ok';
+    if(u.used>=u.cap) toast('ຮອດ '+fmtInt(u.cap)+' ໂດລາ ແລ້ວ — ຕ້ອງຢຸດໂຄສະນາ ໃນ Ads Manager ທັນທີ', true);
   }catch(err){ bad(errText(err)); if(err.code==='conflict') refresh(true); }
-  finally{ $('bfSave').disabled=false; }
+  finally{ $('spSave').disabled=false; }
+});
+
+/* weekly claim form (branch / admin) */
+function closeClaim(){ clEdit=null; $('clFormWrap').hidden=true; }
+function clPreviewUpdate(){
+  if(!clEdit) return;
+  const kip=parseNum($('clKip').value), w=clEdit.w;
+  if(!isNum(kip) || kip<=0){ $('clPreview').textContent=''; return; }
+  const back = w.usd>0 ? Math.round(kip*w.claimable/w.usd) : 0;
+  $('clPreview').textContent = 'ອັດຕາຕາມໃບບິນ ≈ '+fmtInt(kip/w.usd)+' ກີບ/ໂດລາ · ຍອດທີ່ຈະໄດ້ຄືນ ≈ '+fmtKip(back);
+}
+function openClaim(branch, ws){
+  const w=weeksOf(branch).find(x=>x.ws===ws); if(!w) return;
+  closeReview();
+  clEdit={branch, ws, w, version: w.claim ? w.claim.version : 0};
+  $('clTitle').textContent='ຍື່ນເຄລມ: '+branch+' · ອາທິດ '+showDate(w.ws)+' – '+showDate(w.we);
+  const over=w.usd-w.claimable;
+  $('clCalc').textContent='ເງິນທີ່ໃຊ້ອາທິດນີ້ '+fmtUsd(w.usd)+' (ຕາມບັນທຶກລາຍວັນ)'+(over>0.004?' · ເຄລມໄດ້ '+fmtUsd(w.claimable)+' — ສ່ວນທີ່ເກີນງົບ '+fmtUsd(over)+' ເຄລມບໍ່ໄດ້':'')+(w.miss?' · ຍັງຂາດບັນທຶກ '+w.miss+' ມື້ — ບັນທຶກໃຫ້ຄົບກ່ອນຍື່ນ':'');
+  $('clKip').value = w.claim ? String(Number(w.claim.kip)) : ''; $('clRef').value = w.claim ? (w.claim.ref||'') : '';
+  $('clSave').disabled = !!w.miss;
+  $('clMsg').textContent=''; $('clFormWrap').hidden=false; clPreviewUpdate();
+  $('clFormWrap').scrollIntoView({behavior:SMOOTH, block:'start'}); if(!w.miss) $('clKip').focus({preventScroll:true});
+}
+$('clCancel').addEventListener('click', closeClaim);
+$('clKip').addEventListener('input', clPreviewUpdate);
+$('clForm').addEventListener('submit', async e=>{
+  e.preventDefault(); if(!clEdit) return;
+  const m=$('clMsg'); const bad=(t,id)=>{ m.textContent=t; m.className='msg err'; if(id) $(id).focus(); };
+  const kip=parseNum($('clKip').value);
+  if(!isNum(kip) || kip<=0) return bad('ໃສ່ຍອດກີບ ຕາມໃບບິນ ຫຼື ລາຍການບັດ', 'clKip');
+  const rate=kip/clEdit.w.usd;
+  if(rate<5000 || rate>60000) return bad('ຍອດກີບ ÷ ໂດລາ = '+fmtInt(rate)+' ກີບ/ໂດລາ — ຜິດປົກກະຕິ. ກວດວ່າໃສ່ຍອດກີບຂອງອາທິດນີ້ຖືກຕ້ອງ', 'clKip');
+  $('clSave').disabled=true; m.textContent='ກຳລັງສົ່ງ...'; m.className='msg';
+  try{
+    const j=await api('submitClaim',{branch:clEdit.branch, weekStart:clEdit.ws, kip, ref:$('clRef').value.trim(), version:clEdit.version});
+    upsertClaim(j.claim); toast('ຍື່ນເຄລມແລ້ວ — ລໍ ສນຫ ກວດ'); closeClaim(); renderBudgetView(); render();
+  }catch(err){ bad(errText(err)); if(err.code==='conflict') refresh(true); }
+  finally{ $('clSave').disabled=false; }
+});
+
+/* HQ review */
+function closeReview(){ rvEdit=null; $('rvFormWrap').hidden=true; }
+function openReview(id, act){
+  const c=online.claims.find(x=>x.id===id); if(!c) return;
+  closeClaim();
+  rvEdit={id, act, version:c.version};
+  $('rvTitle').textContent=(act==='paid'?'ບັນທຶກການຄືນເງິນ':'ສົ່ງເຄລມກັບໃຫ້ແກ້')+': '+c.branch+' · ອາທິດ '+showDate(c.week_start)+' – '+showDate(addDays(c.week_start,6));
+  $('rvInfo').textContent='ເງິນທີ່ໃຊ້ '+fmtUsd(Number(c.usd))+' · ເຄລມໄດ້ '+fmtUsd(Number(c.usd_claimable))+' · ຍອດກີບຕາມໃບບິນ '+fmtKip(Number(c.kip))+(c.ref?' ('+c.ref+')':'')+' · ຍອດທີ່ຕ້ອງຄືນ '+fmtKip(refundKip(c));
+  $('rvKipWrap').hidden = $('rvDateWrap').hidden = act!=='paid';
+  $('rvKip').value = act==='paid' ? String(refundKip(c)) : ''; $('rvDate').value = todayOnline(); $('rvDate').max = todayOnline();
+  $('rvNoteLbl').textContent = act==='reject' ? 'ເຫດຜົນ / ສິ່ງທີ່ສາຂາຕ້ອງແກ້' : 'ໝາຍເຫດ (ເຊັ່ນ ເລກອ້າງອີງການໂອນ)';
+  $('rvNote').value=''; $('rvMsg').textContent='';
+  $('rvSave').textContent = act==='reject' ? 'ສົ່ງກັບໃຫ້ແກ້' : 'ບັນທຶກວ່າຄືນເງິນແລ້ວ';
+  $('rvFormWrap').hidden=false; $('rvFormWrap').scrollIntoView({behavior:SMOOTH, block:'start'});
+}
+async function doReview(id, act, extra){
+  const c=online.claims.find(x=>x.id===id); if(!c) return;
+  const j=await api('reviewClaim',{id, act, version:c.version, ...(extra||{})});
+  upsertClaim(j.claim);
+}
+$('rvCancel').addEventListener('click', closeReview);
+$('rvForm').addEventListener('submit', async e=>{
+  e.preventDefault(); if(!rvEdit) return;
+  const m=$('rvMsg'); const bad=(t,id)=>{ m.textContent=t; m.className='msg err'; if(id) $(id).focus(); };
+  const note=$('rvNote').value.trim(), extra={hqNote:note};
+  if(rvEdit.act==='reject' && !note) return bad('ຂຽນເຫດຜົນ ເພື່ອໃຫ້ສາຂາຮູ້ວ່າຕ້ອງແກ້ຫຍັງ', 'rvNote');
+  if(rvEdit.act==='paid'){
+    const k=parseNum($('rvKip').value); if(!isNum(k)) return bad('ໃສ່ຈຳນວນທີ່ຄືນເປັນກີບ', 'rvKip');
+    extra.paidKip=k; extra.paidDate=$('rvDate').value;
+  }
+  $('rvSave').disabled=true; m.textContent='ກຳລັງບັນທຶກ...'; m.className='msg';
+  try{ await doReview(rvEdit.id, rvEdit.act, extra); toast('ບັນທຶກແລ້ວ'); closeReview(); renderBudgetView(); render(); }
+  catch(err){ bad(errText(err)); if(err.code==='conflict' || err.detail==='state') refresh(true); }
+  finally{ $('rvSave').disabled=false; }
+});
+$('bgBranches').addEventListener('click', async e=>{
+  const d=e.target.closest('[data-sp-day]');
+  if(d){ if(kindOf()==='admin') $('spBranch').value=d.dataset.spBr; $('spDay').value=d.dataset.spDay; spPrefill();
+    $('spFormWrap').scrollIntoView({behavior:SMOOTH, block:'start'}); $('spUsd').focus({preventScroll:true}); return; }
+  const c=e.target.closest('[data-cl]'); if(c){ openClaim(c.dataset.clBr, c.dataset.cl); return; }
+  const r=e.target.closest('[data-rv]'); if(!r) return;
+  if(r.dataset.rv!=='approve'){ openReview(r.dataset.id, r.dataset.rv); return; }
+  r.disabled=true;
+  try{ await doReview(r.dataset.id, 'approve'); toast('ອະນຸມັດແລ້ວ'); renderBudgetView(); render(); }
+  catch(err){ toast(errText(err), true); r.disabled=false; if(err.code==='conflict' || err.detail==='state') refresh(true); }
 });
 
 /* ---------- admin: project period ---------- */
@@ -2329,7 +2433,7 @@ function renderAdmin(){
 $('projForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const m=$('pjMsg'); const per=$('pjPeriods').value.trim(), inv=$('pjInvDay').value.trim();
-  if(per && !(/^\d+$/.test(per) && +per>=1 && +per<=12)){ m.textContent='ຈຳນວນງວດ ຕ້ອງເປັນ 1–12'; m.className='msg err'; return; }
+  if(per && !(/^\d+$/.test(per) && +per>=1 && +per<=12)){ m.textContent='ຈຳນວນເດືອນ ຕ້ອງເປັນ 1–12'; m.className='msg err'; return; }
   if(inv && !(/^\d+$/.test(inv) && +inv>=1 && +inv<=28)){ m.textContent='ວັນທີສົ່ງໃບບິນ ຕ້ອງເປັນ 1–28'; m.className='msg err'; return; }
   const s={}; FIELDS.forEach(f=>s[f.k]=String(online.settings[f.k]??'').trim());
   s.budgets=budgetsOf(online.settings); s.start=$('pjStart').value; s.periods=per; s.invoiceDay=inv;
@@ -2338,15 +2442,22 @@ $('projForm').addEventListener('submit', async e=>{
   catch(err){ m.textContent=errText(err); m.className='msg err'; }
   finally{ $('pjSave').disabled=false; }
 });
-$('btnExportBudget').addEventListener('click', ()=>{
-  const head=['ງວດ','ເລີ່ມ','ຈົບ','ສາຂາ','ງົບ (ໂດລາ)','ອັດຕາແລກປ່ຽນ','ງົບຕາມແຜນ (ກີບ)','ຫັກເງິນເຫຼືອ (ກີບ)','ຍອດທີ່ຕ້ອງໂອນ (ກີບ)','ວັນທີໂອນ','ໂອນຈິງ (ກີບ)','ພາບໜ້າຈໍວັນຈັນ (ໄດ້ຮັບ/ທັງໝົດ)','ໃບບິນ Facebook','ເງິນທີ່ໃຊ້ຈິງ (ກີບ)','ງົບເຫຼືອ (ກີບ)','ສະຖານະ','ສົ່ງຄືນ (ກີບ)','ໝາຍເຫດ'];
-  const rows=[];
-  BRANCHES.forEach(b=>branchPeriods(b).forEach(x=>rows.push([x.per.p, showDate(x.per.from), showDate(x.per.to), b, x.usd, isNum(x.rate)?x.rate:'', isNum(x.plan)?x.plan:'', x.unknown?'':x.carry,
-    x.blocked?'ຫ້າມໂອນ':(isNum(x.toTransfer)?x.toTransfer:''), showDate(x.transferDate), isNum(x.transferred)?x.transferred:'',
-    x.mondays.filter(m=>m.s===YES).length+'/'+x.mondays.length, x.invoice, isNum(x.actual)?x.actual:'', isNum(x.leftover)?x.leftover:'', x.status, isNum(x.refund)?x.refund:'', x.d.note||''])));
+function downloadCsv(name, head, rows){
   const csv='﻿'+[head,...rows].map(r=>r.map(csvCell).join(',')).join('\r\n');
   const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  a.download='ໂອນງົບ_'+todayOnline()+'.csv'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+  a.download=name+'_'+todayOnline()+'.csv'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+}
+$('btnExportSpend').addEventListener('click', ()=>{
+  const rows=online.spend.slice().sort((a,b)=>a.branch===b.branch ? (a.day<b.day?-1:1) : (a.branch<b.branch?-1:1)).map(x=>{
+    const c=claimOf(x.branch, mondayOf(x.day));
+    return [showDate(x.day), x.branch, Number(x.usd), x.note||'', showDate(mondayOf(x.day)), c?(CLAIM_LABEL[c.status]||c.status):''];
+  });
+  downloadCsv('ເງິນໂຄສະນາລາຍວັນ', ['ວັນທີ','ສາຂາ','ເງິນທີ່ໃຊ້ (ໂດລາ)','ໝາຍເຫດ','ອາທິດເລີ່ມ','ສະຖານະເຄລມ'], rows);
+});
+$('btnExportClaims').addEventListener('click', ()=>{
+  const rows=online.claims.slice().sort((a,b)=>a.week_start<b.week_start?-1:1).map(c=>[c.branch, showDate(c.week_start), showDate(addDays(c.week_start,6)),
+    Number(c.usd), Number(c.usd_claimable), Number(c.kip), c.ref||'', refundKip(c), CLAIM_LABEL[c.status]||c.status, c.hq_note||'', showDate(c.paid_date||''), c.paid_kip===null?'':Number(c.paid_kip)]);
+  downloadCsv('ເຄລມໂຄສະນາ', ['ສາຂາ','ອາທິດເລີ່ມ','ອາທິດຈົບ','ເງິນທີ່ໃຊ້ (ໂດລາ)','ເຄລມໄດ້ (ໂດລາ)','ຍອດກີບຕາມໃບບິນ','ເລກອ້າງອີງ','ຍອດທີ່ຕ້ອງຄືນ (ກີບ)','ສະຖານະ','ໝາຍເຫດ ສນຫ','ວັນທີຄືນ','ຄືນແລ້ວ (ກີບ)'], rows);
 });
 
 /* keep sample choice when logged in */
